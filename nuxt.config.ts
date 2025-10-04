@@ -1,4 +1,4 @@
-# Nuxt 3 Configuration
+// Nuxt 3 Configuration
 export default defineNuxtConfig({
   devtools: { enabled: true },
   
