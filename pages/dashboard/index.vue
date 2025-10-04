@@ -1,137 +1,343 @@
 <template>
-  <div class="space-y-6">
-    <!-- Page Header -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-      <h1 class="text-2xl font-bold text-gray-900">Securities Lending Dashboard</h1>
-      <p class="mt-2 text-gray-600">Monitor your lending positions, risk exposure, and portfolio performance</p>
-    </div>
-
-    <!-- Key Metrics -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div class="metric-card">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm font-medium text-gray-600">Total Lending Value</p>
-            <p class="text-2xl font-bold text-gray-900">$2.4M</p>
-            <p class="text-sm text-green-600">+12.5% from last month</p>
-          </div>
-          <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-            </svg>
-          </div>
+  <div>
+    <!-- Orders Table -->
+    <div class="orders-section">
+      <div class="section-header">
+        <h2 class="section-title">Orders</h2>
+        <div class="section-actions">
+          <button class="action-btn primary">New Order</button>
+          <button class="action-btn secondary">Export</button>
         </div>
       </div>
-
-      <div class="metric-card">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm font-medium text-gray-600">Active Positions</p>
-            <p class="text-2xl font-bold text-gray-900">47</p>
-            <p class="text-sm text-blue-600">+3 this week</p>
-          </div>
-          <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      <div class="metric-card">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm font-medium text-gray-600">Average Rate</p>
-            <p class="text-2xl font-bold text-gray-900">3.2%</p>
-            <p class="text-sm text-yellow-600">+0.1% from last week</p>
-          </div>
-          <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      <div class="metric-card">
-        <div class="flex items-center justify-between">
-          <div>
-            <p class="text-sm font-medium text-gray-600">Risk Score</p>
-            <p class="text-2xl font-bold text-gray-900">Low</p>
-            <p class="text-sm text-green-600">Within acceptable range</p>
-          </div>
-          <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Charts Section -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div class="card">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">Portfolio Performance</h3>
-        <div class="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
-          <p class="text-gray-500">Chart component will be implemented with Figma MCP</p>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">Risk Exposure</h3>
-        <div class="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
-          <p class="text-gray-500">Risk chart will be implemented with Figma MCP</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Recent Activity -->
-    <div class="card">
-      <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Lending Activity</h3>
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+      
+      <div class="table-container">
+        <table class="orders-table">
+          <thead>
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Security</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Borrower</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rate</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+              <th>Symbol</th>
+              <th>Side</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Time</th>
+              <th>Actions</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">AAPL</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Goldman Sachs</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$150,000</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3.2%</td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span class="status-active">Active</span>
+          <tbody>
+            <tr v-for="order in orders" :key="order.id">
+              <td class="symbol-cell">
+                <div class="symbol-info">
+                  <span class="symbol">{{ order.symbol }}</span>
+                  <span class="description">{{ order.description }}</span>
+                </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-01-15</td>
-            </tr>
-            <tr>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">TSLA</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Morgan Stanley</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$200,000</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">4.1%</td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <span class="status-pending">Pending</span>
+              <td>
+                <span class="side" :class="order.side">{{ order.side }}</span>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-01-14</td>
+              <td>{{ order.quantity.toLocaleString() }}</td>
+              <td>${{ order.price.toFixed(2) }}</td>
+              <td>
+                <span class="status" :class="order.status">{{ order.status }}</span>
+              </td>
+              <td>{{ order.time }}</td>
+              <td>
+                <div class="actions">
+                  <button class="action-btn small">Edit</button>
+                  <button class="action-btn small danger">Cancel</button>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- Market Data Widgets -->
+    <div class="widgets-grid">
+      <div class="widget">
+        <div class="widget-header">
+          <h3 class="widget-title">Portfolio Value</h3>
+        </div>
+        <div class="widget-content">
+          <div class="metric-value">$2,847,392</div>
+          <div class="metric-change positive">+$12,847 (+0.45%)</div>
+        </div>
+      </div>
+      
+      <div class="widget">
+        <div class="widget-header">
+          <h3 class="widget-title">Active Loans</h3>
+        </div>
+        <div class="widget-content">
+          <div class="metric-value">47</div>
+          <div class="metric-change">$1,234,567</div>
+        </div>
+      </div>
+      
+      <div class="widget">
+        <div class="widget-header">
+          <h3 class="widget-title">Daily P&L</h3>
+        </div>
+        <div class="widget-content">
+          <div class="metric-value">$8,234</div>
+          <div class="metric-change positive">+2.1%</div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-// Dashboard page logic
+import { ref } from 'vue'
+
+// Sample data
+const orders = ref([
+  {
+    id: 1,
+    symbol: 'AAPL',
+    description: 'Apple Inc.',
+    side: 'Buy',
+    quantity: 1000,
+    price: 175.50,
+    status: 'Filled',
+    time: '09:30:15'
+  },
+  {
+    id: 2,
+    symbol: 'MSFT',
+    description: 'Microsoft Corporation',
+    side: 'Sell',
+    quantity: 500,
+    price: 342.75,
+    status: 'Pending',
+    time: '09:31:22'
+  },
+  {
+    id: 3,
+    symbol: 'GOOGL',
+    description: 'Alphabet Inc.',
+    side: 'Buy',
+    quantity: 200,
+    price: 142.30,
+    status: 'Partially Filled',
+    time: '09:32:45'
+  }
+])
+
 useHead({
   title: 'Dashboard'
 })
 </script>
+
+<style scoped>
+.orders-section {
+  background-color: #1a1a1a;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+}
+
+.section-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.action-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.action-btn.primary {
+  background-color: #04CF8B;
+  color: white;
+}
+
+.action-btn.primary:hover {
+  background-color: #03b87a;
+}
+
+.action-btn.secondary {
+  background-color: transparent;
+  color: #ccc;
+  border: 1px solid #333;
+}
+
+.action-btn.secondary:hover {
+  background-color: #2a2a2a;
+  color: white;
+}
+
+.action-btn.small {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.action-btn.danger {
+  background-color: #ef4444;
+  color: white;
+}
+
+.action-btn.danger:hover {
+  background-color: #dc2626;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.orders-table th {
+  background-color: #2a2a2a;
+  color: #ccc;
+  font-weight: 600;
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #333;
+  font-size: 0.875rem;
+}
+
+.orders-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #333;
+  color: white;
+  font-size: 0.875rem;
+}
+
+.orders-table tr:hover {
+  background-color: #2a2a2a;
+}
+
+.symbol-cell {
+  min-width: 150px;
+}
+
+.symbol-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.symbol {
+  font-weight: 600;
+  color: white;
+}
+
+.description {
+  font-size: 0.75rem;
+  color: #ccc;
+}
+
+.side {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.side.Buy {
+  background-color: #10b981;
+  color: white;
+}
+
+.side.Sell {
+  background-color: #ef4444;
+  color: white;
+}
+
+.status {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status.Filled {
+  background-color: #10b981;
+  color: white;
+}
+
+.status.Pending {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.status.Partially\ Filled {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.widgets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.widget {
+  background-color: #1a1a1a;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.widget-header {
+  margin-bottom: 1rem;
+}
+
+.widget-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ccc;
+  margin: 0;
+}
+
+.widget-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+}
+
+.metric-change {
+  font-size: 0.875rem;
+  color: #ccc;
+}
+
+.metric-change.positive {
+  color: #10b981;
+}
+
+.metric-change.negative {
+  color: #ef4444;
+}
+</style>
