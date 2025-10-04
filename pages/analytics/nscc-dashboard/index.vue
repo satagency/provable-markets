@@ -91,15 +91,15 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div class="card">
         <h3 class="text-lg font-semibold text-gray-900 mb-4">Settlement Activity</h3>
-        <div class="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
-          <p class="text-gray-500">Settlement activity chart will be implemented with Figma MCP</p>
+        <div class="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+          <div class="text-gray-500">Chart placeholder</div>
         </div>
       </div>
 
       <div class="card">
         <h3 class="text-lg font-semibold text-gray-900 mb-4">Margin Utilization</h3>
-        <div class="h-64 bg-gray-50 rounded-lg flex items-center justify-center">
-          <p class="text-gray-500">Margin utilization chart will be implemented with Figma MCP</p>
+        <div class="h-64 bg-gray-100 rounded-lg flex items-center justify-center">
+          <div class="text-gray-500">Chart placeholder</div>
         </div>
       </div>
     </div>
