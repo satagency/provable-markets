@@ -1,86 +1,206 @@
 <template>
-  <div>
-    <!-- Orders Table -->
-    <div class="orders-section">
-      <div class="section-header">
-        <h2 class="section-title">Orders</h2>
-        <div class="section-actions">
-          <button class="action-btn primary">New Order</button>
-          <button class="action-btn secondary">Export</button>
+  <div class="dashboard-container">
+    <!-- Data Window -->
+    <div class="data-window">
+      <!-- Widget Top Header -->
+      <div class="widget-top">
+        <div class="header-content">
+          <div class="left-section">
+            <h2 class="widget-title">Orders</h2>
+            <div class="term-toggle">
+              <span class="toggle-label">Show Archived</span>
+              <div class="switch">
+                <div class="handle"></div>
+              </div>
+            </div>
+          </div>
+          <div class="right-section">
+            <div class="batch-toggle">
+              <span class="batch-label">Batch Orders</span>
+              <div class="switch active">
+                <div class="handle"></div>
+              </div>
+            </div>
+            <button class="create-order-btn">
+              <span>Create Order</span>
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
       
-      <div class="table-container">
-        <table class="orders-table">
-          <thead>
-            <tr>
-              <th>Symbol</th>
-              <th>Side</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Status</th>
-              <th>Time</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="order in orders" :key="order.id">
-              <td class="symbol-cell">
-                <div class="symbol-info">
-                  <span class="symbol">{{ order.symbol }}</span>
-                  <span class="description">{{ order.description }}</span>
+      <!-- Orders Table -->
+      <div class="orders-content">
+        <!-- Table Header -->
+        <div class="table-header">
+          <div class="header-cell select-col">
+            <span class="header-text">Select</span>
+          </div>
+          <div class="header-cell status-col">
+            <span class="header-text">Status</span>
+          </div>
+          <div class="header-cell updated-col">
+            <span class="header-text">Updated</span>
+          </div>
+          <div class="header-cell side-col">
+            <span class="header-text">Side</span>
+          </div>
+          <div class="header-cell intent-col">
+            <span class="header-text">Intent</span>
+          </div>
+          <div class="header-cell ticker-col">
+            <span class="header-text">Ticker</span>
+          </div>
+          <div class="header-cell security-col">
+            <span class="header-text">Security Name</span>
+          </div>
+          <div class="header-cell cusip-col">
+            <span class="header-text">CUSIP</span>
+          </div>
+          <div class="header-cell open-qty-col">
+            <span class="header-text">Open QTY</span>
+          </div>
+          <div class="header-cell ioi-qty-col">
+            <span class="header-text">IOI QTY</span>
+          </div>
+          <div class="header-cell firm-qty-col">
+            <span class="header-text">Firm QTY</span>
+          </div>
+          <div class="header-cell fee-col">
+            <span class="header-text">Fee</span>
+            <span class="header-subtext">%</span>
+          </div>
+          <div class="header-cell exec-fee-col">
+            <span class="header-text">Exec Fee</span>
+            <span class="header-subtext">%</span>
+          </div>
+          <div class="header-cell rebates-col">
+            <span class="header-text">Rebates</span>
+            <span class="header-subtext">%</span>
+          </div>
+          <div class="header-cell agreements-col">
+            <span class="header-text">Agreements</span>
+          </div>
+          <div class="header-cell unit-price-col">
+            <span class="header-text">Unit Price</span>
+          </div>
+          <div class="header-cell market-value-col">
+            <span class="header-text">Market Value</span>
+          </div>
+          <div class="header-cell total-qty-col">
+            <span class="header-text">Total QTY</span>
+          </div>
+          <div class="header-cell min-qty-col">
+            <span class="header-text">Min QTY</span>
+          </div>
+          <div class="header-cell time-force-col">
+            <span class="header-text">Time Force</span>
+          </div>
+          <div class="header-cell counterparty-col">
+            <span class="header-text">CounterParty</span>
                 </div>
-              </td>
-              <td>
-                <span class="side" :class="order.side">{{ order.side }}</span>
-              </td>
-              <td>{{ order.quantity.toLocaleString() }}</td>
-              <td>${{ order.price.toFixed(2) }}</td>
-              <td>
-                <span class="status" :class="order.status">{{ order.status }}</span>
-              </td>
-              <td>{{ order.time }}</td>
-              <td>
-                <div class="actions">
-                  <button class="action-btn small">Edit</button>
-                  <button class="action-btn small danger">Cancel</button>
+          <div class="header-cell last-col">
+            <span class="header-text">Last</span>
                 </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+          <div class="header-cell actions-col">
+            <span class="header-text">Actions</span>
       </div>
     </div>
 
-    <!-- Market Data Widgets -->
-    <div class="widgets-grid">
-      <div class="widget">
-        <div class="widget-header">
-          <h3 class="widget-title">Portfolio Value</h3>
+        <!-- Table Row -->
+        <div class="table-row">
+          <div class="row-cell select-col">
+            <div class="gripper">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+              </svg>
+            </div>
+            <div class="checkbox">
+              <input type="checkbox" />
+            </div>
+          </div>
+          <div class="row-cell status-col">
+            <span class="status-held">Held</span>
+          </div>
+          <div class="row-cell updated-col">
+            <div class="date-time">
+              <span class="date">10/12/23</span>
+              <span class="time">09:23A</span>
+            </div>
         </div>
-        <div class="widget-content">
-          <div class="metric-value">$2,847,392</div>
-          <div class="metric-change positive">+$12,847 (+0.45%)</div>
+          <div class="row-cell side-col">
+            <div class="lending-badge">
+              <span class="lend-text">LENDER</span>
+            </div>
+      </div>
+          <div class="row-cell intent-col">
+            <span>Firm</span>
+          </div>
+          <div class="row-cell ticker-col">
+            <span class="ticker">TSLA</span>
+          </div>
+          <div class="row-cell security-col">
+            <span class="security-name">Tesla, Inc. Common Stock</span>
+          </div>
+          <div class="row-cell cusip-col">
+            <span class="cusip">88160R101</span>
+          </div>
+          <div class="row-cell open-qty-col">
+            <span class="quantity">111</span>
+          </div>
+          <div class="row-cell ioi-qty-col">
+            <span class="dash">--</span>
+          </div>
+          <div class="row-cell firm-qty-col">
+            <span class="dash">--</span>
+          </div>
+          <div class="row-cell fee-col">
+            <span class="fee-negative">-0.67%</span>
+          </div>
+          <div class="row-cell exec-fee-col">
+            <span class="fee-positive">5.00%</span>
+          </div>
+          <div class="row-cell rebates-col">
+            <span class="fee-positive">5.00%</span>
+        </div>
+          <div class="row-cell agreements-col">
+            <div class="agreements-info">
+              <div class="agreement-count">3</div>
+              <span class="available-text">available</span>
+              <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
         </div>
       </div>
-      
-      <div class="widget">
-        <div class="widget-header">
-          <h3 class="widget-title">Active Loans</h3>
+          <div class="row-cell unit-price-col">
+            <span class="price">$175.24</span>
+          </div>
+          <div class="row-cell market-value-col">
+            <span class="market-value">$175,000</span>
+          </div>
+          <div class="row-cell total-qty-col">
+            <span class="quantity">111</span>
+          </div>
+          <div class="row-cell min-qty-col">
+            <span class="quantity">111</span>
+          </div>
+          <div class="row-cell time-force-col">
+            <span class="quantity">111</span>
+          </div>
+          <div class="row-cell counterparty-col">
+            <span class="loss-amount">-$203</span>
+          </div>
+          <div class="row-cell last-col">
+            <div class="priority-badge high">HIGH</div>
+          </div>
+          <div class="row-cell actions-col">
+            <div class="action-buttons">
+              <button class="action-btn">Edit</button>
+              <button class="action-btn danger">Cancel</button>
+            </div>
         </div>
-        <div class="widget-content">
-          <div class="metric-value">47</div>
-          <div class="metric-change">$1,234,567</div>
-        </div>
-      </div>
-      
-      <div class="widget">
-        <div class="widget-header">
-          <h3 class="widget-title">Daily P&L</h3>
-        </div>
-        <div class="widget-content">
-          <div class="metric-value">$8,234</div>
-          <div class="metric-change positive">+2.1%</div>
         </div>
       </div>
     </div>
@@ -130,214 +250,441 @@ useHead({
 </script>
 
 <style scoped>
-.orders-section {
-  background-color: #1a1a1a;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+@font-face {
+  font-family: 'Matrix Sans SC';
+  src: url('https://fonts.cdnfonts.com/css/matrix-sans-sc') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+.dashboard-container {
+  padding: 1rem;
+  height: 100vh;
 }
 
-.section-header {
+.data-window {
+  border: 1px solid #404040;
+  border-radius: 6px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Widget Top Header */
+.widget-top {
+  background-color: #1A1A1A;
+  border-bottom: 1px solid rgba(144, 144, 144, 0.6);
+  height: 59px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  border-radius: 6px 6px 0 0;
+}
+
+.header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  width: 100%;
 }
 
-.section-title {
-  font-size: 1.25rem;
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.widget-title {
+  font-family: 'Roboto', sans-serif;
   font-weight: 600;
+  font-size: 20px;
   color: white;
   margin: 0;
 }
 
-.section-actions {
+.term-toggle {
   display: flex;
-  gap: 0.75rem;
+  align-items: center;
+  gap: 27px;
+}
+
+.toggle-label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  color: #8e8e8e;
+}
+
+.switch {
+  width: 26px;
+  height: 16px;
+  background-color: #e6e0e9;
+  border: 0.938px solid #79747e;
+  border-radius: 100px;
+  position: relative;
+  cursor: pointer;
+}
+
+.switch.active {
+  background-color: #00ad79;
+}
+
+.handle {
+  width: 12px;
+  height: 12px;
+  background-color: #79747e;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  transform: translateY(-50%);
+  transition: all 0.2s ease;
+}
+
+.switch.active .handle {
+  background-color: white;
+  left: 12px;
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.batch-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.batch-label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  color: #6fedc7;
+}
+
+.create-order-btn {
+  background-color: #0e8212;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  height: 32px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.create-order-btn:hover {
+  background-color: #0a6b0e;
+}
+
+/* Orders Content */
+.orders-content {
+  flex: 1;
+  overflow: auto;
+  padding: 0;
+}
+
+/* Table Header */
+.table-header {
+  display: flex;
+  background-color: rgba(255, 255, 255, 0);
+  padding: 0;
+  gap: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  min-width: max-content;
+}
+
+.header-cell {
+  background-color: rgba(224, 224, 224, 0);
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header-text {
+  font-weight: 400;
+}
+
+.header-subtext {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 10px;
+  margin-left: 2px;
+}
+
+/* Column Size System */
+.col-small { width: 80px; min-width: 80px; }
+.col-medium { width: 120px; min-width: 120px; }
+.col-large { width: 160px; min-width: 160px; }
+.col-xlarge { width: 200px; min-width: 200px; }
+
+/* Column Assignments */
+.select-col { width: 80px; min-width: 80px; }
+.status-col { width: 80px; min-width: 80px; }
+.updated-col { width: 120px; min-width: 120px; }
+.side-col { width: 80px; min-width: 80px; }
+.intent-col { width: 80px; min-width: 80px; }
+.ticker-col { width: 80px; min-width: 80px; }
+.security-col { width: 160px; min-width: 160px; }
+.cusip-col { width: 120px; min-width: 120px; }
+.open-qty-col { width: 80px; min-width: 80px; }
+.ioi-qty-col { width: 80px; min-width: 80px; }
+.firm-qty-col { width: 80px; min-width: 80px; }
+.fee-col { width: 80px; min-width: 80px; }
+.exec-fee-col { width: 80px; min-width: 80px; }
+.rebates-col { width: 80px; min-width: 80px; }
+.agreements-col { width: 160px; min-width: 160px; }
+.unit-price-col { width: 80px; min-width: 80px; }
+.market-value-col { width: 120px; min-width: 120px; }
+.total-qty-col { width: 80px; min-width: 80px; }
+.min-qty-col { width: 80px; min-width: 80px; }
+.time-force-col { width: 80px; min-width: 80px; }
+.counterparty-col { width: 120px; min-width: 120px; }
+.last-col { width: 80px; min-width: 80px; }
+.actions-col { width: 120px; min-width: 120px; }
+
+/* Table Row */
+.table-row {
+  display: flex;
+  padding: 0;
+  gap: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color 0.15s ease;
+  width: 100%;
+  min-width: max-content;
+}
+
+.table-row:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.row-cell {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+  color: #ffffff;
+  height: 48px;
+  white-space: nowrap;
+}
+
+.row-cell.select-col {
+  padding: 0 12px;
+  gap: 8px;
+  justify-content: center;
+}
+
+.gripper {
+  color: #666;
+  cursor: grab;
+  opacity: 0.6;
+}
+
+.checkbox input {
+  width: 16px;
+  height: 16px;
+  accent-color: #04CF8B;
+}
+
+/* Data Element Styling */
+.status-held {
+  color: #ffb74d;
+  font-weight: 500;
+}
+
+.date-time {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.date {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.time {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.ticker {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.security-name {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.cusip {
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Roboto Mono', monospace;
+}
+
+.quantity {
+  color: #ffffff;
+  font-weight: 500;
+  text-align: right;
+  width: 100%;
+}
+
+.dash {
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  width: 100%;
+}
+
+.fee-negative {
+  color: #ff6b6b;
+  font-weight: 500;
+}
+
+.fee-positive {
+  color: #51cf66;
+  font-weight: 500;
+}
+
+.price {
+  color: #ffffff;
+  font-weight: 500;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.market-value {
+  color: #51abff;
+  font-weight: 600;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.loss-amount {
+  color: #ff7575;
+  font-family: 'Roboto Mono', monospace;
+  font-weight: 500;
+}
+
+.lending-badge {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%), 
+              linear-gradient(90deg, rgba(37, 99, 235, 0.43) 0%, rgba(37, 99, 235, 0.43) 100%);
+  border: 1px solid #42BED9;
+  border-radius: 4px;
+  padding: 4px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-height: 16px;
+  height: 16px;
+}
+
+.lend-text {
+  font-family: 'Matrix Sans SC', monospace;
+  font-size: 9.905px;
+  color: #3ffff6;
+  letter-spacing: 0.4952px;
+  text-transform: uppercase;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.security-col {
+  padding: 2px 8px;
+}
+
+.agreements-info {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.agreement-count {
+  border: 1px solid #484848;
+  border-radius: 3px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #ffffff;
+}
+
+.market-value {
+  color: #51abff;
+  font-weight: 500;
+}
+
+.counterparty-loss {
+  color: #ff7575;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 14px;
+  letter-spacing: -0.14px;
+}
+
+.priority-badge {
+  background-color: rgba(0, 189, 101, 0.66);
+  border-radius: 90px;
+  padding: 2px 13px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  color: white;
+  letter-spacing: 0.12px;
+  text-transform: uppercase;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
 }
 
 .action-btn {
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  background-color: transparent;
+  border: 1px solid #333;
+  color: #ccc;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: none;
 }
 
-.action-btn.primary {
-  background-color: #04CF8B;
-  color: white;
-}
-
-.action-btn.primary:hover {
-  background-color: #03b87a;
-}
-
-.action-btn.secondary {
-  background-color: transparent;
-  color: #ccc;
-  border: 1px solid #333;
-}
-
-.action-btn.secondary:hover {
+.action-btn:hover {
   background-color: #2a2a2a;
   color: white;
-}
-
-.action-btn.small {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
 }
 
 .action-btn.danger {
   background-color: #ef4444;
   color: white;
+  border-color: #ef4444;
 }
 
 .action-btn.danger:hover {
   background-color: #dc2626;
-}
-
-.table-container {
-  overflow-x: auto;
-}
-
-.orders-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.orders-table th {
-  background-color: #2a2a2a;
-  color: #ccc;
-  font-weight: 600;
-  padding: 0.75rem;
-  text-align: left;
-  border-bottom: 1px solid #333;
-  font-size: 0.875rem;
-}
-
-.orders-table td {
-  padding: 0.75rem;
-  border-bottom: 1px solid #333;
-  color: white;
-  font-size: 0.875rem;
-}
-
-.orders-table tr:hover {
-  background-color: #2a2a2a;
-}
-
-.symbol-cell {
-  min-width: 150px;
-}
-
-.symbol-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.symbol {
-  font-weight: 600;
-  color: white;
-}
-
-.description {
-  font-size: 0.75rem;
-  color: #ccc;
-}
-
-.side {
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.side.Buy {
-  background-color: #10b981;
-  color: white;
-}
-
-.side.Sell {
-  background-color: #ef4444;
-  color: white;
-}
-
-.status {
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.status.Filled {
-  background-color: #10b981;
-  color: white;
-}
-
-.status.Pending {
-  background-color: #f59e0b;
-  color: white;
-}
-
-.status.Partially\ Filled {
-  background-color: #3b82f6;
-  color: white;
-}
-
-.actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.widgets-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
-.widget {
-  background-color: #1a1a1a;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-}
-
-.widget-header {
-  margin-bottom: 1rem;
-}
-
-.widget-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #ccc;
-  margin: 0;
-}
-
-.widget-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.metric-value {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: white;
-}
-
-.metric-change {
-  font-size: 0.875rem;
-  color: #ccc;
-}
-
-.metric-change.positive {
-  color: #10b981;
-}
-
-.metric-change.negative {
-  color: #ef4444;
 }
 </style>
