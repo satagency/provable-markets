@@ -143,30 +143,26 @@
     </aside>
 
         <!-- Submenu Sidebar -->
-        <aside class="submenu-sidebar" :class="{ 'expanded': submenuExpanded }">
+        <aside 
+          class="submenu-sidebar" 
+          :class="{ 'expanded': submenuExpanded }"
+          @mouseenter="handleSubmenuMouseEnter"
+          @mouseleave="handleSubmenuMouseLeave"
+        >
           <div class="submenu-content">
-            <!-- Loading indicator during transition -->
-            <div v-if="isTransitioning" class="submenu-loading">
-              <div class="loading-dots">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-              </div>
-            </div>
-            
             <!-- Submenu content -->
-            <DashboardSubmenu v-if="currentSubmenu === 'dashboard' && !isTransitioning" />
-            <MarketplaceSubmenu v-if="currentSubmenu === 'marketplace' && !isTransitioning" />
-            <TradeManagerSubmenu v-if="currentSubmenu === 'trade-manager' && !isTransitioning" />
-            <AgreementsSubmenu v-if="currentSubmenu === 'agreements' && !isTransitioning" />
-            <LocatesSubmenu v-if="currentSubmenu === 'locates' && !isTransitioning" />
-            <AnalyticsSubmenu v-if="currentSubmenu === 'analytics' && !isTransitioning" />
-            <ReportsSubmenu v-if="currentSubmenu === 'reports' && !isTransitioning" />
-            <TradeOptimizerSubmenu v-if="currentSubmenu === 'trade-optimizer' && !isTransitioning" />
-            <BasketToolSubmenu v-if="currentSubmenu === 'basket-tool' && !isTransitioning" />
-            <StrategyBuilderSubmenu v-if="currentSubmenu === 'strategy-builder' && !isTransitioning" />
-            <ComplianceSubmenu v-if="currentSubmenu === 'compliance' && !isTransitioning" />
-            <SettingsSubmenu v-if="currentSubmenu === 'settings' && !isTransitioning" />
+            <DashboardSubmenu v-if="currentSubmenu === 'dashboard'" />
+            <MarketplaceSubmenu v-if="currentSubmenu === 'marketplace'" />
+            <TradeManagerSubmenu v-if="currentSubmenu === 'trade-manager'" />
+            <AgreementsSubmenu v-if="currentSubmenu === 'agreements'" />
+            <LocatesSubmenu v-if="currentSubmenu === 'locates'" />
+            <AnalyticsSubmenu v-if="currentSubmenu === 'analytics'" />
+            <ReportsSubmenu v-if="currentSubmenu === 'reports'" />
+            <TradeOptimizerSubmenu v-if="currentSubmenu === 'trade-optimizer'" />
+            <BasketToolSubmenu v-if="currentSubmenu === 'basket-tool'" />
+            <StrategyBuilderSubmenu v-if="currentSubmenu === 'strategy-builder'" />
+            <ComplianceSubmenu v-if="currentSubmenu === 'compliance'" />
+            <SettingsSubmenu v-if="currentSubmenu === 'settings'" />
           </div>
         </aside>
 
@@ -268,7 +264,48 @@ const updateClock = () => {
 }
 
 // Use submenu composable
-const { submenuExpanded, currentSubmenu, isTransitioning, expandSubmenu, collapseSubmenu } = useSubmenu()
+const { submenuExpanded, currentSubmenu, expandSubmenu, collapseSubmenu } = useSubmenu()
+
+// Auto-collapse submenu after 6 seconds
+const autoCollapseTimer = ref(null)
+const isHoveringSubmenu = ref(false)
+
+// Start auto-collapse timer
+const startAutoCollapseTimer = () => {
+  // Clear existing timer
+  if (autoCollapseTimer.value) {
+    clearTimeout(autoCollapseTimer.value)
+  }
+  
+  // Set new timer for 6 seconds
+  autoCollapseTimer.value = setTimeout(() => {
+    if (!isHoveringSubmenu.value && submenuExpanded.value) {
+      collapseSubmenu()
+    }
+  }, 6000)
+}
+
+// Handle submenu hover
+const handleSubmenuMouseEnter = () => {
+  isHoveringSubmenu.value = true
+  // Clear auto-collapse timer when hovering
+  if (autoCollapseTimer.value) {
+    clearTimeout(autoCollapseTimer.value)
+  }
+  // Expand submenu when hovering (even if it was collapsed)
+  if (currentSubmenu.value) {
+    // Force expand even if it's the same submenu
+    expandSubmenu(currentSubmenu.value, true)
+  }
+}
+
+const handleSubmenuMouseLeave = () => {
+  isHoveringSubmenu.value = false
+  // Restart auto-collapse timer when leaving hover
+  if (submenuExpanded.value) {
+    startAutoCollapseTimer()
+  }
+}
 
 // Toggle sidebar function
 const toggleSidebar = () => {
@@ -295,11 +332,16 @@ onMounted(() => {
   // Clean up interval on unmount
   onUnmounted(() => {
     clearInterval(clockInterval)
+    if (autoCollapseTimer.value) {
+      clearTimeout(autoCollapseTimer.value)
+    }
   })
   
   const pathSegments = route.path.split('/').filter(Boolean)
   if (pathSegments.length > 0 && routesWithSubmenus.includes(pathSegments[0])) {
     expandSubmenu(pathSegments[0])
+    // Start auto-collapse timer when submenu expands
+    startAutoCollapseTimer()
   } else {
     collapseSubmenu()
   }
@@ -310,6 +352,8 @@ watch(() => route.path, (newPath) => {
   const pathSegments = newPath.split('/').filter(Boolean)
   if (pathSegments.length > 0 && routesWithSubmenus.includes(pathSegments[0])) {
     expandSubmenu(pathSegments[0])
+    // Start auto-collapse timer when submenu expands
+    startAutoCollapseTimer()
   } else {
     collapseSubmenu()
   }
@@ -394,7 +438,7 @@ watch(() => route.path, (newPath) => {
 .logo-text.aurora {
   font-family: 'Basier Circle', sans-serif;
   font-weight: bold;
-  font-size: 19px;
+  font-size: 22px; /* Increased 15% from 19px */
   color: #04cf8b;
   line-height: 1;
   letter-spacing: -0.19px;
@@ -402,7 +446,7 @@ watch(() => route.path, (newPath) => {
 
 .logo-text.review {
   font-family: 'Matrix Sans', sans-serif;
-  font-size: 13px;
+  font-size: 15px; /* Increased 15% from 13px */
   color: #d7ebff;
   line-height: 100%;
   letter-spacing: 0.65px;
@@ -441,7 +485,7 @@ watch(() => route.path, (newPath) => {
       align-items: center;
       gap: 12px;
       padding: 8px;
-      color: #8F8F8F;
+      color: rgba(255, 255, 255, 0.7); /* 70% opacity for inactive */
       text-decoration: none;
       border-radius: 3px;
       height: 40px;
@@ -453,20 +497,20 @@ watch(() => route.path, (newPath) => {
 
 .nav-item:hover {
   background-color: rgba(199, 209, 207, 0.1);
-  color: #f2f7f7;
+  color: #ffffff; /* 100% white on hover */
 }
 
     .nav-item.active {
       background-color: rgba(199, 209, 207, 0.1);
-      color: #f2f7f7;
+      color: #ffffff; /* 100% white when active */
     }
 
     .nav-item.secondary {
-      color: #8F8F8F;
+      color: rgba(255, 255, 255, 0.7); /* 70% opacity for secondary */
     }
 
     .nav-item.bottom {
-      color: #8F8F8F;
+      color: rgba(255, 255, 255, 0.7); /* 70% opacity for bottom items */
     }
 
 .nav-icon {
@@ -589,16 +633,19 @@ watch(() => route.path, (newPath) => {
 
 /* Submenu Sidebar */
 .submenu-sidebar {
-  width: 0;
-  background-color: transparent;
+  width: 12px; /* Increased hoverable area for easier testing */
+  background-color: #161818; /* Fade in background to blend with main sidebar */
   border-right: 1px solid #202020;
-  transition: width 0.3s ease;
+  transition: width 0.3s ease, background-color 0.3s ease;
   overflow: hidden;
   flex-shrink: 0;
+  cursor: pointer; /* Add cursor to indicate hoverable area */
 }
+
 
 .submenu-sidebar.expanded {
   width: 230px;
+  background-color: transparent; /* Transparent when expanded */
 }
 
     .submenu-content {
@@ -607,45 +654,6 @@ watch(() => route.path, (newPath) => {
       background-color: transparent;
     }
 
-    .submenu-loading {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 200px;
-      padding: 1rem;
-    }
-
-    .loading-dots {
-      display: flex;
-      gap: 4px;
-    }
-
-    .dot {
-      width: 6px;
-      height: 6px;
-      background-color: rgba(255, 255, 255, 0.4);
-      border-radius: 50%;
-      animation: loading-dots 1.4s infinite ease-in-out both;
-    }
-
-    .dot:nth-child(1) {
-      animation-delay: -0.32s;
-    }
-
-    .dot:nth-child(2) {
-      animation-delay: -0.16s;
-    }
-
-    @keyframes loading-dots {
-      0%, 80%, 100% {
-        transform: scale(0);
-        opacity: 0.5;
-      }
-      40% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
 
 /* Main Content */
 .main-content {

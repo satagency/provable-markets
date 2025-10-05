@@ -86,7 +86,7 @@ const reratesCount = ref(7)
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 0.5rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.7); /* 70% opacity to match main nav */
   text-decoration: none;
   border-radius: 0.375rem;
   transition: all 0.2s ease;

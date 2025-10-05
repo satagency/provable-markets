@@ -3,34 +3,20 @@ import { ref, readonly } from 'vue'
 // Global submenu state
 const submenuExpanded = ref(false)
 const currentSubmenu = ref('')
-const isTransitioning = ref(false)
+const lastSubmenu = ref('') // Keep track of last submenu for hover expansion
 
 export const useSubmenu = () => {
-  const expandSubmenu = (submenuName: string) => {
-    if (currentSubmenu.value === submenuName) return
+  const expandSubmenu = (submenuName: string, force = false) => {
+    if (!force && currentSubmenu.value === submenuName) return
     
-    isTransitioning.value = true
-    
-    // Add delay for "thinking dashboard" effect
-    setTimeout(() => {
-      currentSubmenu.value = submenuName
-      submenuExpanded.value = true
-      
-      // Small additional delay before allowing next transition
-      setTimeout(() => {
-        isTransitioning.value = false
-      }, 100)
-    }, 300) // 300ms delay for thinking effect
+    currentSubmenu.value = submenuName
+    lastSubmenu.value = submenuName
+    submenuExpanded.value = true
   }
 
   const collapseSubmenu = () => {
-    isTransitioning.value = true
-    
-    setTimeout(() => {
-      submenuExpanded.value = false
-      currentSubmenu.value = ''
-      isTransitioning.value = false
-    }, 150) // Shorter delay for collapse
+    submenuExpanded.value = false
+    // Don't clear currentSubmenu - keep it for hover expansion
   }
 
   const toggleSubmenu = (submenuName: string) => {
@@ -44,7 +30,7 @@ export const useSubmenu = () => {
   return {
     submenuExpanded: readonly(submenuExpanded),
     currentSubmenu: readonly(currentSubmenu),
-    isTransitioning: readonly(isTransitioning),
+    lastSubmenu: readonly(lastSubmenu),
     expandSubmenu,
     collapseSubmenu,
     toggleSubmenu
