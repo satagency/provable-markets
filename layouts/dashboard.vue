@@ -177,7 +177,7 @@
         <div class="header-left">
           <div class="market-status">
             <div class="status-indicator"></div>
-            <span class="status-text">{{ currentDateTime.toUpperCase() }} • MARKET CLOSED</span>
+            <span class="status-text">{{ currentDateTime.toUpperCase() }} • {{ marketStatus }}</span>
           </div>
         </div>
         
@@ -187,7 +187,7 @@
               <div class="notification-bell">
                 <img :src="customIcons.notificationBell" alt="Notifications" class="w-5 h-5 block" />
               </div>
-              <div class="notification-dot"></div>
+              <div class="notification-dot" :class="{ 'market-open': isMarketOpen }"></div>
             </div>
           </div>
           
@@ -226,8 +226,30 @@ import { customIcons } from '~/composables/useCustomIcons'
 // Sidebar toggle state
 const sidebarCollapsed = ref(false)
 
-// Real-time clock
+// Real-time clock and market status
 const currentDateTime = ref('')
+const isMarketOpen = ref(false)
+const marketStatus = ref('MARKET CLOSED')
+
+// Check if market is open (9:30 AM - 4:00 PM EST, Monday-Friday)
+const checkMarketStatus = () => {
+  const now = new Date()
+  const estTime = new Date(now.toLocaleString("en-US", {timeZone: "America/New_York"}))
+  const day = estTime.getDay() // 0 = Sunday, 6 = Saturday
+  const hour = estTime.getHours()
+  const minute = estTime.getMinutes()
+  const timeInMinutes = hour * 60 + minute
+  
+  // Market hours: 9:30 AM (570 minutes) to 4:00 PM (960 minutes), Monday-Friday
+  const marketOpenTime = 9 * 60 + 30 // 9:30 AM
+  const marketCloseTime = 16 * 60 // 4:00 PM
+  
+  const isWeekday = day >= 1 && day <= 5
+  const isMarketHours = timeInMinutes >= marketOpenTime && timeInMinutes < marketCloseTime
+  
+  isMarketOpen.value = isWeekday && isMarketHours
+  marketStatus.value = isMarketOpen.value ? 'MARKET OPEN' : 'MARKET CLOSED'
+}
 
 // Update clock every second
 const updateClock = () => {
@@ -242,6 +264,7 @@ const updateClock = () => {
     timeZoneName: 'short'
   }
   currentDateTime.value = now.toLocaleDateString('en-US', options)
+  checkMarketStatus()
 }
 
 // Use submenu composable
@@ -709,6 +732,10 @@ watch(() => route.path, (newPath) => {
   border: 1px solid #000000;
   border-radius: 50%;
   z-index: 10;
+}
+
+.notification-dot.market-open {
+  background-color: #10b981;
 }
 
 .user-avatar {

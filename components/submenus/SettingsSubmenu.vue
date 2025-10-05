@@ -3,8 +3,8 @@
     <h3 class="submenu-title">Settings</h3>
     <ul class="submenu-list">
       <li>
-        <NuxtLink to="/settings" class="submenu-item">
-          <span class="submenu-label">General</span>
+        <NuxtLink to="/settings/users" class="submenu-item">
+          <span class="submenu-label">Users</span>
         </NuxtLink>
       </li>
       <li>
@@ -13,13 +13,18 @@
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/settings/notifications" class="submenu-item">
-          <span class="submenu-label">Notifications</span>
+        <NuxtLink to="/settings/counterparty-credit" class="submenu-item">
+          <span class="submenu-label">Counterparty Credit</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/settings/security" class="submenu-item">
-          <span class="submenu-label">Security</span>
+        <NuxtLink to="/settings/uptime" class="submenu-item">
+          <span class="submenu-label">Uptime</span>
+        </NuxtLink>
+      </li>
+      <li>
+        <NuxtLink to="/settings/integrations" class="submenu-item">
+          <span class="submenu-label">Integrations</span>
         </NuxtLink>
       </li>
     </ul>

@@ -39,6 +39,16 @@
           <span class="submenu-label">Loans History</span>
         </NuxtLink>
       </li>
+      <li>
+        <NuxtLink to="/trade-manager/manual-loans" class="submenu-item">
+          <span class="submenu-label">Manual Loans</span>
+        </NuxtLink>
+      </li>
+      <li>
+        <NuxtLink to="/trade-manager/pre-established-loans" class="submenu-item">
+          <span class="submenu-label">Pre-established Loans</span>
+        </NuxtLink>
+      </li>
     </ul>
   </div>
 </template>
