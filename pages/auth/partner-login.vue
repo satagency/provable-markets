@@ -1,10 +1,10 @@
 <template>
-  <div style="background-color: #000000; min-height: 100vh; display: flex; flex-direction: column;">
+  <div class="login-page">
     <!-- Header -->
-    <div style="display: flex; justify-content: space-between; align-items: center; padding: 2rem;">
+    <div class="login-header">
       <!-- Logo -->
-      <div style="display: flex; align-items: center;">
-        <svg width="106" height="13" viewBox="0 0 106 13" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 12px;">
+      <div class="logo-container">
+        <svg width="106" height="13" viewBox="0 0 106 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
           <path d="M3.95198 12.171C1.70998 12.171 0.474976 10.822 0.474976 9.05503C0.474976 7.21203 1.72898 5.99602 4.46498 5.99602C5.20598 5.99602 6.19398 6.14802 6.59298 6.28102V5.46403C6.59298 4.78002 6.15598 4.24802 5.07298 4.24802C4.16098 4.24802 3.62898 4.74202 3.62898 5.35002H0.892976C0.892976 3.48802 2.24198 1.89202 5.16798 1.89202C7.88498 1.89202 9.51898 3.39303 9.51898 5.46403V12H6.89698L6.68798 11.107H6.61198C6.06098 11.734 5.18698 12.171 3.95198 12.171ZM4.69298 9.89102C5.88998 9.89102 6.59298 9.18802 6.59298 8.37102V8.27602C5.98498 8.02902 5.37698 7.95302 4.80698 7.95302C3.85698 7.95302 3.36298 8.37102 3.36298 8.90302C3.36298 9.47302 3.81898 9.89102 4.69298 9.89102Z" fill="#04CF8B"/>
           <path d="M17.2143 2.06302H20.1403V8.02903C20.1403 10.138 18.8483 12.171 15.5993 12.171C15.5803 12.171 15.5803 12.171 15.5803 12.171C12.3313 12.171 11.0393 10.138 11.0393 8.02903V2.06302H13.9653V7.59202C13.9653 8.73202 14.4403 9.41603 15.5993 9.41603C16.7393 9.41603 17.2143 8.73202 17.2143 7.59202V2.06302Z" fill="#04CF8B"/>
           <path d="M21.8522 12V2.06302H24.2842L24.5122 3.50702H24.5882C25.0252 2.63302 25.8612 1.89202 27.1342 1.89202H27.8182V4.57102H26.8682C25.4812 4.57102 24.5882 5.50203 24.5882 7.09802V12H21.8522Z" fill="#04CF8B"/>
@@ -21,82 +21,82 @@
       </div>
       
       <!-- Join Button -->
-      <button style="border: 1px solid #F97316; background: transparent; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; font-size: 0.875rem;">
+      <button class="join-button">
         Join Provable Markets
       </button>
     </div>
 
     <!-- Main Content -->
-    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 2rem;">
-      <div style="max-width: 1200px; width: 100%; display: flex; justify-content: center;">
-        <div style="max-width: 400px; width: 100%;">
+    <div class="login-main">
+      <div class="login-container">
+        <div class="login-form-wrapper">
           <!-- Main Title -->
-          <h1 style="color: white; font-family: serif; font-size: 2.5rem; font-weight: bold; text-align: center; margin-bottom: 3rem;">
+          <h1 class="login-title">
             Log in to Provable Markets
           </h1>
           
           <!-- Login Form -->
-        <form style="display: flex; flex-direction: column; gap: 1.5rem;">
-          <input 
-            type="email" 
-            placeholder="Email address"
-            style="width: 100%; padding: 1rem; background-color: #2C2C2C; color: white; border: none; border-radius: 0.75rem; font-size: 1rem; text-align: center;"
-          />
-          
-          <input 
-            type="password" 
-            placeholder="Password"
-            style="width: 100%; padding: 1rem; background-color: #2C2C2C; color: white; border: none; border-radius: 0.75rem; font-size: 1rem; text-align: center;"
-          />
-          
-          <button 
-            type="submit"
-            style="width: 100%; padding: 1rem; background-color: #2C2C2C; color: white; border: 1px solid #F97316; border-radius: 0.75rem; font-size: 1rem; font-weight: 500; cursor: pointer; margin-top: 0.5rem;"
-          >
-            Log in
-          </button>
-        </form>
+          <form class="login-form">
+            <input 
+              type="email" 
+              placeholder="Email address"
+              class="login-input"
+            />
+            
+            <input 
+              type="password" 
+              placeholder="Password"
+              class="login-input"
+            />
+            
+            <button 
+              type="submit"
+              class="login-submit-button"
+            >
+              Log in
+            </button>
+          </form>
         
-        <div style="text-align: center; margin-top: 1rem;">
-          <a href="#" style="color: #A0A0A0; text-decoration: none; font-size: 0.875rem;">Forgot password?</a>
-        </div>
+          <div class="forgot-password">
+            <a href="#" class="forgot-link">Forgot password?</a>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Footer -->
-    <div style="padding: 2rem; display: flex; justify-content: center;">
-      <div style="max-width: 1200px; width: 100%;">
-        <p style="color: #A0A0A0; font-size: 0.75rem; margin-bottom: 1rem;">
+    <div class="login-footer">
+      <div class="footer-container">
+        <p class="copyright">
           © 2025 Provable Markets LLC. All Rights Reserved.
         </p>
         
-        <div style="color: #A0A0A0; font-size: 0.625rem; line-height: 1.6; max-width: 800px; text-align: center;">
-        <p style="margin-bottom: 1rem;">Securities lending services are provided by Provable Markets LLC ("Provable Markets"), a securities lending platform registered with the Securities and Exchange Commission ("SEC"). By using this website, you accept and agree to Provable Markets' <u>Terms of Use</u> and <u>Privacy Policy</u>. Provable Markets' securities lending services are available only to qualified institutional investors and registered broker-dealers in jurisdictions where Provable Markets is authorized to operate.</p>
-        
-        <p style="margin-bottom: 1rem;">Nothing on this website should be considered an offer, solicitation of an offer, or advice to engage in securities lending transactions or investment products. Past performance is no guarantee of future results. Any historical returns, expected returns, or probability projections are purely hypothetical in nature and may not reflect actual or potential future performance; nor do they represent actual performance outcomes of a client.</p>
-        
-        <p style="margin-bottom: 1rem;">Please see Provable Markets' Interactive Performance Tool available at <u>www.provablemarkets.com/historical-performance</u> for important information and disclosures. Strategy holdings and other information provided are for illustrative purposes only and are not to be considered investment recommendations. The content on this website is for informational purposes only and does not constitute a comprehensive description of Provable Markets' securities lending services.</p>
-        
-        <p style="margin-bottom: 1rem;">Please refer to Provable Markets' Program Brochure for important additional information. Certain securities lending transactions are not suitable for all investors. Before engaging in securities lending, you should consider your investment objectives, risk tolerance, and any fees charged by Provable Markets. The rate of return on securities lending transactions can vary widely over time, especially for long term positions.</p>
-        
-        <p style="margin-bottom: 1rem;">Investment losses are possible, including the potential loss of all amounts invested, including principal. Securities lending services are provided to Provable Markets clients by Provable Markets LLC and its clearing partners, both registered broker-dealers and members of FINRA/SIPC. For more information, visit our disclosures page. You may check the background of these firms by visiting FINRA's BrokerCheck.</p>
-        
-        <p style="margin-bottom: 1rem;">Various securities lending products and strategies ("Third Party Strategies") offered by third party fund families and investment companies are made available on the platform. Before engaging in such Third Party Strategies you should consult the specific supplemental information available for each product.</p>
-        
-        <p style="margin-bottom: 1rem;">Certain Third Party Strategies that are available on Provable Markets' platform involve complex securities lending arrangements. Investments in these strategies are highly speculative and subject to liquidity constraints that are generally available in other types of investments. Actual investment return and principal value is likely to fluctuate and may depreciate in value when redeemed.</p>
-        
-        <p style="margin-bottom: 1rem;">The securities lending program is made available in coordination with our clearing partners through Provable Markets LLC. Please visit www.provablemarkets.com/legal for applicable terms and conditions and important disclosures.</p>
-        
-        <p style="margin-bottom: 1rem;"><strong>Securities lending transactions with exposure to volatile securities are only suitable for investors who are willing to bear the risk of loss and experience sharp drawdowns, as they still carry inherent risk associated with market volatility.</strong> You are solely responsible for evaluating the merits and risks associated with the use of any information, materials, content, user content, or third party content provided before making any decisions based on such content.</p>
-        
-        <p style="margin-bottom: 1rem;">All securities lending transactions carry risk, including the potential loss of principal. Investment growth is not guaranteed. Provable Markets' institutional services are available exclusively to Provable Markets clients, subject to availability and location, and are not guaranteed. Certain services are subject to eligibility. Terms and conditions apply.</p>
-        
-        <p style="margin-bottom: 1rem;">Risk management services via Provable Markets Risk are offered by our risk management partners. Provable Markets does not provide investment advice, and our risk management partners are not affiliates of Provable Markets. Terms apply, and details are available in our partners' Terms of Use.</p>
-        
-        <p style="margin-bottom: 1rem;">Any logos or mentions of other companies are for informational purposes only and do not imply affiliation or endorsement of Provable Markets by these companies. Information provided by Provable Markets Support is for informational and general educational purposes only and is not investment or financial advice.</p>
-        
-        <p style="margin-bottom: 0;">Contact Provable Markets at support@provablemarkets.com. 123 Wall Street, New York, NY 10005.</p>
+        <div class="disclaimer">
+          <p>Securities lending services are provided by Provable Markets LLC ("Provable Markets"), a securities lending platform registered with the Securities and Exchange Commission ("SEC"). By using this website, you accept and agree to Provable Markets' <u>Terms of Use</u> and <u>Privacy Policy</u>. Provable Markets' securities lending services are available only to qualified institutional investors and registered broker-dealers in jurisdictions where Provable Markets is authorized to operate.</p>
+          
+          <p>Nothing on this website should be considered an offer, solicitation of an offer, or advice to engage in securities lending transactions or investment products. Past performance is no guarantee of future results. Any historical returns, expected returns, or probability projections are purely hypothetical in nature and may not reflect actual or potential future performance; nor do they represent actual performance outcomes of a client.</p>
+          
+          <p>Please see Provable Markets' Interactive Performance Tool available at <u>www.provablemarkets.com/historical-performance</u> for important information and disclosures. Strategy holdings and other information provided are for illustrative purposes only and are not to be considered investment recommendations. The content on this website is for informational purposes only and does not constitute a comprehensive description of Provable Markets' securities lending services.</p>
+          
+          <p>Please refer to Provable Markets' Program Brochure for important additional information. Certain securities lending transactions are not suitable for all investors. Before engaging in securities lending, you should consider your investment objectives, risk tolerance, and any fees charged by Provable Markets. The rate of return on securities lending transactions can vary widely over time, especially for long term positions.</p>
+          
+          <p>Investment losses are possible, including the potential loss of all amounts invested, including principal. Securities lending services are provided to Provable Markets clients by Provable Markets LLC and its clearing partners, both registered broker-dealers and members of FINRA/SIPC. For more information, visit our disclosures page. You may check the background of these firms by visiting FINRA's BrokerCheck.</p>
+          
+          <p>Various securities lending products and strategies ("Third Party Strategies") offered by third party fund families and investment companies are made available on the platform. Before engaging in such Third Party Strategies you should consult the specific supplemental information available for each product.</p>
+          
+          <p>Certain Third Party Strategies that are available on Provable Markets' platform involve complex securities lending arrangements. Investments in these strategies are highly speculative and subject to liquidity constraints that are generally available in other types of investments. Actual investment return and principal value is likely to fluctuate and may depreciate in value when redeemed.</p>
+          
+          <p>The securities lending program is made available in coordination with our clearing partners through Provable Markets LLC. Please visit www.provablemarkets.com/legal for applicable terms and conditions and important disclosures.</p>
+          
+          <p><strong>Securities lending transactions with exposure to volatile securities are only suitable for investors who are willing to bear the risk of loss and experience sharp drawdowns, as they still carry inherent risk associated with market volatility.</strong> You are solely responsible for evaluating the merits and risks associated with the use of any information, materials, content, user content, or third party content provided before making any decisions based on such content.</p>
+          
+          <p>All securities lending transactions carry risk, including the potential loss of principal. Investment growth is not guaranteed. Provable Markets' institutional services are available exclusively to Provable Markets clients, subject to availability and location, and are not guaranteed. Certain services are subject to eligibility. Terms and conditions apply.</p>
+          
+          <p>Risk management services via Provable Markets Risk are offered by our risk management partners. Provable Markets does not provide investment advice, and our risk management partners are not affiliates of Provable Markets. Terms apply, and details are available in our partners' Terms of Use.</p>
+          
+          <p>Any logos or mentions of other companies are for informational purposes only and do not imply affiliation or endorsement of Provable Markets by these companies. Information provided by Provable Markets Support is for informational and general educational purposes only and is not investment or financial advice.</p>
+          
+          <p>Contact Provable Markets at support@provablemarkets.com. 123 Wall Street, New York, NY 10005.</p>
         </div>
       </div>
     </div>
@@ -108,3 +108,179 @@ useHead({
   title: 'Partner Login'
 })
 </script>
+
+<style scoped>
+.login-page {
+  background-color: #000000;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-svg {
+  margin-right: 12px;
+}
+
+.join-button {
+  border: 1px solid #F97316;
+  background: transparent;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.join-button:hover {
+  background-color: #F97316;
+  color: white;
+}
+
+.login-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.login-container {
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.login-form-wrapper {
+  max-width: 400px;
+  width: 100%;
+}
+
+.login-title {
+  color: white;
+  font-family: serif;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.login-input {
+  width: 100%;
+  padding: 1rem;
+  background-color: #2C2C2C;
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.login-input:focus {
+  outline: none;
+  background-color: #3C3C3C;
+  border: 1px solid #F97316;
+}
+
+.login-input::placeholder {
+  color: #A0A0A0;
+}
+
+.login-submit-button {
+  width: 100%;
+  padding: 1rem;
+  background-color: #2C2C2C;
+  color: white;
+  border: 1px solid #F97316;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.login-submit-button:hover {
+  background-color: #F97316;
+  color: white;
+}
+
+.forgot-password {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.forgot-link {
+  color: #A0A0A0;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s ease;
+}
+
+.forgot-link:hover {
+  color: #F97316;
+}
+
+.login-footer {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-container {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.copyright {
+  color: #A0A0A0;
+  font-size: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.disclaimer {
+  color: #A0A0A0;
+  font-size: 0.625rem;
+  line-height: 1.6;
+  max-width: 800px;
+  text-align: center;
+}
+
+.disclaimer p {
+  margin-bottom: 1rem;
+}
+
+.disclaimer p:last-child {
+  margin-bottom: 0;
+}
+
+.disclaimer u {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.disclaimer strong {
+  font-weight: bold;
+}
+</style>

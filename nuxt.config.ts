@@ -17,7 +17,8 @@ export default defineNuxtConfig({
   googleFonts: {
     families: {
       Inter: [400, 500, 600, 700],
-      'JetBrains Mono': [400, 500]
+      'JetBrains Mono': [400, 500],
+      'Haffer Mono': [400, 500, 600]
     }
   },
   
@@ -49,7 +50,13 @@ export default defineNuxtConfig({
         { name: 'description', content: 'Professional securities lending platform with real-time analytics and risk management' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'preconnect', href: 'http://localhost:3845' }
+      ],
+      script: [
+        { src: 'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js' },
+        { src: 'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/CustomEase.min.js' },
+        { src: 'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js' }
       ]
     }
   },

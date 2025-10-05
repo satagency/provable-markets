@@ -27,6 +27,14 @@
           <span class="submenu-label">Reports</span>
         </NuxtLink>
       </li>
+      <li>
+        <NuxtLink to="/analytics/var-calculator" class="submenu-item">
+          <span class="submenu-label">VaR Calculator</span>
+          <div class="submenu-icon">
+            <img src="http://localhost:3845/assets/32d232a317c4c48ca97a3c418ebe1134c704187f.svg" alt="Math Operations" class="icon-svg" />
+          </div>
+        </NuxtLink>
+      </li>
     </ul>
   </div>
 </template>
@@ -82,5 +90,23 @@
 .submenu-label {
   font-size: 0.813rem;
   font-weight: 400;
+}
+
+.submenu-icon {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+
+.icon-svg {
+  width: 16px;
+  height: 16px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, filter 0.2s ease 0.1s;
+}
+
+.submenu-item:hover .icon-svg {
+  opacity: 1;
+  filter: brightness(0) saturate(100%) invert(58%) sepia(68%) saturate(1000%) hue-rotate(75deg) brightness(95%) contrast(95%);
 }
 </style>

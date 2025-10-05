@@ -125,6 +125,10 @@
             <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Company Settings</span>
           </NuxtLink>
 
+          <!-- Spacing and Divider -->
+          <div class="settings-spacing"></div>
+          <div class="settings-divider" :class="{ 'collapsed': sidebarCollapsed }"></div>
+
           <!-- Company Switch Button -->
           <div class="company-switch" :class="{ 'collapsed': sidebarCollapsed }">
             <div class="company-avatar">T</div>
@@ -366,6 +370,8 @@ watch(() => route.path, (newPath) => {
   height: 100vh;
   background-color: #121212;
   color: white;
+  /* Prevent layout shifts */
+  overflow: hidden;
 }
 
 /* Main Sidebar */
@@ -445,7 +451,7 @@ watch(() => route.path, (newPath) => {
 }
 
 .logo-text.review {
-  font-family: 'Matrix Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 15px; /* Increased 15% from 13px */
   color: #d7ebff;
   line-height: 100%;
@@ -474,6 +480,24 @@ watch(() => route.path, (newPath) => {
     }
 
 .nav-divider.collapsed {
+  opacity: 0;
+  height: 0;
+  margin: 0;
+}
+
+/* Settings spacing and divider */
+.settings-spacing {
+  height: 12px;
+}
+
+.settings-divider {
+  height: 1px;
+  background-color: rgba(185, 198, 195, 0.15);
+  margin: 0 0 16px 0;
+  transition: opacity 0.15s ease;
+}
+
+.settings-divider.collapsed {
   opacity: 0;
   height: 0;
   margin: 0;
@@ -509,9 +533,11 @@ watch(() => route.path, (newPath) => {
       color: rgba(255, 255, 255, 0.7); /* 70% opacity for secondary */
     }
 
-    .nav-item.bottom {
-      color: rgba(255, 255, 255, 0.7); /* 70% opacity for bottom items */
-    }
+.nav-item.bottom {
+  color: rgba(255, 255, 255, 0.7); /* 70% opacity for bottom items */
+}
+
+
 
 .nav-icon {
   display: flex;
