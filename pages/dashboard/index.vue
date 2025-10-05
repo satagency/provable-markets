@@ -258,8 +258,10 @@ useHead({
   font-style: normal;
 }
 .dashboard-container {
-  padding: 1rem;
-  height: 100vh;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .data-window {

@@ -1,6 +1,5 @@
 // Nuxt 3 Configuration
-import { defineNuxtConfig } from 'nuxt/config'
-
+// @ts-ignore
 export default defineNuxtConfig({
   devtools: { enabled: true },
   
