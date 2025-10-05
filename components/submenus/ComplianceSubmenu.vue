@@ -3,18 +3,23 @@
     <h3 class="submenu-title">Compliance & Legal</h3>
     <ul class="submenu-list">
       <li>
-        <NuxtLink to="/compliance" class="submenu-item">
-          <span class="submenu-label">Overview</span>
+        <NuxtLink to="/compliance/risk-disclosure" class="submenu-item">
+          <span class="submenu-label">Risk Disclosure Statement</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/compliance/policies" class="submenu-item">
-          <span class="submenu-label">Policies</span>
+        <NuxtLink to="/compliance/dtcc-settlement" class="submenu-item">
+          <span class="submenu-label">DTCC/DTC Settlement Terms</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/compliance/audits" class="submenu-item">
-          <span class="submenu-label">Audits</span>
+        <NuxtLink to="/compliance/order-handling" class="submenu-item">
+          <span class="submenu-label">Order Handling</span>
+        </NuxtLink>
+      </li>
+      <li>
+        <NuxtLink to="/compliance/data-privacy" class="submenu-item">
+          <span class="submenu-label">Data Usage & Privacy Policy</span>
         </NuxtLink>
       </li>
     </ul>

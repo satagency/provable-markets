@@ -6,8 +6,8 @@
             <!-- Header with Toggle Button -->
             <div class="sidebar-header">
               <button @click="toggleSidebar" class="toggle-btn">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M3 6h14M3 12h14M3 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
               </button>
               <div class="logo" :class="{ 'collapsed': sidebarCollapsed }">
@@ -21,63 +21,49 @@
           <div class="nav-section">
             <NuxtLink to="/dashboard" class="nav-item" :class="{ 'active': $route.path.startsWith('/dashboard') }">
               <div class="nav-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6 6a1 1 0 01-1.414 0l-6-6A1 1 0 013 6.586V4z" fill="currentColor"/>
-                </svg>
+                <img :src="customIcons.home" alt="Home" class="w-5 h-5 block" />
               </div>
-              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Dashboard</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Home</span>
             </NuxtLink>
 
             <NuxtLink to="/marketplace" class="nav-item" :class="{ 'active': $route.path.startsWith('/marketplace') }">
               <div class="nav-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6 6a1 1 0 01-1.414 0l-6-6A1 1 0 013 6.586V4z" fill="currentColor"/>
-                </svg>
+                <img :src="customIcons.marketplace" alt="Marketplace" class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Marketplace</span>
             </NuxtLink>
 
             <NuxtLink to="/trade-manager" class="nav-item" :class="{ 'active': $route.path.startsWith('/trade-manager') }">
               <div class="nav-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M8 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                <img :src="customIcons.tradeManager" alt="Trade Manager" class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Trade Manager</span>
             </NuxtLink>
 
             <NuxtLink to="/agreements" class="nav-item" :class="{ 'active': $route.path.startsWith('/agreements') }">
               <div class="nav-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M8 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                <img :src="customIcons.agreements" alt="Agreements" class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Agreements</span>
             </NuxtLink>
 
             <NuxtLink to="/locates" class="nav-item" :class="{ 'active': $route.path.startsWith('/locates') }">
               <div class="nav-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M10 2L3 7v11h14V7l-7-5z" fill="currentColor"/>
-                </svg>
+                <img :src="customIcons.locates" alt="Locates" class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Locates</span>
             </NuxtLink>
 
             <NuxtLink to="/analytics" class="nav-item" :class="{ 'active': $route.path.startsWith('/analytics') }">
               <div class="nav-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M3 3v14h14V3H3zm2 2h10v10H5V5z" fill="currentColor"/>
-                </svg>
+                <img :src="customIcons.analytics" alt="Analytics" class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Analytics</span>
             </NuxtLink>
 
             <NuxtLink to="/reports" class="nav-item" :class="{ 'active': $route.path.startsWith('/reports') }">
               <div class="nav-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6 6a1 1 0 01-1.414 0l-6-6A1 1 0 013 6.586V4z" fill="currentColor"/>
-                </svg>
+                <img :src="customIcons.reports" alt="Reports" class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Reports</span>
             </NuxtLink>
@@ -90,36 +76,28 @@
           <div class="nav-section secondary">
             <NuxtLink to="/swaps" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/swaps') }">
               <div class="nav-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M8 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                <img :src="customIcons.swaps" alt="Swaps" class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Swaps</span>
             </NuxtLink>
 
             <NuxtLink to="/trade-optimizer" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/trade-optimizer') }">
               <div class="nav-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                <img :src="customIcons.sparkle" alt="Trade Optimizer" class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Trade Optimizer</span>
             </NuxtLink>
 
             <NuxtLink to="/basket-tool" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/basket-tool') }">
               <div class="nav-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M3 3h2l.4 2M7 13h10l-1-7H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                <img :src="customIcons.basket" alt="Basket Tool" class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Basket Tool</span>
             </NuxtLink>
 
             <NuxtLink to="/strategy-builder" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/strategy-builder') }">
               <div class="nav-icon">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+                <img :src="customIcons.strategy" alt="Strategy Builder" class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Strategy Builder</span>
             </NuxtLink>
@@ -130,8 +108,8 @@
         <div class="sidebar-bottom">
           <NuxtLink to="/compliance" class="nav-item bottom" :class="{ 'active': $route.path.startsWith('/compliance') }">
             <div class="nav-icon">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
               </svg>
             </div>
             <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Compliance & Legal</span>
@@ -139,9 +117,9 @@
 
           <NuxtLink to="/settings" class="nav-item bottom" :class="{ 'active': $route.path.startsWith('/settings') }">
             <div class="nav-icon">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
               </svg>
             </div>
             <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Company Settings</span>
@@ -155,8 +133,8 @@
               <div class="company-type">Company</div>
             </div>
             <div class="company-arrow" :class="{ 'collapsed': sidebarCollapsed }">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
               </svg>
             </div>
           </div>
@@ -184,7 +162,6 @@
             <LocatesSubmenu v-if="currentSubmenu === 'locates' && !isTransitioning" />
             <AnalyticsSubmenu v-if="currentSubmenu === 'analytics' && !isTransitioning" />
             <ReportsSubmenu v-if="currentSubmenu === 'reports' && !isTransitioning" />
-            <SwapsSubmenu v-if="currentSubmenu === 'swaps' && !isTransitioning" />
             <TradeOptimizerSubmenu v-if="currentSubmenu === 'trade-optimizer' && !isTransitioning" />
             <BasketToolSubmenu v-if="currentSubmenu === 'basket-tool' && !isTransitioning" />
             <StrategyBuilderSubmenu v-if="currentSubmenu === 'strategy-builder' && !isTransitioning" />
@@ -200,15 +177,17 @@
         <div class="header-left">
           <div class="market-status">
             <div class="status-indicator"></div>
-            <span class="status-text">Aug 26, 2025, EDT • Market Closed</span>
+            <span class="status-text">{{ currentDateTime.toUpperCase() }} • MARKET CLOSED</span>
           </div>
         </div>
         
         <div class="header-right">
           <div class="notifications">
             <div class="notification-icon">
-              🔔
-              <span class="notification-badge">125</span>
+              <div class="notification-bell">
+                <img :src="customIcons.notificationBell" alt="Notifications" class="w-5 h-5 block" />
+              </div>
+              <div class="notification-dot"></div>
             </div>
           </div>
           
@@ -235,18 +214,38 @@ import AgreementsSubmenu from '~/components/submenus/AgreementsSubmenu.vue'
 import LocatesSubmenu from '~/components/submenus/LocatesSubmenu.vue'
 import AnalyticsSubmenu from '~/components/submenus/AnalyticsSubmenu.vue'
 import ReportsSubmenu from '~/components/submenus/ReportsSubmenu.vue'
-import SwapsSubmenu from '~/components/submenus/SwapsSubmenu.vue'
 import TradeOptimizerSubmenu from '~/components/submenus/TradeOptimizerSubmenu.vue'
 import BasketToolSubmenu from '~/components/submenus/BasketToolSubmenu.vue'
 import StrategyBuilderSubmenu from '~/components/submenus/StrategyBuilderSubmenu.vue'
 import ComplianceSubmenu from '~/components/submenus/ComplianceSubmenu.vue'
 import SettingsSubmenu from '~/components/submenus/SettingsSubmenu.vue'
 
+// Custom icons from Figma
+import { customIcons } from '~/composables/useCustomIcons'
+
 // Sidebar toggle state
 const sidebarCollapsed = ref(false)
 
-    // Use submenu composable
-    const { submenuExpanded, currentSubmenu, isTransitioning, expandSubmenu, collapseSubmenu } = useSubmenu()
+// Real-time clock
+const currentDateTime = ref('')
+
+// Update clock every second
+const updateClock = () => {
+  const now = new Date()
+  const options = {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit',
+    timeZoneName: 'short'
+  }
+  currentDateTime.value = now.toLocaleDateString('en-US', options)
+}
+
+// Use submenu composable
+const { submenuExpanded, currentSubmenu, isTransitioning, expandSubmenu, collapseSubmenu } = useSubmenu()
 
 // Toggle sidebar function
 const toggleSidebar = () => {
@@ -259,11 +258,22 @@ const route = useRoute()
 // Define which routes have submenus
 const routesWithSubmenus = [
   'dashboard', 'marketplace', 'trade-manager', 'agreements', 'locates', 
-  'analytics', 'reports', 'swaps', 'trade-optimizer', 'basket-tool', 
+  'analytics', 'reports', 'trade-optimizer', 'basket-tool', 
   'strategy-builder', 'compliance', 'settings'
 ]
 
 onMounted(() => {
+  // Initialize clock
+  updateClock()
+  
+  // Set up interval to update clock every second
+  const clockInterval = setInterval(updateClock, 1000)
+  
+  // Clean up interval on unmount
+  onUnmounted(() => {
+    clearInterval(clockInterval)
+  })
+  
   const pathSegments = route.path.split('/').filter(Boolean)
   if (pathSegments.length > 0 && routesWithSubmenus.includes(pathSegments[0])) {
     expandSubmenu(pathSegments[0])
@@ -408,7 +418,7 @@ watch(() => route.path, (newPath) => {
       align-items: center;
       gap: 12px;
       padding: 8px;
-      color: rgba(242, 247, 247, 0.75);
+      color: #8F8F8F;
       text-decoration: none;
       border-radius: 3px;
       height: 40px;
@@ -429,11 +439,11 @@ watch(() => route.path, (newPath) => {
     }
 
     .nav-item.secondary {
-      color: rgba(242, 247, 247, 0.45);
+      color: #8F8F8F;
     }
 
     .nav-item.bottom {
-      color: rgba(242, 247, 247, 0.75);
+      color: #8F8F8F;
     }
 
 .nav-icon {
@@ -443,6 +453,15 @@ watch(() => route.path, (newPath) => {
   width: 24px;
   height: 24px;
   flex-shrink: 0;
+}
+
+.nav-icon img {
+  filter: brightness(0) saturate(100%) invert(57%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+}
+
+.nav-item.active .nav-icon img,
+.nav-item:hover .nav-icon img {
+  filter: brightness(0) saturate(100%) invert(95%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
 }
 
 .nav-label {
@@ -647,8 +666,9 @@ watch(() => route.path, (newPath) => {
 }
 
 .status-text {
-  font-size: 0.875rem;
-  color: #ccc;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 10px;
+  color: #898989;
 }
 
 .header-right {
@@ -663,21 +683,32 @@ watch(() => route.path, (newPath) => {
 
 .notification-icon {
   position: relative;
-  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
 }
 
-.notification-badge {
+.notification-bell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+.notification-dot {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
   background-color: #ef4444;
-  color: white;
-  font-size: 0.75rem;
-  padding: 0.125rem 0.375rem;
-  border-radius: 0.75rem;
-  min-width: 1.25rem;
-  text-align: center;
+  border: 1px solid #000000;
+  border-radius: 50%;
+  z-index: 10;
 }
 
 .user-avatar {
@@ -685,10 +716,10 @@ watch(() => route.path, (newPath) => {
 }
 
 .avatar-circle {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background-color: #04CF8B;
+  background-color: #6B7280;
 }
 
 .content-area {
