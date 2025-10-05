@@ -33,49 +33,49 @@
           <div class="nav-section">
             <NuxtLink to="/dashboard" class="nav-item" :class="{ 'active': $route.path.startsWith('/dashboard') }">
               <div class="nav-icon">
-                <img :src="customIcons.home" alt="Home" class="w-5 h-5 block" />
+                <HomeIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Home</span>
             </NuxtLink>
 
             <NuxtLink to="/marketplace" class="nav-item" :class="{ 'active': $route.path.startsWith('/marketplace') }">
               <div class="nav-icon">
-                <img :src="customIcons.marketplace" alt="Marketplace" class="w-5 h-5 block" />
+                <MarketplaceIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Marketplace</span>
             </NuxtLink>
 
             <NuxtLink to="/trade-manager" class="nav-item" :class="{ 'active': $route.path.startsWith('/trade-manager') }">
               <div class="nav-icon">
-                <img :src="customIcons.tradeManager" alt="Trade Manager" class="w-5 h-5 block" />
+                <TradeManagerIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Trade Manager</span>
             </NuxtLink>
 
             <NuxtLink to="/agreements" class="nav-item" :class="{ 'active': $route.path.startsWith('/agreements') }">
               <div class="nav-icon">
-                <img :src="customIcons.agreements" alt="Agreements" class="w-5 h-5 block" />
+                <AgreementsIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Agreements</span>
             </NuxtLink>
 
             <NuxtLink to="/locates" class="nav-item" :class="{ 'active': $route.path.startsWith('/locates') }">
               <div class="nav-icon">
-                <img :src="customIcons.locates" alt="Locates" class="w-5 h-5 block" />
+                <LocatesIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Locates</span>
             </NuxtLink>
 
             <NuxtLink to="/analytics" class="nav-item" :class="{ 'active': $route.path.startsWith('/analytics') }">
               <div class="nav-icon">
-                <img :src="customIcons.analytics" alt="Analytics" class="w-5 h-5 block" />
+                <AnalyticsIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Analytics</span>
             </NuxtLink>
 
             <NuxtLink to="/reports" class="nav-item" :class="{ 'active': $route.path.startsWith('/reports') }">
               <div class="nav-icon">
-                <img :src="customIcons.reports" alt="Reports" class="w-5 h-5 block" />
+                <ReportsIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Reports</span>
             </NuxtLink>
@@ -88,28 +88,28 @@
           <div class="nav-section secondary">
             <NuxtLink to="/swaps" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/swaps') }">
               <div class="nav-icon">
-                <img :src="customIcons.swaps" alt="Swaps" class="w-5 h-5 block" />
+                <SwapsIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Swaps</span>
             </NuxtLink>
 
             <NuxtLink to="/trade-optimizer" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/trade-optimizer') }">
               <div class="nav-icon">
-                <img :src="customIcons.sparkle" alt="Trade Optimizer" class="w-5 h-5 block" />
+                <SparkleIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Trade Optimizer</span>
             </NuxtLink>
 
             <NuxtLink to="/basket-tool" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/basket-tool') }">
               <div class="nav-icon">
-                <img :src="customIcons.basket" alt="Basket Tool" class="w-5 h-5 block" />
+                <BasketIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Basket Tool</span>
             </NuxtLink>
 
             <NuxtLink to="/strategy-builder" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/strategy-builder') }">
               <div class="nav-icon">
-                <img :src="customIcons.strategy" alt="Strategy Builder" class="w-5 h-5 block" />
+                <StrategyIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Strategy Builder</span>
             </NuxtLink>
@@ -197,7 +197,7 @@
           <div class="notifications">
             <div class="notification-icon">
               <div class="notification-bell">
-                <img :src="customIcons.notificationBell" alt="Notifications" class="w-5 h-5 block" />
+                <NotificationBellIcon class="w-5 h-5 block" />
               </div>
               <div class="notification-dot" :class="{ 'market-open': isMarketOpen }"></div>
             </div>
@@ -232,8 +232,21 @@ import StrategyBuilderSubmenu from '~/components/submenus/StrategyBuilderSubmenu
 import ComplianceSubmenu from '~/components/submenus/ComplianceSubmenu.vue'
 import SettingsSubmenu from '~/components/submenus/SettingsSubmenu.vue'
 
-// Custom icons from Figma
-import { customIcons } from '~/composables/useCustomIcons'
+// Import icon components directly
+import {
+  HomeIcon,
+  MarketplaceIcon,
+  TradeManagerIcon,
+  AgreementsIcon,
+  LocatesIcon,
+  AnalyticsIcon,
+  ReportsIcon,
+  SwapsIcon,
+  SparkleIcon,
+  BasketIcon,
+  StrategyIcon,
+  NotificationBellIcon
+} from '~/components/icons'
 
 // Sidebar toggle state
 const sidebarCollapsed = ref(false)
@@ -553,9 +566,14 @@ watch(() => route.path, (newPath) => {
   filter: brightness(0) saturate(100%) invert(57%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
 }
 
-.nav-item.active .nav-icon img,
-.nav-item:hover .nav-icon img {
-  filter: brightness(0) saturate(100%) invert(95%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+.nav-item.active .nav-icon svg,
+.nav-item:hover .nav-icon svg {
+  color: #ffffff !important;
+}
+
+.nav-item .nav-icon svg {
+  color: rgba(255, 255, 255, 0.7) !important;
+  transition: color 0.2s ease;
 }
 
 .nav-label {

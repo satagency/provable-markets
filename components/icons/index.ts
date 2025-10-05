@@ -1,0 +1,13 @@
+// Icon components export
+export { default as HomeIcon } from './HomeIcon.vue'
+export { default as MarketplaceIcon } from './MarketplaceIcon.vue'
+export { default as TradeManagerIcon } from './TradeManagerIcon.vue'
+export { default as AgreementsIcon } from './AgreementsIcon.vue'
+export { default as LocatesIcon } from './LocatesIcon.vue'
+export { default as AnalyticsIcon } from './AnalyticsIcon.vue'
+export { default as ReportsIcon } from './ReportsIcon.vue'
+export { default as SwapsIcon } from './SwapsIcon.vue'
+export { default as SparkleIcon } from './SparkleIcon.vue'
+export { default as BasketIcon } from './BasketIcon.vue'
+export { default as StrategyIcon } from './StrategyIcon.vue'
+export { default as NotificationBellIcon } from './NotificationBellIcon.vue'

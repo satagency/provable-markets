@@ -53,7 +53,7 @@ function initLoader() {
           </div>
         </div>
         <div class="aurora-loader__text-wrap">
-          <span data-load-text data-load-reset class="aurora-loader__text-el">Planning the heist</span>
+          <span data-load-text data-load-reset class="aurora-loader__text-el">Connecting capital. Compounding value.</span>
         </div>
       </div>
     </div>

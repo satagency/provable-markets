@@ -1,4 +1,6 @@
 // Nuxt 3 Configuration
+import { defineNuxtConfig } from 'nuxt/config'
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   
@@ -36,7 +38,7 @@ export default defineNuxtConfig({
   // Runtime Config
   runtimeConfig: {
     public: {
-      apiBase: process.env.API_BASE_URL || 'http://localhost:3001/api'
+      apiBase: 'http://localhost:3001/api'
     }
   },
   
@@ -50,8 +52,7 @@ export default defineNuxtConfig({
         { name: 'description', content: 'Professional securities lending platform with real-time analytics and risk management' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'preconnect', href: 'http://localhost:3845' }
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
       ],
       script: [
         { src: 'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js' },
