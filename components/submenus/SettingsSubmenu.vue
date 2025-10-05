@@ -1,30 +1,25 @@
 <template>
   <div class="submenu">
-    <h3 class="submenu-title">Marketplace</h3>
+    <h3 class="submenu-title">Settings</h3>
     <ul class="submenu-list">
       <li>
-        <NuxtLink to="/marketplace" class="submenu-item">
-          <span class="submenu-label">Overview</span>
+        <NuxtLink to="/settings" class="submenu-item">
+          <span class="submenu-label">General</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/marketplace/orderbook" class="submenu-item">
-          <span class="submenu-label">Orderbook</span>
+        <NuxtLink to="/settings/preferences" class="submenu-item">
+          <span class="submenu-label">Preferences</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/marketplace/orders" class="submenu-item">
-          <span class="submenu-label">Orders</span>
+        <NuxtLink to="/settings/notifications" class="submenu-item">
+          <span class="submenu-label">Notifications</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/marketplace/executions" class="submenu-item">
-          <span class="submenu-label">Executions</span>
-        </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink to="/marketplace/watchlists" class="submenu-item">
-          <span class="submenu-label">Watchlists</span>
+        <NuxtLink to="/settings/security" class="submenu-item">
+          <span class="submenu-label">Security</span>
         </NuxtLink>
       </li>
     </ul>
@@ -32,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-// Marketplace submenu logic
+// Settings submenu logic
 </script>
 
 <style scoped>
@@ -77,7 +72,6 @@
   color: rgba(255, 255, 255, 1);
   font-weight: 600;
 }
-
 
 .submenu-label {
   font-size: 0.813rem;

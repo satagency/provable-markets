@@ -8,13 +8,18 @@
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/analytics/nscc-dashboard" class="submenu-item">
-          <span class="submenu-label">NSCC Dashboard</span>
+        <NuxtLink to="/analytics/performance" class="submenu-item">
+          <span class="submenu-label">Performance</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/analytics/var-calculator" class="submenu-item">
-          <span class="submenu-label">VaR Calculator</span>
+        <NuxtLink to="/analytics/market-analysis" class="submenu-item">
+          <span class="submenu-label">Market Analysis</span>
+        </NuxtLink>
+      </li>
+      <li>
+        <NuxtLink to="/analytics/fee-analysis" class="submenu-item">
+          <span class="submenu-label">Fee Analysis</span>
         </NuxtLink>
       </li>
       <li>

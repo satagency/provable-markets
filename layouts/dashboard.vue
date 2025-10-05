@@ -3,18 +3,18 @@
     <!-- Main Sidebar -->
     <aside class="main-sidebar" :class="{ 'collapsed': sidebarCollapsed }">
       <div class="sidebar-container">
-        <!-- Header with Toggle Button -->
-        <div class="sidebar-header">
-          <button @click="toggleSidebar" class="toggle-btn">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M3 6h14M3 12h14M3 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </button>
-          <div class="logo" v-show="!sidebarCollapsed">
-            <span class="logo-text aurora">aurora</span>
-            <span class="logo-text review">REVIEW</span>
-          </div>
-        </div>
+            <!-- Header with Toggle Button -->
+            <div class="sidebar-header">
+              <button @click="toggleSidebar" class="toggle-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M3 6h14M3 12h14M3 18h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <div class="logo" :class="{ 'collapsed': sidebarCollapsed }">
+                <span class="logo-text aurora">aurora</span>
+                <span class="logo-text review">REVIEW</span>
+              </div>
+            </div>
 
         <!-- Main Navigation -->
         <nav class="main-nav">
@@ -25,7 +25,7 @@
                   <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6 6a1 1 0 01-1.414 0l-6-6A1 1 0 013 6.586V4z" fill="currentColor"/>
                 </svg>
               </div>
-              <span class="nav-label" v-show="!sidebarCollapsed">Dashboard</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Dashboard</span>
             </NuxtLink>
 
             <NuxtLink to="/marketplace" class="nav-item" :class="{ 'active': $route.path.startsWith('/marketplace') }">
@@ -34,7 +34,7 @@
                   <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6 6a1 1 0 01-1.414 0l-6-6A1 1 0 013 6.586V4z" fill="currentColor"/>
                 </svg>
               </div>
-              <span class="nav-label" v-show="!sidebarCollapsed">Marketplace</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Marketplace</span>
             </NuxtLink>
 
             <NuxtLink to="/trade-manager" class="nav-item" :class="{ 'active': $route.path.startsWith('/trade-manager') }">
@@ -43,7 +43,7 @@
                   <path d="M8 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
-              <span class="nav-label" v-show="!sidebarCollapsed">Trade Manager</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Trade Manager</span>
             </NuxtLink>
 
             <NuxtLink to="/agreements" class="nav-item" :class="{ 'active': $route.path.startsWith('/agreements') }">
@@ -52,7 +52,7 @@
                   <path d="M8 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
-              <span class="nav-label" v-show="!sidebarCollapsed">Agreements</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Agreements</span>
             </NuxtLink>
 
             <NuxtLink to="/locates" class="nav-item" :class="{ 'active': $route.path.startsWith('/locates') }">
@@ -61,16 +61,16 @@
                   <path d="M10 2L3 7v11h14V7l-7-5z" fill="currentColor"/>
                 </svg>
               </div>
-              <span class="nav-label" v-show="!sidebarCollapsed">Locates</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Locates</span>
             </NuxtLink>
 
             <NuxtLink to="/analytics" class="nav-item" :class="{ 'active': $route.path.startsWith('/analytics') }">
               <div class="nav-icon">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6 6a1 1 0 01-1.414 0l-6-6A1 1 0 013 6.586V4z" fill="currentColor"/>
+                  <path d="M3 3v14h14V3H3zm2 2h10v10H5V5z" fill="currentColor"/>
                 </svg>
               </div>
-              <span class="nav-label" v-show="!sidebarCollapsed">Analytics</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Analytics</span>
             </NuxtLink>
 
             <NuxtLink to="/reports" class="nav-item" :class="{ 'active': $route.path.startsWith('/reports') }">
@@ -79,12 +79,12 @@
                   <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6 6a1 1 0 01-1.414 0l-6-6A1 1 0 013 6.586V4z" fill="currentColor"/>
                 </svg>
               </div>
-              <span class="nav-label" v-show="!sidebarCollapsed">Reports</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Reports</span>
             </NuxtLink>
           </div>
 
           <!-- Divider -->
-          <div class="nav-divider" v-show="!sidebarCollapsed"></div>
+          <div class="nav-divider" :class="{ 'collapsed': sidebarCollapsed }"></div>
 
           <!-- Secondary Navigation -->
           <div class="nav-section secondary">
@@ -94,7 +94,7 @@
                   <path d="M8 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
-              <span class="nav-label" v-show="!sidebarCollapsed">Swaps</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Swaps</span>
             </NuxtLink>
 
             <NuxtLink to="/trade-optimizer" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/trade-optimizer') }">
@@ -103,7 +103,7 @@
                   <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
-              <span class="nav-label" v-show="!sidebarCollapsed">Trade Optimizer</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Trade Optimizer</span>
             </NuxtLink>
 
             <NuxtLink to="/basket-tool" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/basket-tool') }">
@@ -112,7 +112,16 @@
                   <path d="M3 3h2l.4 2M7 13h10l-1-7H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </div>
-              <span class="nav-label" v-show="!sidebarCollapsed">Basket Tool</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Basket Tool</span>
+            </NuxtLink>
+
+            <NuxtLink to="/strategy-builder" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/strategy-builder') }">
+              <div class="nav-icon">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Strategy Builder</span>
             </NuxtLink>
           </div>
         </nav>
@@ -125,7 +134,7 @@
                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
-            <span class="nav-label" v-show="!sidebarCollapsed">Compliance & Legal</span>
+            <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Compliance & Legal</span>
           </NuxtLink>
 
           <NuxtLink to="/settings" class="nav-item bottom" :class="{ 'active': $route.path.startsWith('/settings') }">
@@ -135,17 +144,17 @@
                 <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
-            <span class="nav-label" v-show="!sidebarCollapsed">Company Settings</span>
+            <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Company Settings</span>
           </NuxtLink>
 
           <!-- Company Switch Button -->
-          <div class="company-switch" v-show="!sidebarCollapsed">
+          <div class="company-switch" :class="{ 'collapsed': sidebarCollapsed }">
             <div class="company-avatar">T</div>
-            <div class="company-info">
+            <div class="company-info" :class="{ 'collapsed': sidebarCollapsed }">
               <div class="company-name">Tribeca_PL_Firm</div>
               <div class="company-type">Company</div>
             </div>
-            <div class="company-arrow">
+            <div class="company-arrow" :class="{ 'collapsed': sidebarCollapsed }">
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                 <path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -155,16 +164,34 @@
       </div>
     </aside>
 
-    <!-- Submenu Sidebar -->
-    <aside class="submenu-sidebar" :class="{ 'expanded': submenuExpanded }">
-      <div class="submenu-content">
-        <DashboardSubmenu v-if="currentSubmenu === 'dashboard'" />
-        <LendingSubmenu v-if="currentSubmenu === 'lending'" />
-        <AnalyticsSubmenu v-if="currentSubmenu === 'analytics'" />
-        <MarketplaceSubmenu v-if="currentSubmenu === 'marketplace'" />
-        <TradeManagerSubmenu v-if="currentSubmenu === 'trade-manager'" />
-      </div>
-    </aside>
+        <!-- Submenu Sidebar -->
+        <aside class="submenu-sidebar" :class="{ 'expanded': submenuExpanded }">
+          <div class="submenu-content">
+            <!-- Loading indicator during transition -->
+            <div v-if="isTransitioning" class="submenu-loading">
+              <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+              </div>
+            </div>
+            
+            <!-- Submenu content -->
+            <DashboardSubmenu v-if="currentSubmenu === 'dashboard' && !isTransitioning" />
+            <MarketplaceSubmenu v-if="currentSubmenu === 'marketplace' && !isTransitioning" />
+            <TradeManagerSubmenu v-if="currentSubmenu === 'trade-manager' && !isTransitioning" />
+            <AgreementsSubmenu v-if="currentSubmenu === 'agreements' && !isTransitioning" />
+            <LocatesSubmenu v-if="currentSubmenu === 'locates' && !isTransitioning" />
+            <AnalyticsSubmenu v-if="currentSubmenu === 'analytics' && !isTransitioning" />
+            <ReportsSubmenu v-if="currentSubmenu === 'reports' && !isTransitioning" />
+            <SwapsSubmenu v-if="currentSubmenu === 'swaps' && !isTransitioning" />
+            <TradeOptimizerSubmenu v-if="currentSubmenu === 'trade-optimizer' && !isTransitioning" />
+            <BasketToolSubmenu v-if="currentSubmenu === 'basket-tool' && !isTransitioning" />
+            <StrategyBuilderSubmenu v-if="currentSubmenu === 'strategy-builder' && !isTransitioning" />
+            <ComplianceSubmenu v-if="currentSubmenu === 'compliance' && !isTransitioning" />
+            <SettingsSubmenu v-if="currentSubmenu === 'settings' && !isTransitioning" />
+          </div>
+        </aside>
 
     <!-- Main Content Area -->
     <main class="main-content" :class="{ 'submenu-open': submenuExpanded }">
@@ -202,16 +229,24 @@
 <script setup lang="ts">
 import { useSubmenu } from '~/composables/useSubmenu'
 import DashboardSubmenu from '~/components/submenus/DashboardSubmenu.vue'
-import LendingSubmenu from '~/components/submenus/LendingSubmenu.vue'
-import AnalyticsSubmenu from '~/components/submenus/AnalyticsSubmenu.vue'
 import MarketplaceSubmenu from '~/components/submenus/MarketplaceSubmenu.vue'
 import TradeManagerSubmenu from '~/components/submenus/TradeManagerSubmenu.vue'
+import AgreementsSubmenu from '~/components/submenus/AgreementsSubmenu.vue'
+import LocatesSubmenu from '~/components/submenus/LocatesSubmenu.vue'
+import AnalyticsSubmenu from '~/components/submenus/AnalyticsSubmenu.vue'
+import ReportsSubmenu from '~/components/submenus/ReportsSubmenu.vue'
+import SwapsSubmenu from '~/components/submenus/SwapsSubmenu.vue'
+import TradeOptimizerSubmenu from '~/components/submenus/TradeOptimizerSubmenu.vue'
+import BasketToolSubmenu from '~/components/submenus/BasketToolSubmenu.vue'
+import StrategyBuilderSubmenu from '~/components/submenus/StrategyBuilderSubmenu.vue'
+import ComplianceSubmenu from '~/components/submenus/ComplianceSubmenu.vue'
+import SettingsSubmenu from '~/components/submenus/SettingsSubmenu.vue'
 
 // Sidebar toggle state
 const sidebarCollapsed = ref(false)
 
-// Use submenu composable
-const { submenuExpanded, currentSubmenu, expandSubmenu, collapseSubmenu } = useSubmenu()
+    // Use submenu composable
+    const { submenuExpanded, currentSubmenu, isTransitioning, expandSubmenu, collapseSubmenu } = useSubmenu()
 
 // Toggle sidebar function
 const toggleSidebar = () => {
@@ -220,17 +255,27 @@ const toggleSidebar = () => {
 
 // Auto-expand submenu based on current route
 const route = useRoute()
+
+// Define which routes have submenus
+const routesWithSubmenus = [
+  'dashboard', 'marketplace', 'trade-manager', 'agreements', 'locates', 
+  'analytics', 'reports', 'swaps', 'trade-optimizer', 'basket-tool', 
+  'strategy-builder', 'compliance', 'settings'
+]
+
 onMounted(() => {
   const pathSegments = route.path.split('/').filter(Boolean)
-  if (pathSegments.length > 0) {
+  if (pathSegments.length > 0 && routesWithSubmenus.includes(pathSegments[0])) {
     expandSubmenu(pathSegments[0])
+  } else {
+    collapseSubmenu()
   }
 })
 
 // Watch for route changes
 watch(() => route.path, (newPath) => {
   const pathSegments = newPath.split('/').filter(Boolean)
-  if (pathSegments.length > 0) {
+  if (pathSegments.length > 0 && routesWithSubmenus.includes(pathSegments[0])) {
     expandSubmenu(pathSegments[0])
   } else {
     collapseSubmenu()
@@ -247,25 +292,25 @@ watch(() => route.path, (newPath) => {
 }
 
 /* Main Sidebar */
-.main-sidebar {
-  width: 256px;
-  background-color: #161818;
-  transition: width 0.3s ease;
-  flex-shrink: 0;
-  position: relative;
-}
+    .main-sidebar {
+      width: 256px;
+      background-color: #161818;
+      transition: width 0.3s ease;
+      flex-shrink: 0;
+      position: relative;
+    }
 
-.main-sidebar.collapsed {
-  width: 54px;
-}
+    .main-sidebar.collapsed {
+      width: 60px;
+    }
 
-.sidebar-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 12px;
-  gap: 8px;
-}
+    .sidebar-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 12px;
+      gap: 8px;
+    }
 
 .sidebar-header {
   display: flex;
@@ -273,7 +318,7 @@ watch(() => route.path, (newPath) => {
   gap: 12px;
   padding: 8px;
   border-radius: 3px;
-  min-height: 40px;
+  height: 40px;
 }
 
 .toggle-btn {
@@ -301,10 +346,16 @@ watch(() => route.path, (newPath) => {
   padding: 2px 9px 4px 0;
   border-radius: 90px;
   transition: opacity 0.15s ease;
+  opacity: 1 !important;
+  width: auto !important;
 }
 
-.main-sidebar.collapsed .logo {
-  opacity: 0;
+.logo.collapsed {
+  opacity: 0 !important;
+  width: 0 !important;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 .logo-text.aurora {
@@ -332,59 +383,58 @@ watch(() => route.path, (newPath) => {
   flex: 1;
 }
 
-.nav-section {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
+    .nav-section {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
 
-.nav-section.secondary {
-  margin-top: auto;
-}
+    .nav-divider {
+      height: 1px;
+      background-color: rgba(185, 198, 195, 0.15);
+      margin: 0;
+      transition: opacity 0.15s ease;
+    }
 
-.nav-divider {
-  height: 1px;
-  background-color: rgba(185, 198, 195, 0.15);
-  margin: 0;
-  transition: opacity 0.15s ease;
-}
-
-.main-sidebar.collapsed .nav-divider {
+.nav-divider.collapsed {
   opacity: 0;
+  height: 0;
+  margin: 0;
 }
 
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 8px;
-  color: rgba(242, 247, 247, 0.75);
-  text-decoration: none;
-  border-radius: 3px;
-  min-height: 40px;
-  transition: all 0.2s ease;
-  font-family: 'Roboto', sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-}
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px;
+      color: rgba(242, 247, 247, 0.75);
+      text-decoration: none;
+      border-radius: 3px;
+      height: 40px;
+      transition: all 0.2s ease;
+      font-family: 'Roboto', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+    }
 
 .nav-item:hover {
   background-color: rgba(199, 209, 207, 0.1);
   color: #f2f7f7;
 }
 
-.nav-item.active {
-  background-color: rgba(199, 209, 207, 0.1);
-  color: #f2f7f7;
-}
+    .nav-item.active {
+      background-color: rgba(199, 209, 207, 0.1);
+      color: #f2f7f7;
+    }
 
-.nav-item.secondary {
-  color: rgba(242, 247, 247, 0.45);
-}
+    .nav-item.secondary {
+      color: rgba(242, 247, 247, 0.45);
+    }
 
-.nav-item.bottom {
-  color: rgba(242, 247, 247, 0.75);
-}
+    .nav-item.bottom {
+      color: rgba(242, 247, 247, 0.75);
+    }
 
 .nav-icon {
   display: flex;
@@ -401,10 +451,16 @@ watch(() => route.path, (newPath) => {
   line-height: 20px;
   white-space: nowrap;
   transition: opacity 0.15s ease;
+  opacity: 1 !important;
+  width: auto !important;
 }
 
-.main-sidebar.collapsed .nav-label {
-  opacity: 0;
+.nav-label.collapsed {
+  opacity: 0 !important;
+  width: 0 !important;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 .sidebar-bottom {
@@ -420,13 +476,23 @@ watch(() => route.path, (newPath) => {
   gap: 12px;
   padding: 2px 8px;
   border-radius: 3px;
-  min-height: 40px;
+  height: 40px;
   cursor: pointer;
-  transition: background-color 0.2s ease, opacity 0.15s ease;
+  transition: background-color 0.2s ease;
+  position: relative;
 }
 
-.main-sidebar.collapsed .company-switch {
-  opacity: 0;
+.company-switch.collapsed {
+  padding: 2px 8px;
+  gap: 0;
+}
+
+.company-info.collapsed {
+  display: none;
+}
+
+.company-arrow.collapsed {
+  display: none;
 }
 
 .company-switch:hover {
@@ -493,11 +559,51 @@ watch(() => route.path, (newPath) => {
   width: 230px;
 }
 
-.submenu-content {
-  padding: 1rem;
-  width: 230px;
-  background-color: transparent;
-}
+    .submenu-content {
+      padding: 1rem;
+      width: 230px;
+      background-color: transparent;
+    }
+
+    .submenu-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      padding: 1rem;
+    }
+
+    .loading-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      background-color: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      animation: loading-dots 1.4s infinite ease-in-out both;
+    }
+
+    .dot:nth-child(1) {
+      animation-delay: -0.32s;
+    }
+
+    .dot:nth-child(2) {
+      animation-delay: -0.16s;
+    }
+
+    @keyframes loading-dots {
+      0%, 80%, 100% {
+        transform: scale(0);
+        opacity: 0.5;
+      }
+      40% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
 
 /* Main Content */
 .main-content {

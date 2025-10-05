@@ -1,30 +1,25 @@
 <template>
   <div class="submenu">
-    <h3 class="submenu-title">Marketplace</h3>
+    <h3 class="submenu-title">Strategy Builder</h3>
     <ul class="submenu-list">
       <li>
-        <NuxtLink to="/marketplace" class="submenu-item">
+        <NuxtLink to="/strategy-builder" class="submenu-item">
           <span class="submenu-label">Overview</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/marketplace/orderbook" class="submenu-item">
-          <span class="submenu-label">Orderbook</span>
+        <NuxtLink to="/strategy-builder/create" class="submenu-item">
+          <span class="submenu-label">Create Strategy</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/marketplace/orders" class="submenu-item">
-          <span class="submenu-label">Orders</span>
+        <NuxtLink to="/strategy-builder/templates" class="submenu-item">
+          <span class="submenu-label">Templates</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/marketplace/executions" class="submenu-item">
-          <span class="submenu-label">Executions</span>
-        </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink to="/marketplace/watchlists" class="submenu-item">
-          <span class="submenu-label">Watchlists</span>
+        <NuxtLink to="/strategy-builder/ai-builder" class="submenu-item">
+          <span class="submenu-label">AI Builder</span>
         </NuxtLink>
       </li>
     </ul>
@@ -32,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-// Marketplace submenu logic
+// Strategy Builder submenu logic
 </script>
 
 <style scoped>
@@ -57,6 +52,7 @@
 .submenu-item {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0.75rem 0.5rem;
   color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
@@ -77,7 +73,6 @@
   color: rgba(255, 255, 255, 1);
   font-weight: 600;
 }
-
 
 .submenu-label {
   font-size: 0.813rem;

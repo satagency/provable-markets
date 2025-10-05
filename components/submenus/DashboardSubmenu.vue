@@ -7,22 +7,19 @@
           <span class="submenu-label">Overview</span>
         </NuxtLink>
       </li>
-      
-      <!-- Example dropdown -->
       <li>
-        <SubmenuDropdown label="Performance">
-          <NuxtLink to="/dashboard/performance/summary" class="submenu-item">
-            <span class="submenu-label">Summary</span>
-          </NuxtLink>
-          <NuxtLink to="/dashboard/performance/detailed" class="submenu-item">
-            <span class="submenu-label">Detailed</span>
-          </NuxtLink>
-        </SubmenuDropdown>
+        <NuxtLink to="/dashboard/performance" class="submenu-item">
+          <span class="submenu-label">Performance</span>
+        </NuxtLink>
       </li>
-      
       <li>
         <NuxtLink to="/dashboard/positions" class="submenu-item">
           <span class="submenu-label">Positions</span>
+        </NuxtLink>
+      </li>
+      <li>
+        <NuxtLink to="/dashboard/alerts" class="submenu-item">
+          <span class="submenu-label">Alerts</span>
         </NuxtLink>
       </li>
     </ul>
@@ -30,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import SubmenuDropdown from '~/components/ui/SubmenuDropdown.vue'
+// Dashboard submenu logic
 </script>
 
 <style scoped>

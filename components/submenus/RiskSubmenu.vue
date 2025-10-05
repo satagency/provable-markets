@@ -1,30 +1,30 @@
 <template>
   <div class="submenu">
-    <h3 class="submenu-title">Marketplace</h3>
+    <h3 class="submenu-title">Risk Management</h3>
     <ul class="submenu-list">
       <li>
-        <NuxtLink to="/marketplace" class="submenu-item">
+        <NuxtLink to="/risk" class="submenu-item">
           <span class="submenu-label">Overview</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/marketplace/orderbook" class="submenu-item">
-          <span class="submenu-label">Orderbook</span>
+        <NuxtLink to="/risk/var-calculator" class="submenu-item">
+          <span class="submenu-label">VaR Calculator</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/marketplace/orders" class="submenu-item">
-          <span class="submenu-label">Orders</span>
+        <NuxtLink to="/risk/stress-testing" class="submenu-item">
+          <span class="submenu-label">Stress Testing</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/marketplace/executions" class="submenu-item">
-          <span class="submenu-label">Executions</span>
+        <NuxtLink to="/risk/correlation-analysis" class="submenu-item">
+          <span class="submenu-label">Correlation Analysis</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/marketplace/watchlists" class="submenu-item">
-          <span class="submenu-label">Watchlists</span>
+        <NuxtLink to="/risk/alerts" class="submenu-item">
+          <span class="submenu-label">Risk Alerts</span>
         </NuxtLink>
       </li>
     </ul>
@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-// Marketplace submenu logic
+// Risk management submenu logic
 </script>
 
 <style scoped>
@@ -77,7 +77,6 @@
   color: rgba(255, 255, 255, 1);
   font-weight: 600;
 }
-
 
 .submenu-label {
   font-size: 0.813rem;

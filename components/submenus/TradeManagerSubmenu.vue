@@ -3,15 +3,37 @@
     <h3 class="submenu-title">Trade Manager</h3>
     <ul class="submenu-list">
       <li>
+        <NuxtLink to="/trade-manager" class="submenu-item">
+          <span class="submenu-label">Overview</span>
+        </NuxtLink>
+      </li>
+      <li>
         <NuxtLink to="/trade-manager/positions-overview" class="submenu-item">
           <span class="submenu-label">Positions Overview</span>
         </NuxtLink>
       </li>
+      
+      <!-- Open Positions with Dropdown -->
       <li>
-        <NuxtLink to="/trade-manager/open-positions" class="submenu-item">
-          <span class="submenu-label">Open Positions</span>
-        </NuxtLink>
+        <SubmenuDropdown label="Open Positions">
+          <NuxtLink to="/trade-manager/open-positions" class="submenu-item">
+            <span class="submenu-label">All Positions</span>
+          </NuxtLink>
+          <NuxtLink to="/trade-manager/open-positions/returns" class="submenu-item submenu-dropdown">
+            <span class="submenu-label">Returns</span>
+            <span class="submenu-badge" v-if="returnsCount > 0">{{ returnsCount }}</span>
+          </NuxtLink>
+          <NuxtLink to="/trade-manager/open-positions/recalls" class="submenu-item submenu-dropdown">
+            <span class="submenu-label">Recalls</span>
+            <span class="submenu-badge" v-if="recallsCount > 0">{{ recallsCount }}</span>
+          </NuxtLink>
+          <NuxtLink to="/trade-manager/open-positions/rerates" class="submenu-item submenu-dropdown">
+            <span class="submenu-label">Rerates</span>
+            <span class="submenu-badge" v-if="reratesCount > 0">{{ reratesCount }}</span>
+          </NuxtLink>
+        </SubmenuDropdown>
       </li>
+      
       <li>
         <NuxtLink to="/trade-manager/loans-history" class="submenu-item">
           <span class="submenu-label">Loans History</span>
@@ -22,7 +44,12 @@
 </template>
 
 <script setup lang="ts">
-// Trade Manager submenu logic
+import SubmenuDropdown from '~/components/ui/SubmenuDropdown.vue'
+
+// Mock data for count badges - replace with real data
+const returnsCount = ref(3)
+const recallsCount = ref(1)
+const reratesCount = ref(7)
 </script>
 
 <style scoped>
@@ -47,6 +74,7 @@
 .submenu-item {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0.75rem 0.5rem;
   color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
@@ -72,5 +100,30 @@
 .submenu-label {
   font-size: 0.813rem;
   font-weight: 400;
+}
+
+/* Dropdown items specific styling */
+.submenu-dropdown .submenu-label {
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  font-size: 0.813rem;
+  font-weight: 400;
+}
+
+.submenu-badge {
+  background-color: #ea5f3c;
+  color: black;
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 0 8px;
+  border-radius: 4px;
+  height: 15px;
+  min-width: 15px;
+  text-align: center;
+  line-height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

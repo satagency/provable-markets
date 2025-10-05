@@ -1,6 +1,6 @@
 <template>
   <div class="submenu">
-    <h3 class="submenu-title">Lending</h3>
+    <h3 class="submenu-title">Securities Lending</h3>
     <ul class="submenu-list">
       <li>
         <NuxtLink to="/lending" class="submenu-item">
@@ -8,13 +8,13 @@
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/lending/active-loans" class="submenu-item">
-          <span class="submenu-label">Active Loans</span>
+        <NuxtLink to="/lending/positions" class="submenu-item">
+          <span class="submenu-label">Active Positions</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/lending/loan-history" class="submenu-item">
-          <span class="submenu-label">Loan History</span>
+        <NuxtLink to="/lending/opportunities" class="submenu-item">
+          <span class="submenu-label">Opportunities</span>
         </NuxtLink>
       </li>
       <li>
@@ -22,12 +22,17 @@
           <span class="submenu-label">Collateral</span>
         </NuxtLink>
       </li>
+      <li>
+        <NuxtLink to="/lending/borrowers" class="submenu-item">
+          <span class="submenu-label">Borrowers</span>
+        </NuxtLink>
+      </li>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
-// Lending submenu logic
+// Securities lending submenu logic
 </script>
 
 <style scoped>

@@ -1,30 +1,20 @@
 <template>
   <div class="submenu">
-    <h3 class="submenu-title">Marketplace</h3>
+    <h3 class="submenu-title">Trade Optimizer</h3>
     <ul class="submenu-list">
       <li>
-        <NuxtLink to="/marketplace" class="submenu-item">
+        <NuxtLink to="/trade-optimizer" class="submenu-item">
           <span class="submenu-label">Overview</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/marketplace/orderbook" class="submenu-item">
-          <span class="submenu-label">Orderbook</span>
+        <NuxtLink to="/trade-optimizer/strategies" class="submenu-item">
+          <span class="submenu-label">Strategies</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/marketplace/orders" class="submenu-item">
-          <span class="submenu-label">Orders</span>
-        </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink to="/marketplace/executions" class="submenu-item">
-          <span class="submenu-label">Executions</span>
-        </NuxtLink>
-      </li>
-      <li>
-        <NuxtLink to="/marketplace/watchlists" class="submenu-item">
-          <span class="submenu-label">Watchlists</span>
+        <NuxtLink to="/trade-optimizer/performance" class="submenu-item">
+          <span class="submenu-label">Performance</span>
         </NuxtLink>
       </li>
     </ul>
@@ -32,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-// Marketplace submenu logic
+// Trade Optimizer submenu logic
 </script>
 
 <style scoped>
@@ -77,7 +67,6 @@
   color: rgba(255, 255, 255, 1);
   font-weight: 600;
 }
-
 
 .submenu-label {
   font-size: 0.813rem;

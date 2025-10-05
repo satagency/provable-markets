@@ -11,17 +11,12 @@
 // Determine layout based on route
 const route = useRoute()
 const layoutName = computed(() => {
-  // Use dashboard layout for dashboard-related pages
-  if (route.path.startsWith('/dashboard') || 
-      route.path.startsWith('/lending') || 
-      route.path.startsWith('/analytics') || 
-      route.path.startsWith('/risk') || 
-      route.path.startsWith('/marketplace') || 
-      route.path.startsWith('/trade-manager') || 
-      route.path.startsWith('/swaps') || 
-      route.path.startsWith('/admin')) {
-    return 'dashboard'
+  // Use dashboard layout for all main application pages
+  // Only use simple layout for auth pages
+  if (route.path.startsWith('/auth')) {
+    return 'simple'
   }
-  return 'simple'
+  // Everything else uses dashboard layout
+  return 'dashboard'
 })
 </script>

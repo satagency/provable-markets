@@ -1,11 +1,9 @@
 <template>
   <div>
-    <!-- Blank page awaiting design -->
+    <!-- Risk Management Overview Page -->
   </div>
 </template>
 
 <script setup lang="ts">
-useHead({
-  title: "$(basename $(dirname $1))"
-})
+// Risk management overview page
 </script>
