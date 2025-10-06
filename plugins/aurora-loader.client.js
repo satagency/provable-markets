@@ -193,7 +193,7 @@ function initLoader() {
     const loadTimeline = gsap.timeline({ 
       defaults: { 
         ease: CustomEase ? "loader" : "power2.out",
-        duration: 2
+        duration: 3
       }
     })
     .to(progressBar, { scaleX: 1 })

@@ -30,15 +30,6 @@
       <li>
         <NuxtLink to="/analytics/var-calculator" class="submenu-item">
           <span class="submenu-label">VaR Calculator</span>
-          <div class="submenu-icon">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon-svg">
-              <path d="M2 12H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M2 10V12" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M6 10V12" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M10 10V12" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M14 10V12" stroke="currentColor" stroke-width="1.5"/>
-            </svg>
-          </div>
         </NuxtLink>
       </li>
     </ul>
