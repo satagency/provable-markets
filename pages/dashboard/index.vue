@@ -413,6 +413,7 @@ if (process.client) {
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow: hidden;
   background-image: radial-gradient(circle, rgba(85, 85, 85, 0.3) 1px, transparent 1px);
   background-size: 20px 20px;
 }
@@ -423,7 +424,7 @@ if (process.client) {
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 8px;
-  height: 100%;
+  height: calc(100vh - 50px - 24px); /* Full viewport minus header and padding */
   padding: 2px;
   box-sizing: border-box;
 }

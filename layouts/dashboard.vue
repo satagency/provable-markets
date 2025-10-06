@@ -806,7 +806,7 @@ watch(() => route.path, (newPath) => {
 .content-area {
   flex: 1;
   padding: 12px;
-  overflow: auto;
+  overflow: hidden;
   background-color: #121212;
 }
 

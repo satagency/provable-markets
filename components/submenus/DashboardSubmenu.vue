@@ -4,7 +4,7 @@
     <ul class="submenu-list">
       <li>
         <NuxtLink to="/dashboard" class="submenu-item">
-          <span class="submenu-label">Overview</span>
+          <span class="submenu-label">Design R&D</span>
         </NuxtLink>
       </li>
       <li>
