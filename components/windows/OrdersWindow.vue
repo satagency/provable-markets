@@ -110,98 +110,1031 @@
           </div>
         </div>
 
-        <!-- Table Row -->
-        <div class="table-row">
-          <div class="row-cell select-col">
-            <div class="gripper">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
-              </svg>
+        <!-- Table Rows Container with Scroll -->
+        <div class="table-rows-container">
+          <!-- All Rows in Single Container - Original TSLA Row Duplicated 20 Times -->
+          <div class="table-row">
+              <div class="row-cell select-col">
+                <div class="gripper">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                  </svg>
+                </div>
+                <div class="checkbox">
+                  <input type="checkbox" />
+                </div>
+              </div>
+              <div class="row-cell status-col">
+                <span class="status-held">Held</span>
+              </div>
+              <div class="row-cell updated-col">
+                <div class="date-time">
+                  <span class="date">10/12/23</span>
+                  <span class="time">09:23A</span>
+                </div>
+              </div>
+              <div class="row-cell side-col">
+                <div class="lending-badge">
+                  <span class="lend-text">LENDER</span>
+                </div>
+              </div>
+              <div class="row-cell intent-col">
+                <span>Firm</span>
+              </div>
+              <div class="row-cell ticker-col">
+                <span class="ticker">TSLA</span>
+              </div>
+              <div class="row-cell security-col">
+                <span class="security-name">Tesla, Inc. Common Stock</span>
+              </div>
+              <div class="row-cell cusip-col">
+                <span class="cusip">88160R101</span>
+              </div>
+              <div class="row-cell open-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell ioi-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell firm-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell fee-col">
+                <span class="fee-negative">-0.67%</span>
+              </div>
+              <div class="row-cell exec-fee-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell rebates-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell agreements-col">
+                <div class="agreements-info">
+                  <div class="agreement-count">3</div>
+                  <span class="available-text">available</span>
+                  <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="row-cell unit-price-col">
+                <span class="price">$175.24</span>
+              </div>
+              <div class="row-cell market-value-col">
+                <span class="market-value">$175,000</span>
+              </div>
+              <div class="row-cell total-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell min-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell time-force-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell counterparty-col">
+                <span class="loss-amount">-$203</span>
+              </div>
+              <div class="row-cell last-col">
+                <div class="priority-badge high">HIGH</div>
+              </div>
+              <div class="row-cell actions-col">
+                <div class="action-buttons">
+                  <button class="action-btn">Edit</button>
+                  <button class="action-btn danger">Cancel</button>
+                </div>
+              </div>
             </div>
-            <div class="checkbox">
-              <input type="checkbox" />
+
+          <div class="table-row">
+              <div class="row-cell select-col">
+                <div class="gripper">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                  </svg>
+                </div>
+                <div class="checkbox">
+                  <input type="checkbox" />
+                </div>
+              </div>
+              <div class="row-cell status-col">
+                <span class="status-held">Held</span>
+              </div>
+              <div class="row-cell updated-col">
+                <div class="date-time">
+                  <span class="date">10/12/23</span>
+                  <span class="time">09:23A</span>
+                </div>
+              </div>
+              <div class="row-cell side-col">
+                <div class="lending-badge">
+                  <span class="lend-text">LENDER</span>
+                </div>
+              </div>
+              <div class="row-cell intent-col">
+                <span>Firm</span>
+              </div>
+              <div class="row-cell ticker-col">
+                <span class="ticker">TSLA</span>
+              </div>
+              <div class="row-cell security-col">
+                <span class="security-name">Tesla, Inc. Common Stock</span>
+              </div>
+              <div class="row-cell cusip-col">
+                <span class="cusip">88160R101</span>
+              </div>
+              <div class="row-cell open-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell ioi-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell firm-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell fee-col">
+                <span class="fee-negative">-0.67%</span>
+              </div>
+              <div class="row-cell exec-fee-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell rebates-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell agreements-col">
+                <div class="agreements-info">
+                  <div class="agreement-count">3</div>
+                  <span class="available-text">available</span>
+                  <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="row-cell unit-price-col">
+                <span class="price">$175.24</span>
+              </div>
+              <div class="row-cell market-value-col">
+                <span class="market-value">$175,000</span>
+              </div>
+              <div class="row-cell total-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell min-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell time-force-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell counterparty-col">
+                <span class="loss-amount">-$203</span>
+              </div>
+              <div class="row-cell last-col">
+                <div class="priority-badge high">HIGH</div>
+              </div>
+              <div class="row-cell actions-col">
+                <div class="action-buttons">
+                  <button class="action-btn">Edit</button>
+                  <button class="action-btn danger">Cancel</button>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="row-cell status-col">
-            <span class="status-held">Held</span>
-          </div>
-          <div class="row-cell updated-col">
-            <div class="date-time">
-              <span class="date">10/12/23</span>
-              <span class="time">09:23A</span>
+
+          <div class="table-row">
+              <div class="row-cell select-col">
+                <div class="gripper">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                  </svg>
+                </div>
+                <div class="checkbox">
+                  <input type="checkbox" />
+                </div>
+              </div>
+              <div class="row-cell status-col">
+                <span class="status-held">Held</span>
+              </div>
+              <div class="row-cell updated-col">
+                <div class="date-time">
+                  <span class="date">10/12/23</span>
+                  <span class="time">09:23A</span>
+                </div>
+              </div>
+              <div class="row-cell side-col">
+                <div class="lending-badge">
+                  <span class="lend-text">LENDER</span>
+                </div>
+              </div>
+              <div class="row-cell intent-col">
+                <span>Firm</span>
+              </div>
+              <div class="row-cell ticker-col">
+                <span class="ticker">TSLA</span>
+              </div>
+              <div class="row-cell security-col">
+                <span class="security-name">Tesla, Inc. Common Stock</span>
+              </div>
+              <div class="row-cell cusip-col">
+                <span class="cusip">88160R101</span>
+              </div>
+              <div class="row-cell open-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell ioi-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell firm-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell fee-col">
+                <span class="fee-negative">-0.67%</span>
+              </div>
+              <div class="row-cell exec-fee-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell rebates-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell agreements-col">
+                <div class="agreements-info">
+                  <div class="agreement-count">3</div>
+                  <span class="available-text">available</span>
+                  <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="row-cell unit-price-col">
+                <span class="price">$175.24</span>
+              </div>
+              <div class="row-cell market-value-col">
+                <span class="market-value">$175,000</span>
+              </div>
+              <div class="row-cell total-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell min-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell time-force-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell counterparty-col">
+                <span class="loss-amount">-$203</span>
+              </div>
+              <div class="row-cell last-col">
+                <div class="priority-badge high">HIGH</div>
+              </div>
+              <div class="row-cell actions-col">
+                <div class="action-buttons">
+                  <button class="action-btn">Edit</button>
+                  <button class="action-btn danger">Cancel</button>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="row-cell side-col">
-            <div class="lending-badge">
-              <span class="lend-text">LENDER</span>
+
+          <div class="table-row">
+              <div class="row-cell select-col">
+                <div class="gripper">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                  </svg>
+                </div>
+                <div class="checkbox">
+                  <input type="checkbox" />
+                </div>
+              </div>
+              <div class="row-cell status-col">
+                <span class="status-held">Held</span>
+              </div>
+              <div class="row-cell updated-col">
+                <div class="date-time">
+                  <span class="date">10/12/23</span>
+                  <span class="time">09:23A</span>
+                </div>
+              </div>
+              <div class="row-cell side-col">
+                <div class="lending-badge">
+                  <span class="lend-text">LENDER</span>
+                </div>
+              </div>
+              <div class="row-cell intent-col">
+                <span>Firm</span>
+              </div>
+              <div class="row-cell ticker-col">
+                <span class="ticker">TSLA</span>
+              </div>
+              <div class="row-cell security-col">
+                <span class="security-name">Tesla, Inc. Common Stock</span>
+              </div>
+              <div class="row-cell cusip-col">
+                <span class="cusip">88160R101</span>
+              </div>
+              <div class="row-cell open-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell ioi-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell firm-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell fee-col">
+                <span class="fee-negative">-0.67%</span>
+              </div>
+              <div class="row-cell exec-fee-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell rebates-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell agreements-col">
+                <div class="agreements-info">
+                  <div class="agreement-count">3</div>
+                  <span class="available-text">available</span>
+                  <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="row-cell unit-price-col">
+                <span class="price">$175.24</span>
+              </div>
+              <div class="row-cell market-value-col">
+                <span class="market-value">$175,000</span>
+              </div>
+              <div class="row-cell total-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell min-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell time-force-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell counterparty-col">
+                <span class="loss-amount">-$203</span>
+              </div>
+              <div class="row-cell last-col">
+                <div class="priority-badge high">HIGH</div>
+              </div>
+              <div class="row-cell actions-col">
+                <div class="action-buttons">
+                  <button class="action-btn">Edit</button>
+                  <button class="action-btn danger">Cancel</button>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="row-cell intent-col">
-            <span>Firm</span>
-          </div>
-          <div class="row-cell ticker-col">
-            <span class="ticker">TSLA</span>
-          </div>
-          <div class="row-cell security-col">
-            <span class="security-name">Tesla, Inc. Common Stock</span>
-          </div>
-          <div class="row-cell cusip-col">
-            <span class="cusip">88160R101</span>
-          </div>
-          <div class="row-cell open-qty-col">
-            <span class="quantity">111</span>
-          </div>
-          <div class="row-cell ioi-qty-col">
-            <span class="dash">--</span>
-          </div>
-          <div class="row-cell firm-qty-col">
-            <span class="dash">--</span>
-          </div>
-          <div class="row-cell fee-col">
-            <span class="fee-negative">-0.67%</span>
-          </div>
-          <div class="row-cell exec-fee-col">
-            <span class="fee-positive">5.00%</span>
-          </div>
-          <div class="row-cell rebates-col">
-            <span class="fee-positive">5.00%</span>
-          </div>
-          <div class="row-cell agreements-col">
-            <div class="agreements-info">
-              <div class="agreement-count">3</div>
-              <span class="available-text">available</span>
-              <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-              </svg>
+
+          <div class="table-row">
+              <div class="row-cell select-col">
+                <div class="gripper">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                  </svg>
+                </div>
+                <div class="checkbox">
+                  <input type="checkbox" />
+                </div>
+              </div>
+              <div class="row-cell status-col">
+                <span class="status-held">Held</span>
+              </div>
+              <div class="row-cell updated-col">
+                <div class="date-time">
+                  <span class="date">10/12/23</span>
+                  <span class="time">09:23A</span>
+                </div>
+              </div>
+              <div class="row-cell side-col">
+                <div class="lending-badge">
+                  <span class="lend-text">LENDER</span>
+                </div>
+              </div>
+              <div class="row-cell intent-col">
+                <span>Firm</span>
+              </div>
+              <div class="row-cell ticker-col">
+                <span class="ticker">TSLA</span>
+              </div>
+              <div class="row-cell security-col">
+                <span class="security-name">Tesla, Inc. Common Stock</span>
+              </div>
+              <div class="row-cell cusip-col">
+                <span class="cusip">88160R101</span>
+              </div>
+              <div class="row-cell open-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell ioi-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell firm-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell fee-col">
+                <span class="fee-negative">-0.67%</span>
+              </div>
+              <div class="row-cell exec-fee-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell rebates-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell agreements-col">
+                <div class="agreements-info">
+                  <div class="agreement-count">3</div>
+                  <span class="available-text">available</span>
+                  <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="row-cell unit-price-col">
+                <span class="price">$175.24</span>
+              </div>
+              <div class="row-cell market-value-col">
+                <span class="market-value">$175,000</span>
+              </div>
+              <div class="row-cell total-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell min-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell time-force-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell counterparty-col">
+                <span class="loss-amount">-$203</span>
+              </div>
+              <div class="row-cell last-col">
+                <div class="priority-badge high">HIGH</div>
+              </div>
+              <div class="row-cell actions-col">
+                <div class="action-buttons">
+                  <button class="action-btn">Edit</button>
+                  <button class="action-btn danger">Cancel</button>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="row-cell unit-price-col">
-            <span class="price">$175.24</span>
-          </div>
-          <div class="row-cell market-value-col">
-            <span class="market-value">$175,000</span>
-          </div>
-          <div class="row-cell total-qty-col">
-            <span class="quantity">111</span>
-          </div>
-          <div class="row-cell min-qty-col">
-            <span class="quantity">111</span>
-          </div>
-          <div class="row-cell time-force-col">
-            <span class="quantity">111</span>
-          </div>
-          <div class="row-cell counterparty-col">
-            <span class="loss-amount">-$203</span>
-          </div>
-          <div class="row-cell last-col">
-            <div class="priority-badge high">HIGH</div>
-          </div>
-          <div class="row-cell actions-col">
-            <div class="action-buttons">
-              <button class="action-btn">Edit</button>
-              <button class="action-btn danger">Cancel</button>
+
+          <div class="table-row">
+              <div class="row-cell select-col">
+                <div class="gripper">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                  </svg>
+                </div>
+                <div class="checkbox">
+                  <input type="checkbox" />
+                </div>
+              </div>
+              <div class="row-cell status-col">
+                <span class="status-held">Held</span>
+              </div>
+              <div class="row-cell updated-col">
+                <div class="date-time">
+                  <span class="date">10/12/23</span>
+                  <span class="time">09:23A</span>
+                </div>
+              </div>
+              <div class="row-cell side-col">
+                <div class="lending-badge">
+                  <span class="lend-text">LENDER</span>
+                </div>
+              </div>
+              <div class="row-cell intent-col">
+                <span>Firm</span>
+              </div>
+              <div class="row-cell ticker-col">
+                <span class="ticker">TSLA</span>
+              </div>
+              <div class="row-cell security-col">
+                <span class="security-name">Tesla, Inc. Common Stock</span>
+              </div>
+              <div class="row-cell cusip-col">
+                <span class="cusip">88160R101</span>
+              </div>
+              <div class="row-cell open-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell ioi-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell firm-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell fee-col">
+                <span class="fee-negative">-0.67%</span>
+              </div>
+              <div class="row-cell exec-fee-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell rebates-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell agreements-col">
+                <div class="agreements-info">
+                  <div class="agreement-count">3</div>
+                  <span class="available-text">available</span>
+                  <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="row-cell unit-price-col">
+                <span class="price">$175.24</span>
+              </div>
+              <div class="row-cell market-value-col">
+                <span class="market-value">$175,000</span>
+              </div>
+              <div class="row-cell total-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell min-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell time-force-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell counterparty-col">
+                <span class="loss-amount">-$203</span>
+              </div>
+              <div class="row-cell last-col">
+                <div class="priority-badge high">HIGH</div>
+              </div>
+              <div class="row-cell actions-col">
+                <div class="action-buttons">
+                  <button class="action-btn">Edit</button>
+                  <button class="action-btn danger">Cancel</button>
+                </div>
+              </div>
             </div>
-          </div>
+
+          <div class="table-row">
+              <div class="row-cell select-col">
+                <div class="gripper">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                  </svg>
+                </div>
+                <div class="checkbox">
+                  <input type="checkbox" />
+                </div>
+              </div>
+              <div class="row-cell status-col">
+                <span class="status-held">Held</span>
+              </div>
+              <div class="row-cell updated-col">
+                <div class="date-time">
+                  <span class="date">10/12/23</span>
+                  <span class="time">09:23A</span>
+                </div>
+              </div>
+              <div class="row-cell side-col">
+                <div class="lending-badge">
+                  <span class="lend-text">LENDER</span>
+                </div>
+              </div>
+              <div class="row-cell intent-col">
+                <span>Firm</span>
+              </div>
+              <div class="row-cell ticker-col">
+                <span class="ticker">TSLA</span>
+              </div>
+              <div class="row-cell security-col">
+                <span class="security-name">Tesla, Inc. Common Stock</span>
+              </div>
+              <div class="row-cell cusip-col">
+                <span class="cusip">88160R101</span>
+              </div>
+              <div class="row-cell open-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell ioi-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell firm-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell fee-col">
+                <span class="fee-negative">-0.67%</span>
+              </div>
+              <div class="row-cell exec-fee-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell rebates-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell agreements-col">
+                <div class="agreements-info">
+                  <div class="agreement-count">3</div>
+                  <span class="available-text">available</span>
+                  <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="row-cell unit-price-col">
+                <span class="price">$175.24</span>
+              </div>
+              <div class="row-cell market-value-col">
+                <span class="market-value">$175,000</span>
+              </div>
+              <div class="row-cell total-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell min-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell time-force-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell counterparty-col">
+                <span class="loss-amount">-$203</span>
+              </div>
+              <div class="row-cell last-col">
+                <div class="priority-badge high">HIGH</div>
+              </div>
+              <div class="row-cell actions-col">
+                <div class="action-buttons">
+                  <button class="action-btn">Edit</button>
+                  <button class="action-btn danger">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+          <div class="table-row">
+              <div class="row-cell select-col">
+                <div class="gripper">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                  </svg>
+                </div>
+                <div class="checkbox">
+                  <input type="checkbox" />
+                </div>
+              </div>
+              <div class="row-cell status-col">
+                <span class="status-held">Held</span>
+              </div>
+              <div class="row-cell updated-col">
+                <div class="date-time">
+                  <span class="date">10/12/23</span>
+                  <span class="time">09:23A</span>
+                </div>
+              </div>
+              <div class="row-cell side-col">
+                <div class="lending-badge">
+                  <span class="lend-text">LENDER</span>
+                </div>
+              </div>
+              <div class="row-cell intent-col">
+                <span>Firm</span>
+              </div>
+              <div class="row-cell ticker-col">
+                <span class="ticker">TSLA</span>
+              </div>
+              <div class="row-cell security-col">
+                <span class="security-name">Tesla, Inc. Common Stock</span>
+              </div>
+              <div class="row-cell cusip-col">
+                <span class="cusip">88160R101</span>
+              </div>
+              <div class="row-cell open-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell ioi-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell firm-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell fee-col">
+                <span class="fee-negative">-0.67%</span>
+              </div>
+              <div class="row-cell exec-fee-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell rebates-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell agreements-col">
+                <div class="agreements-info">
+                  <div class="agreement-count">3</div>
+                  <span class="available-text">available</span>
+                  <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="row-cell unit-price-col">
+                <span class="price">$175.24</span>
+              </div>
+              <div class="row-cell market-value-col">
+                <span class="market-value">$175,000</span>
+              </div>
+              <div class="row-cell total-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell min-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell time-force-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell counterparty-col">
+                <span class="loss-amount">-$203</span>
+              </div>
+              <div class="row-cell last-col">
+                <div class="priority-badge high">HIGH</div>
+              </div>
+              <div class="row-cell actions-col">
+                <div class="action-buttons">
+                  <button class="action-btn">Edit</button>
+                  <button class="action-btn danger">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+          <div class="table-row">
+              <div class="row-cell select-col">
+                <div class="gripper">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                  </svg>
+                </div>
+                <div class="checkbox">
+                  <input type="checkbox" />
+                </div>
+              </div>
+              <div class="row-cell status-col">
+                <span class="status-held">Held</span>
+              </div>
+              <div class="row-cell updated-col">
+                <div class="date-time">
+                  <span class="date">10/12/23</span>
+                  <span class="time">09:23A</span>
+                </div>
+              </div>
+              <div class="row-cell side-col">
+                <div class="lending-badge">
+                  <span class="lend-text">LENDER</span>
+                </div>
+              </div>
+              <div class="row-cell intent-col">
+                <span>Firm</span>
+              </div>
+              <div class="row-cell ticker-col">
+                <span class="ticker">TSLA</span>
+              </div>
+              <div class="row-cell security-col">
+                <span class="security-name">Tesla, Inc. Common Stock</span>
+              </div>
+              <div class="row-cell cusip-col">
+                <span class="cusip">88160R101</span>
+              </div>
+              <div class="row-cell open-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell ioi-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell firm-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell fee-col">
+                <span class="fee-negative">-0.67%</span>
+              </div>
+              <div class="row-cell exec-fee-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell rebates-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell agreements-col">
+                <div class="agreements-info">
+                  <div class="agreement-count">3</div>
+                  <span class="available-text">available</span>
+                  <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="row-cell unit-price-col">
+                <span class="price">$175.24</span>
+              </div>
+              <div class="row-cell market-value-col">
+                <span class="market-value">$175,000</span>
+              </div>
+              <div class="row-cell total-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell min-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell time-force-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell counterparty-col">
+                <span class="loss-amount">-$203</span>
+              </div>
+              <div class="row-cell last-col">
+                <div class="priority-badge high">HIGH</div>
+              </div>
+              <div class="row-cell actions-col">
+                <div class="action-buttons">
+                  <button class="action-btn">Edit</button>
+                  <button class="action-btn danger">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+          <div class="table-row">
+              <div class="row-cell select-col">
+                <div class="gripper">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                  </svg>
+                </div>
+                <div class="checkbox">
+                  <input type="checkbox" />
+                </div>
+              </div>
+              <div class="row-cell status-col">
+                <span class="status-held">Held</span>
+              </div>
+              <div class="row-cell updated-col">
+                <div class="date-time">
+                  <span class="date">10/12/23</span>
+                  <span class="time">09:23A</span>
+                </div>
+              </div>
+              <div class="row-cell side-col">
+                <div class="lending-badge">
+                  <span class="lend-text">LENDER</span>
+                </div>
+              </div>
+              <div class="row-cell intent-col">
+                <span>Firm</span>
+              </div>
+              <div class="row-cell ticker-col">
+                <span class="ticker">TSLA</span>
+              </div>
+              <div class="row-cell security-col">
+                <span class="security-name">Tesla, Inc. Common Stock</span>
+              </div>
+              <div class="row-cell cusip-col">
+                <span class="cusip">88160R101</span>
+              </div>
+              <div class="row-cell open-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell ioi-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell firm-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell fee-col">
+                <span class="fee-negative">-0.67%</span>
+              </div>
+              <div class="row-cell exec-fee-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell rebates-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell agreements-col">
+                <div class="agreements-info">
+                  <div class="agreement-count">3</div>
+                  <span class="available-text">available</span>
+                  <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="row-cell unit-price-col">
+                <span class="price">$175.24</span>
+              </div>
+              <div class="row-cell market-value-col">
+                <span class="market-value">$175,000</span>
+              </div>
+              <div class="row-cell total-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell min-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell time-force-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell counterparty-col">
+                <span class="loss-amount">-$203</span>
+              </div>
+              <div class="row-cell last-col">
+                <div class="priority-badge high">HIGH</div>
+              </div>
+              <div class="row-cell actions-col">
+                <div class="action-buttons">
+                  <button class="action-btn">Edit</button>
+                  <button class="action-btn danger">Cancel</button>
+                </div>
+              </div>
+            </div>
+
+          <div class="table-row">
+              <div class="row-cell select-col">
+                <div class="gripper">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+                  </svg>
+                </div>
+                <div class="checkbox">
+                  <input type="checkbox" />
+                </div>
+              </div>
+              <div class="row-cell status-col">
+                <span class="status-held">Held</span>
+              </div>
+              <div class="row-cell updated-col">
+                <div class="date-time">
+                  <span class="date">10/12/23</span>
+                  <span class="time">09:23A</span>
+                </div>
+              </div>
+              <div class="row-cell side-col">
+                <div class="lending-badge">
+                  <span class="lend-text">LENDER</span>
+                </div>
+              </div>
+              <div class="row-cell intent-col">
+                <span>Firm</span>
+              </div>
+              <div class="row-cell ticker-col">
+                <span class="ticker">TSLA</span>
+              </div>
+              <div class="row-cell security-col">
+                <span class="security-name">Tesla, Inc. Common Stock</span>
+              </div>
+              <div class="row-cell cusip-col">
+                <span class="cusip">88160R101</span>
+              </div>
+              <div class="row-cell open-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell ioi-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell firm-qty-col">
+                <span class="dash">--</span>
+              </div>
+              <div class="row-cell fee-col">
+                <span class="fee-negative">-0.67%</span>
+              </div>
+              <div class="row-cell exec-fee-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell rebates-col">
+                <span class="fee-positive">5.00%</span>
+              </div>
+              <div class="row-cell agreements-col">
+                <div class="agreements-info">
+                  <div class="agreement-count">3</div>
+                  <span class="available-text">available</span>
+                  <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div class="row-cell unit-price-col">
+                <span class="price">$175.24</span>
+              </div>
+              <div class="row-cell market-value-col">
+                <span class="market-value">$175,000</span>
+              </div>
+              <div class="row-cell total-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell min-qty-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell time-force-col">
+                <span class="quantity">111</span>
+              </div>
+              <div class="row-cell counterparty-col">
+                <span class="loss-amount">-$203</span>
+              </div>
+              <div class="row-cell last-col">
+                <div class="priority-badge high">HIGH</div>
+              </div>
+              <div class="row-cell actions-col">
+                <div class="action-buttons">
+                  <button class="action-btn">Edit</button>
+                  <button class="action-btn danger">Cancel</button>
+                </div>
+              </div>
+            </div>
         </div>
       </div>
     </div>
@@ -389,8 +1322,23 @@ const orders = ref([
 /* Orders Content */
 .orders-content {
   flex: 1;
-  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   padding: 0;
+}
+
+/* Table Rows Container with Scroll */
+.table-rows-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  max-height: 400px;
+}
+
+/* Row Wrapper */
+.row-wrapper {
+  width: 100%;
 }
 
 /* Table Header */
@@ -508,6 +1456,21 @@ const orders = ref([
 /* Data Element Styling */
 .status-held {
   color: #ffb74d;
+  font-weight: 500;
+}
+
+.status-active {
+  color: #51cf66;
+  font-weight: 500;
+}
+
+.status-pending {
+  color: #ffd43b;
+  font-weight: 500;
+}
+
+.status-filled {
+  color: #51cf66;
   font-weight: 500;
 }
 
@@ -647,7 +1610,6 @@ const orders = ref([
 }
 
 .priority-badge {
-  background-color: rgba(0, 189, 101, 0.66);
   border-radius: 90px;
   padding: 2px 13px;
   font-family: 'Roboto', sans-serif;
@@ -656,6 +1618,18 @@ const orders = ref([
   color: white;
   letter-spacing: 0.12px;
   text-transform: uppercase;
+}
+
+.priority-badge.high {
+  background-color: rgba(239, 68, 68, 0.8);
+}
+
+.priority-badge.medium {
+  background-color: rgba(245, 158, 11, 0.8);
+}
+
+.priority-badge.low {
+  background-color: rgba(0, 189, 101, 0.66);
 }
 
 .action-buttons {
