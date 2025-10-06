@@ -59,6 +59,9 @@ function initLoader() {
     </div>
   `
 
+  // Hide main content immediately to prevent FOUC
+  document.body.style.visibility = 'hidden'
+  
   // Add CSS styles FIRST (before HTML)
   const style = document.createElement('style')
   style.textContent = `
@@ -205,6 +208,7 @@ function initLoader() {
     .to(bg, { yPercent: -101, duration: 1 },"hideContent")
     .to(bg, { autoAlpha: 0, duration: 0.2 }, "hideContent+=0.5")
     .set(wrap,{ display: "none", pointerEvents: "none" })
+    .set(document.body, { visibility: "visible" }, "hideContent")
     
     if (resetTargets.length) {
       loadTimeline.set(resetTargets, { autoAlpha: 1 }, 0)
