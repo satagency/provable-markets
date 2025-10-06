@@ -16,20 +16,24 @@
       <!-- Open Positions with Dropdown -->
       <li>
         <SubmenuDropdown label="Open Positions">
+          <template #label>
+            <span>Open Positions</span>
+            <div class="activity-dot"></div>
+          </template>
           <NuxtLink to="/trade-manager/open-positions" class="submenu-item">
             <span class="submenu-label">All Positions</span>
           </NuxtLink>
           <NuxtLink to="/trade-manager/open-positions/returns" class="submenu-item submenu-dropdown">
             <span class="submenu-label">Returns</span>
-            <span class="submenu-badge" v-if="returnsCount > 0">{{ returnsCount }}</span>
+            <span class="submenu-badge red-badge" v-if="returnsCount > 0">{{ returnsCount }}</span>
           </NuxtLink>
           <NuxtLink to="/trade-manager/open-positions/recalls" class="submenu-item submenu-dropdown">
             <span class="submenu-label">Recalls</span>
-            <span class="submenu-badge" v-if="recallsCount > 0">{{ recallsCount }}</span>
+            <span class="submenu-badge red-badge" v-if="recallsCount > 0">{{ recallsCount }}</span>
           </NuxtLink>
           <NuxtLink to="/trade-manager/open-positions/rerates" class="submenu-item submenu-dropdown">
             <span class="submenu-label">Rerates</span>
-            <span class="submenu-badge" v-if="reratesCount > 0">{{ reratesCount }}</span>
+            <span class="submenu-badge red-badge" v-if="reratesCount > 0">{{ reratesCount }}</span>
           </NuxtLink>
         </SubmenuDropdown>
       </li>
@@ -69,7 +73,7 @@ const reratesCount = ref(7)
 
 .submenu-title {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   color: white;
   margin: 0 0 1rem 0;
   padding: 0 0.5rem;
@@ -103,7 +107,7 @@ const reratesCount = ref(7)
 .submenu-item.router-link-active {
   background-color: #2a2a2a;
   color: rgba(255, 255, 255, 1);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 
@@ -135,5 +139,20 @@ const reratesCount = ref(7)
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.submenu-badge.red-badge {
+  background-color: rgba(239, 68, 68, 0.5);
+  color: white;
+  border: 1px solid #ef4444;
+}
+
+.activity-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #ef4444;
+  border-radius: 50%;
+  margin-left: 8px;
+  display: inline-block;
 }
 </style>

@@ -32,7 +32,7 @@
 
 .submenu-title {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   color: white;
   margin: 0 0 1rem 0;
   padding: 0 0.5rem;
@@ -65,7 +65,7 @@
 .submenu-item.router-link-active {
   background-color: #2a2a2a;
   color: rgba(255, 255, 255, 1);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .submenu-label {

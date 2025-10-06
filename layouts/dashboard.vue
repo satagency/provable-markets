@@ -120,19 +120,14 @@
         <div class="sidebar-bottom">
           <NuxtLink to="/compliance" class="nav-item bottom" :class="{ 'active': $route.path.startsWith('/compliance') }">
             <div class="nav-icon">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-              </svg>
+              <ComplianceIcon class="w-5 h-5 block" />
             </div>
             <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Compliance & Legal</span>
           </NuxtLink>
 
           <NuxtLink to="/settings" class="nav-item bottom" :class="{ 'active': $route.path.startsWith('/settings') }">
             <div class="nav-icon">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-              </svg>
+              <SettingsIcon class="w-5 h-5 block" />
             </div>
             <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Company Settings</span>
           </NuxtLink>
@@ -245,7 +240,9 @@ import {
   SparkleIcon,
   BasketIcon,
   StrategyIcon,
-  NotificationBellIcon
+  NotificationBellIcon,
+  ComplianceIcon,
+  SettingsIcon
 } from '~/components/icons'
 
 // Sidebar toggle state
@@ -586,6 +583,10 @@ watch(() => route.path, (newPath) => {
   width: auto !important;
 }
 
+.nav-item.active .nav-label {
+  font-weight: 500;
+}
+
 .nav-label.collapsed {
   opacity: 0 !important;
   width: 0 !important;
@@ -650,15 +651,15 @@ watch(() => route.path, (newPath) => {
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 4px;
+  gap: 1px;
 }
 
 .company-name {
   font-family: 'Roboto', sans-serif;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 14px;
   color: #e1e3e3;
-  line-height: 20px;
+  line-height: 16px;
 }
 
 .company-type {
@@ -666,7 +667,7 @@ watch(() => route.path, (newPath) => {
   font-weight: 400;
   font-size: 12px;
   color: rgba(242, 247, 247, 0.75);
-  line-height: 16px;
+  line-height: 14px;
 }
 
 .company-arrow {

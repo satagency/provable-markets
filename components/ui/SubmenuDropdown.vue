@@ -5,7 +5,11 @@
       class="dropdown-trigger"
       :class="{ 'active': isOpen }"
     >
-      <span class="dropdown-label">{{ label }}</span>
+      <span class="dropdown-label">
+        <slot name="label">
+          {{ label }}
+        </slot>
+      </span>
       <svg 
         class="dropdown-arrow" 
         :class="{ 'rotated': isOpen }"
@@ -77,6 +81,8 @@ const toggleDropdown = () => {
 .dropdown-label {
   font-size: 0.813rem;
   font-weight: inherit;
+  display: flex;
+  align-items: center;
 }
 
 .dropdown-arrow {
