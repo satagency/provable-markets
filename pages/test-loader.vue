@@ -25,10 +25,10 @@ const isLoaderVisible = ref(false)
 function showLoader() {
   isLoaderVisible.value = true
   
-  // Hide loader after animation completes (about 3 seconds)
+  // Hide loader after animation completes (about 4 seconds)
   setTimeout(() => {
     isLoaderVisible.value = false
-  }, 3000)
+  }, 4000)
 }
 </script>
 

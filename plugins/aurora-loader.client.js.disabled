@@ -1,16 +1,27 @@
 export default defineNuxtPlugin(() => {
   // Only run on client-side
   if (process.client) {
-    // Wait for DOM to be ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initLoader)
-    } else {
-      initLoader()
+    // Prevent multiple initializations
+    if (window.__auroraLoaderInitialized) {
+      return
     }
+    window.__auroraLoaderInitialized = true
+    
+    // Hide body immediately to prevent white screen
+    document.body.style.visibility = 'hidden'
+    document.body.style.opacity = '0'
+    
+    // Start loader immediately
+    initLoader()
   }
 })
 
 function initLoader() {
+  // Check if loader already exists
+  if (document.querySelector('[data-load-wrap]')) {
+    return
+  }
+  
   // Create the loader HTML
   const loaderHTML = `
     <div data-load-wrap class="aurora-loader">
@@ -59,8 +70,7 @@ function initLoader() {
     </div>
   `
 
-  // Hide main content immediately to prevent FOUC
-  document.body.style.visibility = 'hidden'
+  // Body visibility already set in plugin initialization
   
   // Add CSS styles FIRST (before HTML)
   const style = document.createElement('style')
@@ -73,6 +83,12 @@ function initLoader() {
       position: fixed;
       inset: 0% 0% auto;
       display: block !important;
+      animation: fadeIn 0.1s ease-in;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .aurora-loader__bg {
@@ -159,14 +175,28 @@ function initLoader() {
   // Add loader to body AFTER CSS is loaded
   document.body.insertAdjacentHTML('afterbegin', loaderHTML)
 
-  // Wait for GSAP to load, then start animation
+  // Start animation immediately
   const waitForGSAP = () => {
     if (window.gsap) {
       startAnimation()
     } else {
+      // Wait for GSAP to load, then start animation
       setTimeout(waitForGSAP, 100)
     }
   }
+  
+  // Fallback: show body after 2 seconds if GSAP never loads
+  setTimeout(() => {
+    if (document.body.style.visibility === 'hidden') {
+      document.body.style.visibility = 'visible'
+      document.body.style.opacity = '1'
+      // Remove loader if it exists
+      const loader = document.querySelector('[data-load-wrap]')
+      if (loader) {
+        loader.remove()
+      }
+    }
+  }, 2000)
 
   const startAnimation = () => {
     const gsap = window.gsap
@@ -196,7 +226,7 @@ function initLoader() {
     const loadTimeline = gsap.timeline({ 
       defaults: { 
         ease: CustomEase ? "loader" : "power2.out",
-        duration: 3
+        duration: 4
       }
     })
     .to(progressBar, { scaleX: 1 })
@@ -208,7 +238,7 @@ function initLoader() {
     .to(bg, { yPercent: -101, duration: 1 },"hideContent")
     .to(bg, { autoAlpha: 0, duration: 0.2 }, "hideContent+=0.5")
     .set(wrap,{ display: "none", pointerEvents: "none" })
-    .set(document.body, { visibility: "visible" }, "hideContent")
+    .set(document.body, { visibility: "visible", opacity: 1 }, "hideContent")
     
     if (resetTargets.length) {
       loadTimeline.set(resetTargets, { autoAlpha: 1 }, 0)

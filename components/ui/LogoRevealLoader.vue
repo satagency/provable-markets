@@ -104,7 +104,7 @@ function initLogoRevealLoader() {
   const loadTimeline = gsap.timeline({ 
     defaults: { 
       ease: CustomEase ? "loader" : "power2.out",
-      duration: 3
+      duration: 4
     }
   })
   .set(wrap,{ display: "block" })
