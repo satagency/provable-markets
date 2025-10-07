@@ -1,9 +1,5 @@
 <template>
   <div class="dashboard-container">
-    <!-- Debug info -->
-    <div style="position: fixed; top: 10px; right: 10px; background: red; color: white; padding: 10px; z-index: 10000;">
-      Windows: {{ windows.length }}
-              </div>
 
     <!-- Grid Container for Windows -->
     <div 
