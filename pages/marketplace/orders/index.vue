@@ -1,248 +1,454 @@
 <template>
   <div class="dashboard-container">
-    <!-- Data Window -->
-    <div class="data-window">
-      <!-- Widget Top Header -->
-      <div class="widget-top">
-        <div class="header-content">
-          <div class="left-section">
-            <h2 class="widget-title">Orders</h2>
-            <div class="term-toggle">
+    <!-- Debug info -->
+    <div style="position: fixed; top: 10px; right: 10px; background: red; color: white; padding: 10px; z-index: 10000;">
+      Windows: {{ windows.length }}
+              </div>
+
+    <!-- Grid Container for Windows -->
+    <div 
+      class="grid-container"
+      :style="{ gridTemplateColumns: gridTemplate }"
+    >
+      <!-- Dynamic Windows -->
+      <div 
+        v-for="window in windows"
+        :key="window.id"
+        class="grid-window"
+        :style="{ gridArea: window.gridArea, zIndex: window.zIndex }"
+        @mousedown="startDrag(window.id, $event)"
+      >
+        <!-- Window Header with Controls -->
+        <div class="window-header">
+          <div class="window-title-section">
+            <span class="window-title">{{ window.title }}</span>
+            <div 
+              v-if="window.title === 'Orders'"
+              class="show-archived-toggle"
+            >
               <span class="toggle-label">Show Archived</span>
-              <div class="switch">
+              <div 
+                class="switch"
+                :class="{ active: showArchived }"
+                @click="toggleShowArchived"
+              >
                 <div class="handle"></div>
               </div>
             </div>
           </div>
-          <div class="right-section">
-            <div class="batch-toggle">
-              <span class="batch-label">Batch Orders</span>
-              <div class="switch active">
-                <div class="handle"></div>
-              </div>
-            </div>
-            <button class="create-order-btn">
+          <div class="window-header-actions">
+            <button 
+              v-if="window.title === 'Orders'"
+              class="create-order-btn"
+              @click="createOrder"
+            >
               <span>Create Order</span>
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
               </svg>
             </button>
+            <button 
+              v-if="window.title === 'Orders'"
+              class="batch-orders-btn"
+              @click="batchOrders"
+            >
+              <span>Batch Orders</span>
+            </button>
+          </div>
+          <div class="window-controls">
+            <button 
+              v-if="windows.length > 1"
+              @click="removeWindow(window.id)"
+              class="close-btn"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+            </div>
+      </div>
+      
+        <!-- Window Content -->
+        <div class="window-content">
+          <component v-if="window.component" :is="window.component" />
+          <div v-else class="window-placeholder">
+            <h3>{{ window.title }}</h3>
+            <p>Future window content goes here</p>
           </div>
         </div>
       </div>
       
-      <!-- Orders Table -->
-      <div class="orders-content">
-        <!-- Table Header -->
-        <div class="table-header">
-          <div class="header-cell select-col">
-            <span class="header-text">Select</span>
-          </div>
-          <div class="header-cell status-col">
-            <span class="header-text">Status</span>
-          </div>
-          <div class="header-cell updated-col">
-            <span class="header-text">Updated</span>
-          </div>
-          <div class="header-cell side-col">
-            <span class="header-text">Side</span>
-          </div>
-          <div class="header-cell intent-col">
-            <span class="header-text">Intent</span>
-          </div>
-          <div class="header-cell ticker-col">
-            <span class="header-text">Ticker</span>
-          </div>
-          <div class="header-cell security-col">
-            <span class="header-text">Security Name</span>
-          </div>
-          <div class="header-cell cusip-col">
-            <span class="header-text">CUSIP</span>
-          </div>
-          <div class="header-cell open-qty-col">
-            <span class="header-text">Open QTY</span>
-          </div>
-          <div class="header-cell ioi-qty-col">
-            <span class="header-text">IOI QTY</span>
-          </div>
-          <div class="header-cell firm-qty-col">
-            <span class="header-text">Firm QTY</span>
-          </div>
-          <div class="header-cell fee-col">
-            <span class="header-text">Fee</span>
-            <span class="header-subtext">%</span>
-          </div>
-          <div class="header-cell exec-fee-col">
-            <span class="header-text">Exec Fee</span>
-            <span class="header-subtext">%</span>
-          </div>
-          <div class="header-cell rebates-col">
-            <span class="header-text">Rebates</span>
-            <span class="header-subtext">%</span>
-          </div>
-          <div class="header-cell agreements-col">
-            <span class="header-text">Agreements</span>
-          </div>
-          <div class="header-cell unit-price-col">
-            <span class="header-text">Unit Price</span>
-          </div>
-          <div class="header-cell market-value-col">
-            <span class="header-text">Market Value</span>
-          </div>
-          <div class="header-cell total-qty-col">
-            <span class="header-text">Total QTY</span>
-          </div>
-          <div class="header-cell min-qty-col">
-            <span class="header-text">Min QTY</span>
-          </div>
-          <div class="header-cell time-force-col">
-            <span class="header-text">Time Force</span>
-          </div>
-          <div class="header-cell counterparty-col">
-            <span class="header-text">CounterParty</span>
-                </div>
-          <div class="header-cell last-col">
-            <span class="header-text">Last</span>
-                </div>
-          <div class="header-cell actions-col">
-            <span class="header-text">Actions</span>
-      </div>
-    </div>
-
-        <!-- Table Row -->
-        <div class="table-row">
-          <div class="row-cell select-col">
-            <div class="gripper">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
-              </svg>
-            </div>
-            <div class="checkbox">
-              <input type="checkbox" />
-            </div>
-          </div>
-          <div class="row-cell status-col">
-            <span class="status-held">Held</span>
-          </div>
-          <div class="row-cell updated-col">
-            <div class="date-time">
-              <span class="date">10/12/23</span>
-              <span class="time">09:23A</span>
-            </div>
-        </div>
-          <div class="row-cell side-col">
-            <div class="lending-badge">
-              <span class="lend-text">LENDER</span>
-            </div>
-      </div>
-          <div class="row-cell intent-col">
-            <span>Firm</span>
-          </div>
-          <div class="row-cell ticker-col">
-            <span class="ticker">TSLA</span>
-          </div>
-          <div class="row-cell security-col">
-            <span class="security-name">Tesla, Inc. Common Stock</span>
-          </div>
-          <div class="row-cell cusip-col">
-            <span class="cusip">88160R101</span>
-          </div>
-          <div class="row-cell open-qty-col">
-            <span class="quantity">111</span>
-          </div>
-          <div class="row-cell ioi-qty-col">
-            <span class="dash">--</span>
-          </div>
-          <div class="row-cell firm-qty-col">
-            <span class="dash">--</span>
-          </div>
-          <div class="row-cell fee-col">
-            <span class="fee-negative">-0.67%</span>
-          </div>
-          <div class="row-cell exec-fee-col">
-            <span class="fee-positive">5.00%</span>
-          </div>
-          <div class="row-cell rebates-col">
-            <span class="fee-positive">5.00%</span>
-        </div>
-          <div class="row-cell agreements-col">
-            <div class="agreements-info">
-              <div class="agreement-count">3</div>
-              <span class="available-text">available</span>
-              <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-              </svg>
-        </div>
-      </div>
-          <div class="row-cell unit-price-col">
-            <span class="price">$175.24</span>
-          </div>
-          <div class="row-cell market-value-col">
-            <span class="market-value">$175,000</span>
-          </div>
-          <div class="row-cell total-qty-col">
-            <span class="quantity">111</span>
-          </div>
-          <div class="row-cell min-qty-col">
-            <span class="quantity">111</span>
-          </div>
-          <div class="row-cell time-force-col">
-            <span class="quantity">111</span>
-          </div>
-          <div class="row-cell counterparty-col">
-            <span class="loss-amount">-$203</span>
-          </div>
-          <div class="row-cell last-col">
-            <div class="priority-badge high">HIGH</div>
-          </div>
-          <div class="row-cell actions-col">
-            <div class="action-buttons">
-              <button class="action-btn">Edit</button>
-              <button class="action-btn danger">Cancel</button>
-            </div>
-        </div>
-        </div>
+      <!-- Add Window Button -->
+      <div 
+        v-if="windows.length < 3"
+        class="add-window-btn"
+        @click="addWindow('New Window', null)"
+      >
+        <span>+ Add Window</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+import OrdersWindow from '~/components/windows/OrdersWindow.vue'
 
-// Sample data
-const orders = ref([
+// Grid system state
+const gridColumns = ref(2)
+const gridRows = ref(1)
+const gridGap = ref(8)
+
+// Window configurations
+const windows = ref([
   {
     id: 1,
-    symbol: 'AAPL',
-    description: 'Apple Inc.',
-    side: 'Buy',
-    quantity: 1000,
-    price: 175.50,
-    status: 'Filled',
-    time: '09:30:15'
+    title: 'Orders',
+    component: OrdersWindow,
+    gridArea: '1 / 1 / 2 / 2', // row-start / col-start / row-end / col-end
+    zIndex: 1
   },
   {
     id: 2,
-    symbol: 'MSFT',
-    description: 'Microsoft Corporation',
-    side: 'Sell',
-    quantity: 500,
-    price: 342.75,
-    status: 'Pending',
-    time: '09:31:22'
-  },
-  {
-    id: 3,
-    symbol: 'GOOGL',
-    description: 'Alphabet Inc.',
-    side: 'Buy',
-    quantity: 200,
-    price: 142.30,
-    status: 'Partially Filled',
-    time: '09:32:45'
+    title: 'Window 2',
+    component: null,
+    gridArea: '2 / 1 / 3 / 2',
+    zIndex: 1
   }
 ])
+
+// Show archived toggle state
+const showArchived = ref(false)
+
+// Available grid positions - flexible row-based layout
+const gridPositions = ref([
+  // Row 1 positions
+  { id: 1, area: '1 / 1 / 2 / 2', name: 'Row 1 - Full Width' },
+  { id: 2, area: '1 / 1 / 2 / 2', name: 'Row 1 - Left Half' },
+  { id: 3, area: '1 / 2 / 2 / 3', name: 'Row 1 - Right Half' },
+  
+  // Row 2 positions
+  { id: 4, area: '2 / 1 / 3 / 2', name: 'Row 2 - Full Width' },
+  { id: 5, area: '2 / 1 / 3 / 2', name: 'Row 2 - Left Half' },
+  { id: 6, area: '2 / 2 / 3 / 3', name: 'Row 2 - Right Half' },
+  
+  // Row 3 positions
+  { id: 7, area: '3 / 1 / 4 / 2', name: 'Row 3 - Full Width' },
+  { id: 8, area: '3 / 1 / 4 / 2', name: 'Row 3 - Left Half' },
+  { id: 9, area: '3 / 2 / 4 / 3', name: 'Row 3 - Right Half' }
+])
+
+// Drag state
+const isDragging = ref(false)
+const dragWindowId = ref(0)
+const dragStart = ref({ x: 0, y: 0 })
+
+// Window styles computed from grid areas
+const window1Style = ref({
+  gridArea: windows.value[0].gridArea,
+  zIndex: windows.value[0].zIndex
+})
+
+const window2Style = ref({
+  gridArea: windows.value[1].gridArea,
+  zIndex: windows.value[1].zIndex
+})
+
+// Start drag
+function startDrag(windowId: number, e: MouseEvent) {
+  // Only allow dragging from window header
+  if (!(e.target as HTMLElement).closest('.window-header')) {
+    return
+  }
+  
+  console.log('Start drag window:', windowId)
+  e.preventDefault()
+  e.stopPropagation()
+  
+  isDragging.value = true
+  dragWindowId.value = windowId
+  dragStart.value = {
+    x: e.clientX,
+    y: e.clientY
+  }
+  
+  // Bring window to front
+  windows.value.forEach(window => {
+    if (window.id === windowId) {
+      window.zIndex = 10
+    } else {
+      window.zIndex = 1
+    }
+  })
+  
+  updateWindowStyles()
+}
+
+// Mouse move handler
+function handleMouseMove(e: MouseEvent) {
+  if (isDragging.value) {
+    const deltaX = e.clientX - dragStart.value.x
+    const deltaY = e.clientY - dragStart.value.y
+    
+    // Only update position if mouse has moved significantly
+    if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
+      // Calculate which grid position the mouse is over
+      const containerRect = document.querySelector('.grid-container')?.getBoundingClientRect()
+      if (containerRect) {
+        const relativeX = e.clientX - containerRect.left
+        const relativeY = e.clientY - containerRect.top
+        
+        // Determine grid position based on mouse position
+        const newPosition = calculateGridPosition(relativeX, relativeY, containerRect)
+        
+        if (newPosition) {
+          const currentWindow = windows.value.find(w => w.id === dragWindowId.value)
+          if (currentWindow && currentWindow.gridArea !== newPosition) {
+            moveWindow(dragWindowId.value, newPosition)
+          }
+        }
+      }
+    }
+  }
+}
+
+// Calculate grid position based on mouse coordinates
+function calculateGridPosition(x: number, y: number, containerRect: DOMRect) {
+  const containerWidth = containerRect.width
+  const containerHeight = containerRect.height
+  
+  // Simple row detection based on mouse Y position
+  const rowHeight = containerHeight / 3 // Assume max 3 rows
+  let targetRow = 1
+  
+  if (y < rowHeight) {
+    targetRow = 1
+  } else if (y < rowHeight * 2) {
+    targetRow = 2
+  } else {
+    targetRow = 3
+  }
+  
+  // Simple column detection based on mouse X position
+  const colWidth = containerWidth / 2
+  let targetCol = 1
+  
+  if (x < colWidth) {
+    targetCol = 1
+  } else {
+    targetCol = 2
+  }
+  
+  // Return valid grid area
+  if (targetCol === 1) {
+    return `${targetRow} / 1 / ${targetRow + 1} / 2`
+  } else {
+    return `${targetRow} / 2 / ${targetRow + 1} / 3`
+  }
+}
+
+// Mouse up handler
+function handleMouseUp() {
+  isDragging.value = false
+  dragWindowId.value = 0
+}
+
+// Update window styles
+function updateWindowStyles() {
+  window1Style.value = {
+    gridArea: windows.value[0].gridArea,
+    zIndex: windows.value[0].zIndex
+  }
+  
+  window2Style.value = {
+    gridArea: windows.value[1].gridArea,
+    zIndex: windows.value[1].zIndex
+  }
+}
+
+// Computed grid template based on window count
+const gridTemplate = ref('')
+
+// Update grid template - flexible row-based configuration
+function updateGridTemplate() {
+  const windowCount = windows.value.length
+  
+  if (windowCount === 1) {
+    gridTemplate.value = '1fr'
+    gridColumns.value = 1
+    gridRows.value = 1
+    return
+  }
+  
+  // Analyze window positions to determine row configuration
+  const rowConfig = analyzeRowConfiguration()
+  
+  // Build grid template based on row configuration
+  const rows = []
+  const maxRow = Math.max(...windows.value.map(w => {
+    const match = w.gridArea.match(/(\d+)/)
+    return match ? parseInt(match[1]) : 1
+  }))
+  
+  for (let row = 1; row <= maxRow; row++) {
+    const rowWindows = windows.value.filter(w => {
+      const match = w.gridArea.match(/(\d+)/)
+      const windowRow = match ? parseInt(match[1]) : 1
+      return windowRow === row
+    })
+    
+    if (rowWindows.length === 0) {
+      // Empty row - skip it
+      continue
+    } else if (rowWindows.length === 1) {
+      rows.push('1fr') // Full width row
+    } else if (rowWindows.length === 2) {
+      rows.push('1fr 1fr') // Split row
+    } else {
+      rows.push('1fr') // Default to full width
+    }
+  }
+  
+  // Set grid template
+  gridTemplate.value = rows.join(' ')
+  gridColumns.value = Math.max(...rows.map(r => r.split(' ').length))
+  gridRows.value = rows.length
+  
+  console.log('Grid template updated:', {
+    template: gridTemplate.value,
+    columns: gridColumns.value,
+    rows: gridRows.value,
+    rowConfig: rowConfig
+  })
+}
+
+// Analyze how windows are distributed across rows
+function analyzeRowConfiguration() {
+  const rowConfig = {}
+  
+  windows.value.forEach(window => {
+    const match = window.gridArea.match(/(\d+)/)
+    const row = match ? parseInt(match[1]) : 1
+    
+    if (!rowConfig[row]) {
+      rowConfig[row] = []
+    }
+    rowConfig[row].push(window)
+  })
+  
+  return rowConfig
+}
+
+// Move window to different position
+function moveWindow(windowId: number, newPosition: string) {
+  const window = windows.value.find(w => w.id === windowId)
+  if (window && window.gridArea !== newPosition) {
+    console.log(`Moving window ${windowId} from ${window.gridArea} to ${newPosition}`)
+    window.gridArea = newPosition
+    
+    // Update grid template first
+    updateGridTemplate()
+    
+    // Then ensure windows in single-window rows span full width
+    optimizeWindowAreas()
+    
+    updateWindowStyles()
+  }
+}
+
+// Optimize window areas to ensure full width when alone in row
+function optimizeWindowAreas() {
+  const rowConfig = analyzeRowConfiguration()
+  
+  windows.value.forEach(window => {
+    const match = window.gridArea.match(/(\d+)/)
+    const windowRow = match ? parseInt(match[1]) : 1
+    const rowWindows = rowConfig[windowRow] || []
+    
+    if (rowWindows.length === 1) {
+      // Single window in row - make it full width
+      window.gridArea = `${windowRow} / 1 / ${windowRow + 1} / 2`
+    }
+  })
+}
+
+// Get available positions for a window
+function getAvailablePositions(windowId: number) {
+  const usedPositions = windows.value
+    .filter(w => w.id !== windowId)
+    .map(w => w.gridArea)
+  
+  return gridPositions.value.filter(pos => !usedPositions.includes(pos.area))
+}
+
+// Add new window
+function addWindow(title: string, component: any) {
+  if (windows.value.length >= 3) {
+    console.log('Maximum 3 windows allowed')
+    return
+  }
+  
+  const newId = Math.max(...windows.value.map(w => w.id)) + 1
+  const availablePositions = getAvailablePositions(newId)
+  
+  if (availablePositions.length > 0) {
+    windows.value.push({
+      id: newId,
+      title,
+      component,
+      gridArea: availablePositions[0].area,
+      zIndex: 1
+    })
+    
+    updateGridTemplate()
+    updateWindowStyles()
+  }
+}
+
+// Remove window
+function removeWindow(windowId: number) {
+  windows.value = windows.value.filter(w => w.id !== windowId)
+  updateGridTemplate()
+  updateWindowStyles()
+}
+
+// Create order function
+function createOrder() {
+  console.log('Create Order clicked')
+  // Add your create order logic here
+}
+
+// Batch orders function
+function batchOrders() {
+  console.log('Batch Orders clicked')
+  // Add your batch orders logic here
+}
+
+// Toggle show archived function
+function toggleShowArchived() {
+  showArchived.value = !showArchived.value
+  console.log('Show Archived:', showArchived.value)
+  // Add your logic to filter/show archived orders here
+}
+
+// Event listeners
+onMounted(function() {
+  document.addEventListener('mousemove', handleMouseMove)
+  document.addEventListener('mouseup', handleMouseUp)
+  
+  // Initialize grid template
+  updateGridTemplate()
+})
+
+onUnmounted(function() {
+  document.removeEventListener('mousemove', handleMouseMove)
+  document.removeEventListener('mouseup', handleMouseUp)
+})
+
+// Set page title
+if (process.client) {
+  document.title = 'Orders'
+}
 
 useHead({
   title: 'Orders'
@@ -250,65 +456,175 @@ useHead({
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
-@font-face {
-  font-family: 'Matrix Sans SC';
-  src: url('https://fonts.cdnfonts.com/css/matrix-sans-sc') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-}
 .dashboard-container {
   padding: 0;
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background-image: radial-gradient(circle, rgba(85, 85, 85, 0.3) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
-.data-window {
+/* Grid Container */
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 8px;
+  height: calc(100vh - 50px - 24px); /* Full viewport minus header and padding */
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+/* Grid Windows */
+.grid-window {
   border: 1px solid #404040;
   border-radius: 6px;
-  height: 100%;
+  overflow: hidden;
+  background: #1a1a1a;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Widget Top Header */
-.widget-top {
-  background-color: #1A1A1A;
-  border-bottom: 1px solid rgba(144, 144, 144, 0.6);
-  height: 59px;
+.grid-window:hover {
+  border-color: rgba(4, 207, 139, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.grid-window:active {
+  border-color: rgba(4, 207, 139, 0.8);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Window Header */
+.window-header {
+  height: 40px;
+  background: #2a2a2a;
+  border-bottom: 1px solid #404040;
   display: flex;
   align-items: center;
-  padding: 0 20px;
-  border-radius: 6px 6px 0 0;
-}
-
-.header-content {
-  display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: 100%;
+  padding: 0 12px;
+  cursor: move;
+  user-select: none;
+  transition: background-color 0.2s ease;
 }
 
-.left-section {
+.window-header:hover {
+  background: #333;
+}
+
+.grid-window:active .window-header {
+  background: #444;
+}
+
+.window-title-section {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 16px;
 }
 
-.widget-title {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 600;
-  font-size: 20px;
+.window-title {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.window-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.window-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 8px;
+}
+
+.position-select {
+  background: #1a1a1a;
+  border: 1px solid #404040;
+  color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.position-select:hover {
+  border-color: rgba(4, 207, 139, 0.5);
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: #ff4444;
+}
+
+.create-order-btn {
+  background-color: #0e8212;
   color: white;
-  margin: 0;
-}
-
-.term-toggle {
+  border: none;
+  border-radius: 6px;
+  height: 28px;
+  padding: 0 10px;
   display: flex;
   align-items: center;
-  gap: 27px;
+  gap: 6px;
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.create-order-btn:hover {
+  background-color: #0a6b0e;
+}
+
+.batch-orders-btn {
+  background-color: #404040;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  height: 28px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.batch-orders-btn:hover {
+  background-color: #555555;
+}
+
+.show-archived-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .toggle-label {
@@ -325,6 +641,7 @@ useHead({
   border-radius: 100px;
   position: relative;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .switch.active {
@@ -348,345 +665,68 @@ useHead({
   left: 12px;
 }
 
-.right-section {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.batch-toggle {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.batch-label {
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-  color: #6fedc7;
-}
-
-.create-order-btn {
-  background-color: #0e8212;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  height: 32px;
-  padding: 0 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: 'Geist', sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.create-order-btn:hover {
-  background-color: #0a6b0e;
-}
-
-/* Orders Content */
-.orders-content {
+/* Window Content */
+.window-content {
   flex: 1;
-  overflow: auto;
-  padding: 0;
-}
-
-/* Table Header */
-.table-header {
-  display: flex;
-  background-color: rgba(255, 255, 255, 0);
-  padding: 0;
-  gap: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  width: 100%;
-  min-width: max-content;
-}
-
-.header-cell {
-  background-color: rgba(224, 224, 224, 0);
-  height: 40px;
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  font-family: 'Roboto', sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.6);
-  letter-spacing: 0.1px;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
-.header-text {
-  font-weight: 400;
-}
-
-.header-subtext {
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 10px;
-  margin-left: 2px;
-}
-
-/* Column Size System */
-.col-small { width: 80px; min-width: 80px; }
-.col-medium { width: 120px; min-width: 120px; }
-.col-large { width: 160px; min-width: 160px; }
-.col-xlarge { width: 200px; min-width: 200px; }
-
-/* Column Assignments */
-.select-col { width: 80px; min-width: 80px; }
-.status-col { width: 80px; min-width: 80px; }
-.updated-col { width: 120px; min-width: 120px; }
-.side-col { width: 80px; min-width: 80px; }
-.intent-col { width: 80px; min-width: 80px; }
-.ticker-col { width: 80px; min-width: 80px; }
-.security-col { width: 160px; min-width: 160px; }
-.cusip-col { width: 120px; min-width: 120px; }
-.open-qty-col { width: 80px; min-width: 80px; }
-.ioi-qty-col { width: 80px; min-width: 80px; }
-.firm-qty-col { width: 80px; min-width: 80px; }
-.fee-col { width: 80px; min-width: 80px; }
-.exec-fee-col { width: 80px; min-width: 80px; }
-.rebates-col { width: 80px; min-width: 80px; }
-.agreements-col { width: 160px; min-width: 160px; }
-.unit-price-col { width: 80px; min-width: 80px; }
-.market-value-col { width: 120px; min-width: 120px; }
-.total-qty-col { width: 80px; min-width: 80px; }
-.min-qty-col { width: 80px; min-width: 80px; }
-.time-force-col { width: 80px; min-width: 80px; }
-.counterparty-col { width: 120px; min-width: 120px; }
-.last-col { width: 80px; min-width: 80px; }
-.actions-col { width: 120px; min-width: 120px; }
-
-/* Table Row */
-.table-row {
-  display: flex;
-  padding: 0;
-  gap: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: background-color 0.15s ease;
-  width: 100%;
-  min-width: max-content;
-}
-
-.table-row:hover {
-  background-color: rgba(255, 255, 255, 0.02);
-}
-
-.row-cell {
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  font-family: 'Roboto', sans-serif;
-  font-size: 13px;
-  color: #ffffff;
-  height: 48px;
-  white-space: nowrap;
-}
-
-.row-cell.select-col {
-  padding: 0 12px;
-  gap: 8px;
-  justify-content: center;
-}
-
-.gripper {
-  color: #666;
-  cursor: grab;
-  opacity: 0.6;
-}
-
-.checkbox input {
-  width: 16px;
-  height: 16px;
-  accent-color: #04CF8B;
-}
-
-/* Data Element Styling */
-.status-held {
-  color: #ffb74d;
-  font-weight: 500;
-}
-
-.date-time {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.date {
-  color: #ffffff;
-  font-weight: 500;
-}
-
-.time {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.ticker {
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.security-name {
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: 400;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
-}
-
-.cusip {
-  color: rgba(255, 255, 255, 0.6);
-  font-family: 'Roboto Mono', monospace;
-}
-
-.quantity {
-  color: #ffffff;
-  font-weight: 500;
-  text-align: right;
-  width: 100%;
-}
-
-.dash {
-  color: rgba(255, 255, 255, 0.4);
-  text-align: center;
-  width: 100%;
-}
-
-.fee-negative {
-  color: #ff6b6b;
-  font-weight: 500;
-}
-
-.fee-positive {
-  color: #51cf66;
-  font-weight: 500;
-}
-
-.price {
-  color: #ffffff;
-  font-weight: 500;
-  font-family: 'Roboto Mono', monospace;
-}
-
-.market-value {
-  color: #51abff;
-  font-weight: 600;
-  font-family: 'Roboto Mono', monospace;
-}
-
-.loss-amount {
-  color: #ff7575;
-  font-family: 'Roboto Mono', monospace;
-  font-weight: 500;
-}
-
-.lending-badge {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%), 
-              linear-gradient(90deg, rgba(37, 99, 235, 0.43) 0%, rgba(37, 99, 235, 0.43) 100%);
-  border: 1px solid #42BED9;
-  border-radius: 4px;
-  padding: 4px 6px;
+/* Add Window Button */
+.add-window-btn {
+  border: 2px dashed #404040;
+  border-radius: 6px;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  max-height: 16px;
-  height: 16px;
-}
-
-.lend-text {
-  font-family: 'Matrix Sans SC', monospace;
-  font-size: 9.905px;
-  color: #3ffff6;
-  letter-spacing: 0.4952px;
-  text-transform: uppercase;
-  font-weight: 400;
-  line-height: normal;
-}
-
-.security-col {
-  padding: 2px 8px;
-}
-
-.agreements-info {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.agreement-count {
-  border: 1px solid #484848;
-  border-radius: 3px;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  color: #ffffff;
-}
-
-.market-value {
-  color: #51abff;
-  font-weight: 500;
-}
-
-.counterparty-loss {
-  color: #ff7575;
-  font-family: 'Roboto Mono', monospace;
-  font-size: 14px;
-  letter-spacing: -0.14px;
-}
-
-.priority-badge {
-  background-color: rgba(0, 189, 101, 0.66);
-  border-radius: 90px;
-  padding: 2px 13px;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  font-size: 12px;
-  color: white;
-  letter-spacing: 0.12px;
-  text-transform: uppercase;
-}
-
-.action-buttons {
-  display: flex;
-  gap: 8px;
-}
-
-.action-btn {
-  background-color: transparent;
-  border: 1px solid #333;
-  color: #ccc;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
   cursor: pointer;
+  color: #666;
+  font-size: 14px;
   transition: all 0.2s ease;
 }
 
-.action-btn:hover {
-  background-color: #2a2a2a;
-  color: white;
+.add-window-btn:hover {
+  border-color: rgba(4, 207, 139, 0.5);
+  color: rgba(4, 207, 139, 0.8);
+  background: rgba(4, 207, 139, 0.05);
 }
 
-.action-btn.danger {
-  background-color: #ef4444;
-  color: white;
-  border-color: #ef4444;
+/* Window Placeholder */
+.window-placeholder {
+  padding: 40px;
+  color: #888;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.action-btn.danger:hover {
-  background-color: #dc2626;
+.window-placeholder h3 {
+  color: #ccc;
+  margin-bottom: 10px;
+}
+
+.window-placeholder p {
+  color: #666;
+  font-size: 14px;
+}
+
+/* Responsive Grid */
+@media (max-width: 1200px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    gap: 10px;
+    padding: 10px;
+  }
 }
 </style>
