@@ -60,4 +60,24 @@
   .status-inactive {
     @apply bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium;
   }
+  
+  /* Global Table Density System */
+  .table-density-normal {
+    /* Normal density - more spacious (Orders table spacing) */
+  }
+  
+  .table-density-dense {
+    /* Dense density - more compact (Agreements table spacing) */
+  }
+  
+  /* Ensure density classes are applied to all table containers */
+  .table-density-normal .table-header,
+  .table-density-normal .table-row {
+    /* Normal spacing is applied via individual component CSS */
+  }
+  
+  .table-density-dense .table-header,
+  .table-density-dense .table-row {
+    /* Dense spacing is applied via individual component CSS */
+  }
 }

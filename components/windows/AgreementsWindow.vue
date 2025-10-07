@@ -1,5 +1,5 @@
 <template>
-  <div class="agreements-window">
+  <div class="agreements-window" :class="densityClasses">
     <!-- Agreements Table -->
     <div class="agreements-content">
       <!-- Table Header -->
@@ -1631,7 +1631,10 @@
 </template>
 
 <script setup lang="ts">
-// Agreements window component
+import { useTableDensity } from '~/composables/useTableDensity'
+
+// Table density management
+const { densityClasses } = useTableDensity()
 </script>
 
 <style scoped>
@@ -1652,7 +1655,7 @@
 /* Table Header */
 .table-header {
   display: flex;
-  background-color: rgba(255, 255, 255, 0);
+  background-color: #161818;
   padding: 0;
   gap: 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -1662,10 +1665,8 @@
 
 .header-cell {
   background-color: rgba(224, 224, 224, 0);
-  height: 36px;
   display: flex;
   align-items: center;
-  padding: 0 6px;
   font-family: 'Roboto', sans-serif;
   font-size: 12px;
   font-weight: 400;
@@ -1674,6 +1675,18 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Normal density (Orders spacing) */
+.table-density-normal .header-cell {
+  height: 40px;
+  padding: 0 12px;
+}
+
+/* Dense density (default - current Agreements spacing) */
+.table-density-dense .header-cell {
+  height: 36px;
+  padding: 0 6px;
 }
 
 .header-text {
@@ -1734,18 +1747,37 @@
 .row-cell {
   display: flex;
   align-items: center;
-  padding: 0 6px;
   font-family: 'Roboto', sans-serif;
   font-size: 13px;
   color: #ffffff;
-  height: 40px;
   overflow: hidden;
 }
 
-.row-cell.select-col {
+/* Normal density (Orders spacing) */
+.table-density-normal .row-cell {
+  height: 48px;
   padding: 0 12px;
+}
+
+/* Dense density (default - current Agreements spacing) */
+.table-density-dense .row-cell {
+  height: 40px;
+  padding: 0 6px;
+}
+
+.row-cell.select-col {
   gap: 8px;
   justify-content: center;
+}
+
+/* Normal density (Orders spacing) */
+.table-density-normal .row-cell.select-col {
+  padding: 0 12px;
+}
+
+/* Dense density (default - current Agreements spacing) */
+.table-density-dense .row-cell.select-col {
+  padding: 0 12px;
 }
 
 .gripper {

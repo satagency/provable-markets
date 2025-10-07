@@ -189,6 +189,8 @@
         </div>
         
         <div class="header-right">
+          <TableDensitySettings />
+          
           <div class="notifications">
             <div class="notification-icon">
               <div class="notification-bell">
@@ -226,6 +228,7 @@ import BasketToolSubmenu from '~/components/submenus/BasketToolSubmenu.vue'
 import StrategyBuilderSubmenu from '~/components/submenus/StrategyBuilderSubmenu.vue'
 import ComplianceSubmenu from '~/components/submenus/ComplianceSubmenu.vue'
 import SettingsSubmenu from '~/components/submenus/SettingsSubmenu.vue'
+import TableDensitySettings from '~/components/ui/TableDensitySettings.vue'
 
 // Import icon components directly
 import {

@@ -1,6 +1,6 @@
 <template>
   <!-- Your existing orders window design - preserved exactly -->
-  <div class="dashboard-container">
+  <div class="dashboard-container" :class="densityClasses">
     <!-- Data Window -->
     <div class="data-window">
       
@@ -1115,6 +1115,10 @@
 <script setup lang="ts">
 // Your existing script - preserved exactly
 import { ref } from 'vue'
+import { useTableDensity } from '~/composables/useTableDensity'
+
+// Table density management
+const { densityClasses } = useTableDensity()
 
 // Sample data
 const orders = ref([
@@ -1328,10 +1332,8 @@ const orders = ref([
 
 .header-cell {
   background-color: rgba(224, 224, 224, 0);
-  height: 40px;
   display: flex;
   align-items: center;
-  padding: 0 12px;
   font-family: 'Roboto', sans-serif;
   font-size: 12px;
   font-weight: 400;
@@ -1340,6 +1342,18 @@ const orders = ref([
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* Normal density (default - current Orders spacing) */
+.table-density-normal .header-cell {
+  height: 40px;
+  padding: 0 12px;
+}
+
+/* Dense density (Agreements spacing) */
+.table-density-dense .header-cell {
+  height: 36px;
+  padding: 0 6px;
 }
 
 .header-text {
@@ -1401,18 +1415,37 @@ const orders = ref([
 .row-cell {
   display: flex;
   align-items: center;
-  padding: 0 12px;
   font-family: 'Roboto', sans-serif;
   font-size: 13px;
   color: #ffffff;
-  height: 48px;
   white-space: nowrap;
 }
 
-.row-cell.select-col {
+/* Normal density (default - current Orders spacing) */
+.table-density-normal .row-cell {
+  height: 48px;
   padding: 0 12px;
+}
+
+/* Dense density (Agreements spacing) */
+.table-density-dense .row-cell {
+  height: 40px;
+  padding: 0 6px;
+}
+
+.row-cell.select-col {
   gap: 8px;
   justify-content: center;
+}
+
+/* Normal density (default - current Orders spacing) */
+.table-density-normal .row-cell.select-col {
+  padding: 0 12px;
+}
+
+/* Dense density (Agreements spacing) */
+.table-density-dense .row-cell.select-col {
+  padding: 0 12px;
 }
 
 .gripper {
