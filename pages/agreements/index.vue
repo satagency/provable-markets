@@ -50,6 +50,16 @@
             >
               <span>Batch Agreements</span>
             </button>
+            <button 
+              v-if="window.title === 'Agreements' && windows.length === 1"
+              class="expand-btn"
+              @click="toggleWindowExpansion(window.id)"
+              :class="{ expanded: window.expanded }"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+              </svg>
+            </button>
           </div>
           <div class="window-controls">
             <button 
@@ -102,14 +112,16 @@ const windows = ref([
     title: 'Agreements',
     component: AgreementsWindow,
     gridArea: '1 / 1 / 2 / 2', // row-start / col-start / row-end / col-end
-    zIndex: 1
+    zIndex: 1,
+    expanded: false
   },
   {
     id: 2,
     title: 'Window 2',
     component: null,
     gridArea: '2 / 1 / 3 / 2',
-    zIndex: 1
+    zIndex: 1,
+    expanded: false
   }
 ])
 
@@ -268,11 +280,22 @@ const gridTemplate = ref('')
 // Update grid template - flexible row-based configuration
 function updateGridTemplate() {
   const windowCount = windows.value.length
+  const activeWindows = windows.value.filter(w => w.component !== null)
+  const hasExpandedWindow = activeWindows.some(w => w.expanded)
   
-  if (windowCount === 1) {
+  if (windowCount === 1 && hasExpandedWindow) {
+    // Single window expanded - take full height
     gridTemplate.value = '1fr'
     gridColumns.value = 1
     gridRows.value = 1
+    return
+  }
+  
+  if (windowCount === 1) {
+    // Single window normal - take half height
+    gridTemplate.value = '1fr 1fr'
+    gridColumns.value = 1
+    gridRows.value = 2
     return
   }
   
@@ -393,7 +416,8 @@ function addWindow(title: string, component: any) {
       title,
       component,
       gridArea: availablePositions[0].area,
-      zIndex: 1
+      zIndex: 1,
+      expanded: false
     })
     
     updateGridTemplate()
@@ -427,6 +451,18 @@ function toggleShowArchived() {
   // Add your logic to filter/show archived agreements here
 }
 
+// Toggle window expansion function
+function toggleWindowExpansion(windowId: number) {
+  const window = windows.value.find(w => w.id === windowId)
+  if (window) {
+    window.expanded = !window.expanded
+    console.log(`Window ${windowId} expanded:`, window.expanded)
+    
+    // Update grid template when expansion changes
+    updateGridTemplate()
+  }
+}
+
 // Event listeners
 onMounted(function() {
   document.addEventListener('mousemove', handleMouseMove)
@@ -442,13 +478,6 @@ onUnmounted(function() {
 })
 
 // Set page title
-if (process.client) {
-  document.title = 'Agreements'
-}
-
-useHead({
-  title: 'Agreements'
-})
 </script>
 
 <style scoped>
@@ -615,6 +644,34 @@ useHead({
 
 .batch-agreements-btn:hover {
   background-color: #555555;
+}
+
+.expand-btn {
+  background-color: #404040;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  height: 28px;
+  width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.expand-btn:hover {
+  background-color: #555555;
+  color: #04CF8B;
+}
+
+.expand-btn.expanded {
+  background-color: #04CF8B;
+  color: white;
+}
+
+.expand-btn.expanded:hover {
+  background-color: #0a6b0e;
 }
 
 .show-archived-toggle {
