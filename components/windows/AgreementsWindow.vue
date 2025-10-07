@@ -1843,8 +1843,7 @@ const { densityClasses } = useTableDensity()
 }
 
 .lending-badge {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%), 
-              linear-gradient(90deg, rgba(37, 99, 235, 0.43) 0%, rgba(37, 99, 235, 0.43) 100%);
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0.43) 0%, rgba(37, 99, 235, 0.43) 100%);
   border: 1px solid #42BED9;
   border-radius: 4px;
   padding: 4px 6px;
@@ -1867,8 +1866,7 @@ const { densityClasses } = useTableDensity()
 }
 
 .borrowing-badge {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%), 
-              linear-gradient(90deg, rgba(81, 207, 102, 0.43) 0%, rgba(81, 207, 102, 0.43) 100%);
+  background: linear-gradient(90deg, rgba(81, 207, 102, 0.43) 0%, rgba(81, 207, 102, 0.43) 100%);
   border: 1px solid #51cf66;
   border-radius: 4px;
   padding: 4px 6px;
