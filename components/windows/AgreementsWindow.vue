@@ -1847,7 +1847,7 @@ const { densityClasses } = useTableDensity()
               linear-gradient(90deg, rgba(37, 99, 235, 0.43) 0%, rgba(37, 99, 235, 0.43) 100%);
   border: 1px solid #42BED9;
   border-radius: 4px;
-  padding: 4px 6px;
+  padding: 4px 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1871,7 +1871,7 @@ const { densityClasses } = useTableDensity()
               linear-gradient(90deg, rgba(81, 207, 102, 0.43) 0%, rgba(81, 207, 102, 0.43) 100%);
   border: 1px solid #51cf66;
   border-radius: 4px;
-  padding: 4px 6px;
+  padding: 4px 10px;
   display: flex;
   align-items: center;
   justify-content: center;

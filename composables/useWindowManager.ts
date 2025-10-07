@@ -1,4 +1,4 @@
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, readonly } from 'vue'
 
 export interface WindowConfig {
   id: string

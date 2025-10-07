@@ -130,7 +130,7 @@ const reratesCount = ref(7)
   font-family: 'Roboto', sans-serif;
   font-size: 13px;
   font-weight: 500;
-  padding: 0 8px;
+  padding: 0 12px;
   border-radius: 4px;
   height: 15px;
   min-width: 15px;
