@@ -20,27 +20,50 @@
       >
         <!-- Window Header with Controls -->
         <div class="window-header">
-          <span class="window-title">{{ window.title }}</span>
-          <div class="window-controls">
-            <select 
-              @change="moveWindow(window.id, $event.target.value)"
-              :value="window.gridArea"
-              class="position-select"
+          <div class="window-title-section">
+            <span class="window-title">{{ window.title }}</span>
+            <div 
+              v-if="window.title === 'Orders'"
+              class="show-archived-toggle"
             >
-              <option 
-                v-for="pos in getAvailablePositions(window.id)"
-                :key="pos.id"
-                :value="pos.area"
+              <span class="toggle-label">Show Archived</span>
+              <div 
+                class="switch"
+                :class="{ active: showArchived }"
+                @click="toggleShowArchived"
               >
-                {{ pos.name }}
-              </option>
-            </select>
+                <div class="handle"></div>
+              </div>
+            </div>
+          </div>
+          <div class="window-header-actions">
+            <button 
+              v-if="window.title === 'Orders'"
+              class="create-order-btn"
+              @click="createOrder"
+            >
+              <span>Create Order</span>
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+            </button>
+            <button 
+              v-if="window.title === 'Orders'"
+              class="batch-orders-btn"
+              @click="batchOrders"
+            >
+              <span>Batch Orders</span>
+            </button>
+          </div>
+          <div class="window-controls">
             <button 
               v-if="windows.length > 1"
               @click="removeWindow(window.id)"
               class="close-btn"
             >
-              ×
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
             </button>
         </div>
       </div>
@@ -93,6 +116,9 @@ const windows = ref([
     zIndex: 1
   }
 ])
+
+// Show archived toggle state
+const showArchived = ref(false)
 
 // Available grid positions - flexible row-based layout
 const gridPositions = ref([
@@ -386,6 +412,25 @@ function removeWindow(windowId: number) {
   updateWindowStyles()
 }
 
+// Create order function
+function createOrder() {
+  console.log('Create Order clicked')
+  // Add your create order logic here
+}
+
+// Batch orders function
+function batchOrders() {
+  console.log('Batch Orders clicked')
+  // Add your batch orders logic here
+}
+
+// Toggle show archived function
+function toggleShowArchived() {
+  showArchived.value = !showArchived.value
+  console.log('Show Archived:', showArchived.value)
+  // Add your logic to filter/show archived orders here
+}
+
 // Event listeners
 onMounted(function() {
   document.addEventListener('mousemove', handleMouseMove)
@@ -453,7 +498,7 @@ if (process.client) {
 
 /* Window Header */
 .window-header {
-  height: 32px;
+  height: 40px;
   background: #2a2a2a;
   border-bottom: 1px solid #404040;
   display: flex;
@@ -473,16 +518,30 @@ if (process.client) {
   background: #444;
 }
 
+.window-title-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .window-title {
   color: #ffffff;
   font-size: 14px;
   font-weight: 500;
 }
 
+.window-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
 .window-controls {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-left: 8px;
 }
 
 .position-select {
@@ -500,21 +559,106 @@ if (process.client) {
 }
 
 .close-btn {
-  background: #ff4444;
+  background: transparent;
   border: none;
-  color: white;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
+  color: #ffffff;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
-  font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: color 0.2s ease;
 }
 
 .close-btn:hover {
-  background: #ff6666;
+  color: #ff4444;
+}
+
+.create-order-btn {
+  background-color: #0e8212;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  height: 28px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.create-order-btn:hover {
+  background-color: #0a6b0e;
+}
+
+.batch-orders-btn {
+  background-color: #404040;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  height: 28px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.batch-orders-btn:hover {
+  background-color: #555555;
+}
+
+.show-archived-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toggle-label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  color: #8e8e8e;
+}
+
+.switch {
+  width: 26px;
+  height: 16px;
+  background-color: #e6e0e9;
+  border: 0.938px solid #79747e;
+  border-radius: 100px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.switch.active {
+  background-color: #00ad79;
+}
+
+.handle {
+  width: 12px;
+  height: 12px;
+  background-color: #79747e;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  transform: translateY(-50%);
+  transition: all 0.2s ease;
+}
+
+.switch.active .handle {
+  background-color: white;
+  left: 12px;
 }
 
 /* Window Content */

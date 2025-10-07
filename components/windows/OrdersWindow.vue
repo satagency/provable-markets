@@ -3,115 +3,86 @@
   <div class="dashboard-container">
     <!-- Data Window -->
     <div class="data-window">
-      <!-- Widget Top Header -->
-      <div class="widget-top">
-        <div class="header-content">
-          <div class="left-section">
-            <h2 class="widget-title">Orders</h2>
-            <div class="term-toggle">
-              <span class="toggle-label">Show Archived</span>
-              <div class="switch">
-                <div class="handle"></div>
-              </div>
-            </div>
-          </div>
-          <div class="right-section">
-            <div class="batch-toggle">
-              <span class="batch-label">Batch Orders</span>
-              <div class="switch active">
-                <div class="handle"></div>
-              </div>
-            </div>
-            <button class="create-order-btn">
-              <span>Create Order</span>
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
       
       <!-- Orders Table -->
       <div class="orders-content">
-        <!-- Table Header -->
-        <div class="table-header">
-          <div class="header-cell select-col">
-            <span class="header-text">Select</span>
-          </div>
-          <div class="header-cell status-col">
-            <span class="header-text">Status</span>
-          </div>
-          <div class="header-cell updated-col">
-            <span class="header-text">Updated</span>
-          </div>
-          <div class="header-cell side-col">
-            <span class="header-text">Side</span>
-          </div>
-          <div class="header-cell intent-col">
-            <span class="header-text">Intent</span>
-          </div>
-          <div class="header-cell ticker-col">
-            <span class="header-text">Ticker</span>
-          </div>
-          <div class="header-cell security-col">
-            <span class="header-text">Security Name</span>
-          </div>
-          <div class="header-cell cusip-col">
-            <span class="header-text">CUSIP</span>
-          </div>
-          <div class="header-cell open-qty-col">
-            <span class="header-text">Open QTY</span>
-          </div>
-          <div class="header-cell ioi-qty-col">
-            <span class="header-text">IOI QTY</span>
-          </div>
-          <div class="header-cell firm-qty-col">
-            <span class="header-text">Firm QTY</span>
-          </div>
-          <div class="header-cell fee-col">
-            <span class="header-text">Fee</span>
-            <span class="header-subtext">%</span>
-          </div>
-          <div class="header-cell exec-fee-col">
-            <span class="header-text">Exec Fee</span>
-            <span class="header-subtext">%</span>
-          </div>
-          <div class="header-cell rebates-col">
-            <span class="header-text">Rebates</span>
-            <span class="header-subtext">%</span>
-          </div>
-          <div class="header-cell agreements-col">
-            <span class="header-text">Agreements</span>
-          </div>
-          <div class="header-cell unit-price-col">
-            <span class="header-text">Unit Price</span>
-          </div>
-          <div class="header-cell market-value-col">
-            <span class="header-text">Market Value</span>
-          </div>
-          <div class="header-cell total-qty-col">
-            <span class="header-text">Total QTY</span>
-          </div>
-          <div class="header-cell min-qty-col">
-            <span class="header-text">Min QTY</span>
-          </div>
-          <div class="header-cell time-force-col">
-            <span class="header-text">Time Force</span>
-          </div>
-          <div class="header-cell counterparty-col">
-            <span class="header-text">CounterParty</span>
-          </div>
-          <div class="header-cell last-col">
-            <span class="header-text">Last</span>
-          </div>
-          <div class="header-cell actions-col">
-            <span class="header-text">Actions</span>
-          </div>
-        </div>
-
         <!-- Table Rows Container with Scroll -->
         <div class="table-rows-container">
+          <!-- Table Header -->
+          <div class="table-header">
+            <div class="header-cell select-col">
+              <span class="header-text">Select</span>
+            </div>
+            <div class="header-cell status-col">
+              <span class="header-text">Status</span>
+            </div>
+            <div class="header-cell updated-col">
+              <span class="header-text">Updated</span>
+            </div>
+            <div class="header-cell side-col">
+              <span class="header-text">Side</span>
+            </div>
+            <div class="header-cell intent-col">
+              <span class="header-text">Intent</span>
+            </div>
+            <div class="header-cell ticker-col">
+              <span class="header-text">Ticker</span>
+            </div>
+            <div class="header-cell security-col">
+              <span class="header-text">Security Name</span>
+            </div>
+            <div class="header-cell cusip-col">
+              <span class="header-text">CUSIP</span>
+            </div>
+            <div class="header-cell open-qty-col">
+              <span class="header-text">Open QTY</span>
+            </div>
+            <div class="header-cell ioi-qty-col">
+              <span class="header-text">IOI QTY</span>
+            </div>
+            <div class="header-cell firm-qty-col">
+              <span class="header-text">Firm QTY</span>
+            </div>
+            <div class="header-cell fee-col">
+              <span class="header-text">Fee</span>
+              <span class="header-subtext">%</span>
+            </div>
+            <div class="header-cell exec-fee-col">
+              <span class="header-text">Exec Fee</span>
+              <span class="header-subtext">%</span>
+            </div>
+            <div class="header-cell rebates-col">
+              <span class="header-text">Rebates</span>
+              <span class="header-subtext">%</span>
+            </div>
+            <div class="header-cell agreements-col">
+              <span class="header-text">Agreements</span>
+            </div>
+            <div class="header-cell unit-price-col">
+              <span class="header-text">Unit Price</span>
+            </div>
+            <div class="header-cell market-value-col">
+              <span class="header-text">Market Value</span>
+            </div>
+            <div class="header-cell total-qty-col">
+              <span class="header-text">Total QTY</span>
+            </div>
+            <div class="header-cell min-qty-col">
+              <span class="header-text">Min QTY</span>
+            </div>
+            <div class="header-cell time-force-col">
+              <span class="header-text">Time Force</span>
+            </div>
+            <div class="header-cell counterparty-col">
+              <span class="header-text">CounterParty</span>
+            </div>
+            <div class="header-cell last-col">
+              <span class="header-text">Last</span>
+            </div>
+            <div class="header-cell actions-col">
+              <span class="header-text">Actions</span>
+            </div>
+          </div>
           <!-- All Rows in Single Container - Original TSLA Row Duplicated 20 Times -->
           <div class="table-row">
               <div class="row-cell select-col">
@@ -1197,8 +1168,6 @@ const orders = ref([
 }
 
 .data-window {
-  border: 1px solid #404040;
-  border-radius: 6px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -1209,7 +1178,7 @@ const orders = ref([
 .widget-top {
   background-color: #1A1A1A;
   border-bottom: 1px solid rgba(144, 144, 144, 0.6);
-  height: 59px;
+  height: 90px;
   display: flex;
   align-items: center;
   padding: 0 20px;
@@ -1334,6 +1303,8 @@ const orders = ref([
   overflow-y: auto;
   overflow-x: auto;
   max-height: 400px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Row Wrapper */
@@ -1344,12 +1315,15 @@ const orders = ref([
 /* Table Header */
 .table-header {
   display: flex;
-  background-color: rgba(255, 255, 255, 0);
+  background-color: #161818;
   padding: 0;
   gap: 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   width: 100%;
   min-width: max-content;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .header-cell {
