@@ -303,12 +303,12 @@ const startAutoCollapseTimer = () => {
     clearTimeout(autoCollapseTimer.value)
   }
   
-  // Set new timer for 6 seconds
+  // Set new timer for 3 seconds
   autoCollapseTimer.value = setTimeout(() => {
     if (!isHoveringSubmenu.value && submenuExpanded.value) {
       collapseSubmenu()
     }
-  }, 6000)
+  }, 3000)
 }
 
 // Handle submenu hover
