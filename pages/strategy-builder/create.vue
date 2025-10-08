@@ -1,0 +1,534 @@
+<template>
+  <div class="dashboard-container">
+    <!-- Grid Container for Windows -->
+    <div 
+      class="grid-container"
+      :style="{ gridTemplateColumns: gridTemplate }"
+    >
+      <!-- Dynamic Windows -->
+      <div 
+        v-for="window in windows"
+        :key="window.id"
+        class="grid-window"
+        :style="{ gridArea: window.gridArea, zIndex: window.zIndex }"
+        @mousedown="startDrag(window.id, $event)"
+      >
+        <!-- Window Header with Controls -->
+        <div class="window-header">
+          <div class="window-title-section">
+            <span class="window-title">{{ window.title }}</span>
+          </div>
+          <div class="window-header-actions">
+            <button 
+              v-if="window.title === 'Create Strategy'"
+              class="save-strategy-btn"
+              @click="saveStrategy"
+            >
+              <span>Save Strategy</span>
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12"></path>
+              </svg>
+            </button>
+            <button 
+              v-if="window.title === 'Create Strategy'"
+              class="test-strategy-btn"
+              @click="testStrategy"
+            >
+              <span>Test Strategy</span>
+            </button>
+          </div>
+          <div class="window-controls">
+            <button
+              v-if="windows.length > 1"
+              @click="removeWindow(window.id)"
+              class="close-btn"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Window Content -->
+        <div class="window-content">
+          <component v-if="window.component" :is="window.component" />
+          <div v-else class="window-placeholder">
+            <h3>{{ window.title }}</h3>
+            <p>Strategy creation interface coming soon</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Window Button -->
+      <div 
+        v-if="windows.length < 3"
+        class="add-window-btn"
+        @click="addWindow('New Window', null)"
+      >
+        <span>+ Add Window</span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useHead } from '#app'
+
+// Grid system state
+const gridColumns = ref(2)
+const gridRows = ref(1)
+const gridGap = ref(8)
+
+// Window configurations
+const windows = ref([
+  {
+    id: 1,
+    title: 'Create Strategy',
+    component: null,
+    gridArea: '1 / 1 / 2 / 2',
+    zIndex: 1
+  },
+  {
+    id: 2,
+    title: 'Strategy Parameters',
+    component: null,
+    gridArea: '2 / 1 / 3 / 2',
+    zIndex: 1
+  }
+])
+
+// Drag state
+const isDragging = ref(false)
+const dragWindowId = ref(0)
+const dragStart = ref({ x: 0, y: 0 })
+
+// Computed grid template
+const gridTemplate = ref('')
+
+// Start drag
+function startDrag(windowId: number, e: MouseEvent) {
+  if (!(e.target as HTMLElement).closest('.window-header')) {
+    return
+  }
+
+  console.log('Start drag window:', windowId)
+  e.preventDefault()
+  e.stopPropagation()
+
+  isDragging.value = true
+  dragWindowId.value = windowId
+  dragStart.value = {
+    x: e.clientX,
+    y: e.clientY
+  }
+
+  // Bring window to front
+  windows.value.forEach(window => {
+    if (window.id === windowId) {
+      window.zIndex = 10
+    } else {
+      window.zIndex = 1
+    }
+  })
+}
+
+// Mouse move handler
+function handleMouseMove(e: MouseEvent) {
+  if (isDragging.value) {
+    const deltaX = e.clientX - dragStart.value.x
+    const deltaY = e.clientY - dragStart.value.y
+
+    if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
+      const containerRect = document.querySelector('.grid-container')?.getBoundingClientRect()
+      if (containerRect) {
+        const relativeX = e.clientX - containerRect.left
+        const relativeY = e.clientY - containerRect.top
+        const newPosition = calculateGridPosition(relativeX, relativeY, containerRect)
+
+        if (newPosition) {
+          const currentWindow = windows.value.find(w => w.id === dragWindowId.value)
+          if (currentWindow && currentWindow.gridArea !== newPosition) {
+            moveWindow(dragWindowId.value, newPosition)
+          }
+        }
+      }
+    }
+  }
+}
+
+// Calculate grid position
+function calculateGridPosition(x: number, y: number, containerRect: DOMRect) {
+  const containerWidth = containerRect.width
+  const containerHeight = containerRect.height
+  const rowHeight = containerHeight / 3
+  let targetRow = 1
+
+  if (y < rowHeight) {
+    targetRow = 1
+  } else if (y < rowHeight * 2) {
+    targetRow = 2
+  } else {
+    targetRow = 3
+  }
+
+  const colWidth = containerWidth / 2
+  let targetCol = 1
+
+  if (x < colWidth) {
+    targetCol = 1
+  } else {
+    targetCol = 2
+  }
+
+  if (targetCol === 1) {
+    return `${targetRow} / 1 / ${targetRow + 1} / 2`
+  } else {
+    return `${targetRow} / 2 / ${targetRow + 1} / 3`
+  }
+}
+
+// Mouse up handler
+function handleMouseUp() {
+  isDragging.value = false
+  dragWindowId.value = 0
+}
+
+// Update grid template
+function updateGridTemplate() {
+  const windowCount = windows.value.length
+
+  if (windowCount === 1) {
+    gridTemplate.value = '1fr'
+    gridColumns.value = 1
+    gridRows.value = 1
+    return
+  }
+
+  const rowConfig = analyzeRowConfiguration()
+  const maxRow = Math.max(...windows.value.map(w => {
+    const match = w.gridArea.match(/(\d+)/)
+    return match ? parseInt(match[1]) : 1
+  }))
+
+  const rows = []
+  for (let row = 1; row <= maxRow; row++) {
+    const rowWindows = windows.value.filter(w => {
+      const match = w.gridArea.match(/(\d+)/)
+      const windowRow = match ? parseInt(match[1]) : 1
+      return windowRow === row
+    })
+
+    if (rowWindows.length === 0) {
+      continue
+    } else if (rowWindows.length === 1) {
+      rows.push('1fr')
+    } else if (rowWindows.length === 2) {
+      rows.push('1fr 1fr')
+    } else {
+      rows.push('1fr')
+    }
+  }
+
+  gridTemplate.value = rows.join(' ')
+  gridColumns.value = Math.max(...rows.map(r => r.split(' ').length))
+  gridRows.value = rows.length
+}
+
+// Analyze row configuration
+function analyzeRowConfiguration() {
+  const rowConfig = {}
+
+  windows.value.forEach(window => {
+    const match = window.gridArea.match(/(\d+)/)
+    const row = match ? parseInt(match[1]) : 1
+
+    if (!rowConfig[row]) {
+      rowConfig[row] = []
+    }
+    rowConfig[row].push(window)
+  })
+
+  return rowConfig
+}
+
+// Move window
+function moveWindow(windowId: number, newPosition: string) {
+  const window = windows.value.find(w => w.id === windowId)
+  if (window && window.gridArea !== newPosition) {
+    console.log(`Moving window ${windowId} from ${window.gridArea} to ${newPosition}`)
+    window.gridArea = newPosition
+    updateGridTemplate()
+    optimizeWindowAreas()
+  }
+}
+
+// Optimize window areas
+function optimizeWindowAreas() {
+  const rowConfig = analyzeRowConfiguration()
+
+  windows.value.forEach(window => {
+    const match = window.gridArea.match(/(\d+)/)
+    const windowRow = match ? parseInt(match[1]) : 1
+    const rowWindows = rowConfig[windowRow] || []
+
+    if (rowWindows.length === 1) {
+      window.gridArea = `${windowRow} / 1 / ${windowRow + 1} / 2`
+    }
+  })
+}
+
+// Add new window
+function addWindow(title: string, component: any) {
+  if (windows.value.length >= 3) {
+    console.log('Maximum 3 windows allowed')
+    return
+  }
+
+  const newId = Math.max(...windows.value.map(w => w.id)) + 1
+  windows.value.push({
+    id: newId,
+    title,
+    component,
+    gridArea: '1 / 1 / 2 / 2',
+    zIndex: 1
+  })
+
+  updateGridTemplate()
+}
+
+// Remove window
+function removeWindow(windowId: number) {
+  windows.value = windows.value.filter(w => w.id !== windowId)
+  updateGridTemplate()
+}
+
+// Strategy functions
+function saveStrategy() {
+  console.log('Save Strategy clicked')
+}
+
+function testStrategy() {
+  console.log('Test Strategy clicked')
+}
+
+// Event listeners
+onMounted(() => {
+  document.addEventListener('mousemove', handleMouseMove)
+  document.addEventListener('mouseup', handleMouseUp)
+  updateGridTemplate()
+})
+
+onUnmounted(() => {
+  document.removeEventListener('mousemove', handleMouseMove)
+  document.removeEventListener('mouseup', handleMouseUp)
+})
+
+// Set page title
+useHead({
+  title: 'Create Strategy - Strategy Builder'
+})
+</script>
+
+<style scoped>
+.dashboard-container {
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background-image: radial-gradient(circle, rgba(85, 85, 85, 0.3) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 8px;
+  height: calc(100vh - 50px - 24px);
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+.grid-window {
+  border: 1px solid #404040;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #1a1a1a;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.grid-window:hover {
+  border-color: rgba(4, 207, 139, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.window-header {
+  height: 40px;
+  background: #2a2a2a;
+  border-bottom: 1px solid #404040;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  cursor: move;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.window-header:hover {
+  background: #333;
+}
+
+.window-title-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.window-title {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.window-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.window-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 8px;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+  color: #ff4444;
+}
+
+.save-strategy-btn {
+  background-color: #0e8212;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  height: 28px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.save-strategy-btn:hover {
+  background-color: #0a6b0e;
+}
+
+.test-strategy-btn {
+  background-color: #404040;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  height: 28px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.test-strategy-btn:hover {
+  background-color: #555555;
+}
+
+.window-content {
+  flex: 1;
+  overflow: auto;
+}
+
+.add-window-btn {
+  border: 2px dashed #404040;
+  border-radius: 6px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #666;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.add-window-btn:hover {
+  border-color: rgba(4, 207, 139, 0.5);
+  color: rgba(4, 207, 139, 0.8);
+  background: rgba(4, 207, 139, 0.05);
+}
+
+.window-placeholder {
+  padding: 40px;
+  color: #888;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.window-placeholder h3 {
+  color: #ccc;
+  margin-bottom: 10px;
+}
+
+.window-placeholder p {
+  color: #666;
+  font-size: 14px;
+}
+
+@media (max-width: 1200px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    gap: 10px;
+    padding: 10px;
+  }
+}
+</style>

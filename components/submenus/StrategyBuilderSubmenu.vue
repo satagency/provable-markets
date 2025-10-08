@@ -18,8 +18,8 @@
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/strategy-builder/ai-builder" class="submenu-item">
-          <span class="submenu-label">AI Builder</span>
+        <NuxtLink to="/strategy-builder/settings-rules" class="submenu-item">
+          <span class="submenu-label">Settings/Rules</span>
         </NuxtLink>
       </li>
     </ul>
