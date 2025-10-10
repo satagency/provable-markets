@@ -1,6 +1,6 @@
 <template>
   <div :class="badgeClass">
-    <span :class="textClass">{{ side }}</span>
+    <span :class="textClass">{{ displayText }}</span>
   </div>
 </template>
 
@@ -19,6 +19,10 @@ const badgeClass = computed(() => {
 
 const textClass = computed(() => {
   return props.side === 'LENDER' ? 'side-text lend-text' : 'side-text borrow-text'
+})
+
+const displayText = computed(() => {
+  return props.side === 'LENDER' ? 'LENDER' : 'BORROW'
 })
 </script>
 
@@ -57,6 +61,6 @@ const textClass = computed(() => {
 }
 
 .borrow-text {
-  color: #7dd87d;
+  color: #51cf66;
 }
 </style>
