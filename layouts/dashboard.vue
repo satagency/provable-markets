@@ -183,8 +183,11 @@
       <header class="main-header">
         <div class="header-left">
           <div class="market-status">
-            <div class="status-indicator"></div>
-            <span class="status-text">{{ currentDateTime.toUpperCase() }} • {{ marketStatus }}</span>
+            <div class="status-indicator">
+              <PhSun v-if="isMarketOpen" class="market-icon sun-icon" />
+              <PhMoonStars v-else class="market-icon moon-icon" />
+            </div>
+            <span class="status-text" :class="{ 'market-closed': !isMarketOpen }">{{ currentDateTime.toUpperCase() }} • {{ marketStatus }}</span>
           </div>
         </div>
         
@@ -247,6 +250,9 @@ import {
   ComplianceIcon,
   SettingsIcon
 } from '~/components/icons'
+
+// Import Phosphor icons for market status
+import { PhSun, PhMoonStars } from '@phosphor-icons/vue'
 
 // Sidebar toggle state
 const sidebarCollapsed = ref(false)
@@ -739,16 +745,51 @@ watch(() => route.path, (newPath) => {
 }
 
 .status-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: #ef4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+}
+
+.market-icon {
+  width: 14px;
+  height: 14px;
+  transition: all 0.3s ease;
+}
+
+.sun-icon {
+  color: #f59e0b;
+  animation: pulse 2s infinite;
+}
+
+.moon-icon {
+  color: #9ca3af;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .status-text {
   font-family: 'Roboto Mono', monospace;
   font-size: 10px;
   color: #898989;
+  transition: color 0.3s ease;
+}
+
+.status-text.market-closed {
+  color: #6b7280;
+  opacity: 0.7;
 }
 
 .header-right {

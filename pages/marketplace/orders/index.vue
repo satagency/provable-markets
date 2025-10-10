@@ -67,6 +67,36 @@
         <!-- Window Content -->
         <div class="window-content">
           <component v-if="window.component" :is="window.component" />
+          <div v-else-if="window.title === 'Order Details'" class="order-details-content">
+            <!-- Tab Menu -->
+            <div class="tab-menu">
+              <div 
+                v-for="tab in orderDetailTabs"
+                :key="tab.id"
+                class="tab-item"
+                :class="{ active: activeOrderDetailTab === tab.id }"
+                @click="activeOrderDetailTab = tab.id"
+              >
+                {{ tab.label }}
+              </div>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="tab-content">
+              <div v-if="activeOrderDetailTab === 'history'" class="tab-panel">
+                <h4>Order History</h4>
+                <p>Order history content will go here</p>
+              </div>
+              <div v-else-if="activeOrderDetailTab === 'child-orders'" class="tab-panel">
+                <h4>Child Orders</h4>
+                <p>Child orders content will go here</p>
+              </div>
+              <div v-else-if="activeOrderDetailTab === 'details'" class="tab-panel">
+                <h4>Order Details</h4>
+                <p>Detailed order information will go here</p>
+              </div>
+            </div>
+          </div>
           <div v-else class="window-placeholder">
             <h3>{{ window.title }}</h3>
             <p>Future window content goes here</p>
@@ -106,7 +136,7 @@ const windows = ref([
   },
   {
     id: 2,
-    title: 'Window 2',
+    title: 'Order Details',
     component: null,
     gridArea: '2 / 1 / 3 / 2',
     zIndex: 1
@@ -115,6 +145,14 @@ const windows = ref([
 
 // Show archived toggle state
 const showArchived = ref(false)
+
+// Order Details tab state
+const activeOrderDetailTab = ref('history')
+const orderDetailTabs = ref([
+  { id: 'history', label: 'History' },
+  { id: 'child-orders', label: 'Child Orders' },
+  { id: 'details', label: 'Details' }
+])
 
 // Available grid positions - quadrant-based layout
 const gridPositions = ref([
@@ -267,12 +305,12 @@ function updateGridTemplate() {
     windows.value[0].gridArea = '1 / 1 / 2 / 2'
     return
   } else if (windowCount === 2) {
-    // Two windows: side by side horizontally
-    gridTemplate.value = '1fr / 1fr 1fr'
-    gridColumns.value = 2
-    gridRows.value = 1
+    // Two windows: stacked vertically, both full width
+    gridTemplate.value = '1fr 1fr / 1fr'
+    gridColumns.value = 1
+    gridRows.value = 2
     windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    windows.value[1].gridArea = '1 / 2 / 2 / 3'
+    windows.value[1].gridArea = '2 / 1 / 3 / 2'
   } else if (windowCount === 3) {
     // Three windows: all in top row horizontally
     gridTemplate.value = '1fr / 1fr 1fr 1fr'
@@ -484,8 +522,6 @@ useHead({
 /* Grid Container */
 .grid-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
   gap: 8px;
   height: calc(100vh - 50px - 24px); /* Full viewport minus header and padding */
   padding: 2px;
@@ -725,6 +761,63 @@ useHead({
 .window-placeholder p {
   color: #666;
   font-size: 14px;
+}
+
+/* Order Details Tab Menu */
+.order-details-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-menu {
+  display: flex;
+  border-bottom: 1px solid #404040;
+  background: #1a1a1a;
+}
+
+.tab-item {
+  padding: 12px 16px;
+  color: #888;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  border-right: 1px solid #404040;
+  transition: all 0.2s ease;
+  background: transparent;
+}
+
+.tab-item:last-child {
+  border-right: none;
+}
+
+.tab-item:hover {
+  color: #ccc;
+  background: #2a2a2a;
+}
+
+.tab-item.active {
+  color: #ffffff;
+  background: #2a2a2a;
+}
+
+.tab-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.tab-panel h4 {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.tab-panel p {
+  color: #888;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 /* Responsive Grid */

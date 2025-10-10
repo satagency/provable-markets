@@ -1,10 +1,22 @@
 <template>
-  <div class="dashboard-container">
+  <div class="strategy-builder-page">
+    <!-- Strategy Builder Toolbar -->
+    <StrategyBuilderToolbar
+      :strategy-status="strategyStatus"
+      :strategy-name="strategyName"
+      @update:strategy-status="strategyStatus = $event"
+      @update:strategy-name="strategyName = $event"
+      @test-strategy="testStrategy"
+      @save-draft="saveDraft"
+      @activate-strategy="activateStrategy"
+    />
+
     <!-- Grid Container for Windows -->
-    <div 
-      class="grid-container"
-      :style="{ gridTemplateColumns: gridTemplate }"
-    >
+    <div class="dashboard-container">
+      <div 
+        class="grid-container"
+        :style="{ gridTemplate: gridTemplate }"
+      >
       <!-- Dynamic Windows -->
       <div 
         v-for="window in windows"
@@ -17,25 +29,13 @@
         <div class="window-header">
           <div class="window-title-section">
             <span class="window-title">{{ window.title }}</span>
+            <div v-if="window.title === 'Market Conditions'" class="market-status-badge">
+              <div class="market-status-dot" :style="{ backgroundColor: marketStatusColor }"></div>
+              <span class="market-status-text">{{ marketStatusText }}</span>
+            </div>
           </div>
           <div class="window-header-actions">
-            <button 
-              v-if="window.title === 'Create Strategy'"
-              class="save-strategy-btn"
-              @click="saveStrategy"
-            >
-              <span>Save Strategy</span>
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12"></path>
-              </svg>
-            </button>
-            <button 
-              v-if="window.title === 'Create Strategy'"
-              class="test-strategy-btn"
-              @click="testStrategy"
-            >
-              <span>Test Strategy</span>
-            </button>
+            <!-- Action buttons will be moved to topbar/toolbar components -->
           </div>
           <div class="window-controls">
             <button
@@ -62,39 +62,70 @@
 
       <!-- Add Window Button -->
       <div 
-        v-if="windows.length < 3"
+        v-if="windows.length < 4"
         class="add-window-btn"
         @click="addWindow('New Window', null)"
       >
         <span>+ Add Window</span>
       </div>
     </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useHead } from '#app'
+import StrategyBuilderToolbar from '~/components/ui/StrategyBuilderToolbar.vue'
+
+// Strategy state
+const strategyStatus = ref<'draft' | 'saved' | 'active'>('draft')
+const strategyName = ref('')
+
+
+// Market state
+const marketStatus = ref('fair') // 'bull', 'fair', 'bear'
+const marketData = ref({
+  sp500: 0,
+  nasdaq: 0,
+  dow: 0,
+  vix: 0,
+  lastUpdate: null
+})
 
 // Grid system state
 const gridColumns = ref(2)
-const gridRows = ref(1)
+const gridRows = ref(2)
 const gridGap = ref(8)
 
 // Window configurations
 const windows = ref([
   {
     id: 1,
-    title: 'Create Strategy',
+    title: 'Market Conditions',
     component: null,
     gridArea: '1 / 1 / 2 / 2',
     zIndex: 1
   },
   {
     id: 2,
-    title: 'Strategy Parameters',
+    title: 'Actions',
+    component: null,
+    gridArea: '1 / 2 / 2 / 3',
+    zIndex: 1
+  },
+  {
+    id: 3,
+    title: 'Constraints',
     component: null,
     gridArea: '2 / 1 / 3 / 2',
+    zIndex: 1
+  },
+  {
+    id: 4,
+    title: 'Execution Settings',
+    component: null,
+    gridArea: '2 / 2 / 3 / 3',
     zIndex: 1
   }
 ])
@@ -106,6 +137,60 @@ const dragStart = ref({ x: 0, y: 0 })
 
 // Computed grid template
 const gridTemplate = ref('')
+
+// Debug: Log grid template changes
+watch(gridTemplate, (newTemplate) => {
+  console.log('Grid template changed to:', newTemplate)
+})
+
+// Computed properties
+const strategyStatusText = computed(() => {
+  return strategyStatus.value === 'draft' ? 'Draft' : 'Active'
+})
+
+const marketStatusText = computed(() => {
+  switch (marketStatus.value) {
+    case 'bull': return 'Bull'
+    case 'bear': return 'Bear'
+    case 'fair': return 'FAIR'
+    default: return 'FAIR'
+  }
+})
+
+const marketStatusColor = computed(() => {
+  switch (marketStatus.value) {
+    case 'bull': return '#04CF8B' // Green
+    case 'bear': return '#ef4444' // Red
+    case 'fair': return '#f59e0b' // Yellow
+    default: return '#f59e0b'
+  }
+})
+
+// Calculate market status based on real data
+const calculateMarketStatus = computed(() => {
+  const { sp500, nasdaq, dow, vix } = marketData.value
+  
+  // Simple market sentiment calculation
+  let bullishSignals = 0
+  let bearishSignals = 0
+  
+  // VIX (Volatility Index) - lower is more bullish
+  if (vix < 20) bullishSignals++
+  else if (vix > 30) bearishSignals++
+  
+  // Price momentum (simplified)
+  if (sp500 > 0 && nasdaq > 0 && dow > 0) {
+    // If all major indices are positive, bullish
+    if (sp500 > 0 && nasdaq > 0 && dow > 0) bullishSignals++
+    // If any are significantly negative, bearish
+    if (sp500 < -1 || nasdaq < -1 || dow < -1) bearishSignals++
+  }
+  
+  // Determine status
+  if (bullishSignals > bearishSignals) return 'bull'
+  if (bearishSignals > bullishSignals) return 'bear'
+  return 'fair'
+})
 
 // Start drag
 function startDrag(windowId: number, e: MouseEvent) {
@@ -139,7 +224,7 @@ function handleMouseMove(e: MouseEvent) {
   if (isDragging.value) {
     const deltaX = e.clientX - dragStart.value.x
     const deltaY = e.clientY - dragStart.value.y
-
+    
     if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
       const containerRect = document.querySelector('.grid-container')?.getBoundingClientRect()
       if (containerRect) {
@@ -158,19 +243,18 @@ function handleMouseMove(e: MouseEvent) {
   }
 }
 
+
 // Calculate grid position
 function calculateGridPosition(x: number, y: number, containerRect: DOMRect) {
   const containerWidth = containerRect.width
   const containerHeight = containerRect.height
-  const rowHeight = containerHeight / 3
+  const rowHeight = containerHeight / 2
   let targetRow = 1
 
   if (y < rowHeight) {
     targetRow = 1
-  } else if (y < rowHeight * 2) {
-    targetRow = 2
   } else {
-    targetRow = 3
+    targetRow = 2
   }
 
   const colWidth = containerWidth / 2
@@ -195,76 +279,23 @@ function handleMouseUp() {
   dragWindowId.value = 0
 }
 
-// Update grid template - responsive horizontal-first configuration
+
+// Update grid template - Strategy Builder always uses 2x2 quadrant layout
 function updateGridTemplate() {
   const windowCount = windows.value.length
   
-  if (windowCount === 1) {
-    gridTemplate.value = '1fr / 1fr'
-    gridColumns.value = 1
-    gridRows.value = 1
-    windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    return
-  } else if (windowCount === 2) {
-    // Two windows: side by side horizontally
-    gridTemplate.value = '1fr / 1fr 1fr'
-    gridColumns.value = 2
-    gridRows.value = 1
-    windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    windows.value[1].gridArea = '1 / 2 / 2 / 3'
-  } else if (windowCount === 3) {
-    // Three windows: all in top row horizontally
-    gridTemplate.value = '1fr / 1fr 1fr 1fr'
-    gridColumns.value = 3
-    gridRows.value = 1
-    windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    windows.value[1].gridArea = '1 / 2 / 2 / 3'
-    windows.value[2].gridArea = '1 / 3 / 2 / 4'
-  } else if (windowCount === 4) {
-    // Four windows: 2x2 grid
+  // Strategy Builder: Always 2x2 quadrant layout for 4 mandatory windows
+  if (windowCount >= 1) {
     gridTemplate.value = '1fr 1fr / 1fr 1fr'
     gridColumns.value = 2
     gridRows.value = 2
-    windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    windows.value[1].gridArea = '1 / 2 / 2 / 3'
-    windows.value[2].gridArea = '2 / 1 / 3 / 2'
-    windows.value[3].gridArea = '2 / 2 / 3 / 3'
-  } else if (windowCount === 5) {
-    // Five windows: 3 in top row, 2 in bottom row
-    gridTemplate.value = '1fr 1fr / 1fr 1fr 1fr'
-    gridColumns.value = 3
-    gridRows.value = 2
-    windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    windows.value[1].gridArea = '1 / 2 / 2 / 3'
-    windows.value[2].gridArea = '1 / 3 / 2 / 4'
-    windows.value[3].gridArea = '2 / 1 / 3 / 2'
-    windows.value[4].gridArea = '2 / 2 / 3 / 3'
-  } else if (windowCount === 6) {
-    // Six windows: 3x2 grid
-    gridTemplate.value = '1fr 1fr / 1fr 1fr 1fr'
-    gridColumns.value = 3
-    gridRows.value = 2
-    windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    windows.value[1].gridArea = '1 / 2 / 2 / 3'
-    windows.value[2].gridArea = '1 / 3 / 2 / 4'
-    windows.value[3].gridArea = '2 / 1 / 3 / 2'
-    windows.value[4].gridArea = '2 / 2 / 3 / 3'
-    windows.value[5].gridArea = '2 / 3 / 3 / 4'
-  } else {
-    // More than 6 windows: flexible layout
-    const cols = Math.ceil(Math.sqrt(windowCount))
-    const rows = Math.ceil(windowCount / cols)
-    const rowTemplate = Array(rows).fill('1fr').join(' ')
-    const colTemplate = Array(cols).fill('1fr').join(' ')
-    gridTemplate.value = `${rowTemplate} / ${colTemplate}`
-    gridColumns.value = cols
-    gridRows.value = rows
     
-    // Position windows in grid
+    // Position windows in quadrant layout
     windows.value.forEach((window, index) => {
-      const row = Math.floor(index / cols) + 1
-      const col = (index % cols) + 1
-      window.gridArea = `${row} / ${col} / ${row + 1} / ${col + 1}`
+      if (index === 0) window.gridArea = '1 / 1 / 2 / 2' // Top-left
+      else if (index === 1) window.gridArea = '1 / 2 / 2 / 3' // Top-right
+      else if (index === 2) window.gridArea = '2 / 1 / 3 / 2' // Bottom-left
+      else if (index === 3) window.gridArea = '2 / 2 / 3 / 3' // Bottom-right
     })
   }
   
@@ -276,23 +307,6 @@ function updateGridTemplate() {
   })
 }
 
-// Analyze row configuration
-function analyzeRowConfiguration() {
-  const rowConfig = {}
-
-  windows.value.forEach(window => {
-    const match = window.gridArea.match(/(\d+)/)
-    const row = match ? parseInt(match[1]) : 1
-
-    if (!rowConfig[row]) {
-      rowConfig[row] = []
-    }
-    rowConfig[row].push(window)
-  })
-
-  return rowConfig
-}
-
 // Move window
 function moveWindow(windowId: number, newPosition: string) {
   const window = windows.value.find(w => w.id === windowId)
@@ -300,29 +314,13 @@ function moveWindow(windowId: number, newPosition: string) {
     console.log(`Moving window ${windowId} from ${window.gridArea} to ${newPosition}`)
     window.gridArea = newPosition
     updateGridTemplate()
-    optimizeWindowAreas()
   }
-}
-
-// Optimize window areas
-function optimizeWindowAreas() {
-  const rowConfig = analyzeRowConfiguration()
-
-  windows.value.forEach(window => {
-    const match = window.gridArea.match(/(\d+)/)
-    const windowRow = match ? parseInt(match[1]) : 1
-    const rowWindows = rowConfig[windowRow] || []
-
-    if (rowWindows.length === 1) {
-      window.gridArea = `${windowRow} / 1 / ${windowRow + 1} / 2`
-    }
-  })
 }
 
 // Add new window
 function addWindow(title: string, component: any) {
-  if (windows.value.length >= 3) {
-    console.log('Maximum 3 windows allowed')
+  if (windows.value.length >= 4) {
+    console.log('Maximum 4 windows allowed')
     return
   }
 
@@ -345,24 +343,99 @@ function removeWindow(windowId: number) {
 }
 
 // Strategy functions
-function saveStrategy() {
-  console.log('Save Strategy clicked')
+function createStrategy() {
+  console.log('Create Strategy clicked')
 }
 
 function testStrategy() {
   console.log('Test Strategy clicked')
 }
 
+function saveDraft() {
+  console.log('Save Draft clicked')
+}
+
+function activateStrategy() {
+  console.log('Activate Strategy clicked')
+}
+
+
+// Fetch real market data
+async function fetchMarketData() {
+  try {
+    // Using Alpha Vantage API (free tier) for real market data
+    const apiKey = 'demo' // Replace with actual API key
+    const baseUrl = 'https://www.alphavantage.co/query'
+    
+    // Fetch S&P 500 data
+    const sp500Response = await fetch(`${baseUrl}?function=GLOBAL_QUOTE&symbol=SPY&apikey=${apiKey}`)
+    const sp500Data = await sp500Response.json()
+    
+    // Fetch NASDAQ data
+    const nasdaqResponse = await fetch(`${baseUrl}?function=GLOBAL_QUOTE&symbol=QQQ&apikey=${apiKey}`)
+    const nasdaqData = await nasdaqResponse.json()
+    
+    // Fetch VIX data
+    const vixResponse = await fetch(`${baseUrl}?function=GLOBAL_QUOTE&symbol=VIX&apikey=${apiKey}`)
+    const vixData = await vixResponse.json()
+    
+    // Process the data
+    if (sp500Data['Global Quote'] && nasdaqData['Global Quote'] && vixData['Global Quote']) {
+      const sp500Change = parseFloat(sp500Data['Global Quote']['10. change percent'].replace('%', ''))
+      const nasdaqChange = parseFloat(nasdaqData['Global Quote']['10. change percent'].replace('%', ''))
+      const vixValue = parseFloat(vixData['Global Quote']['05. price'])
+      
+      marketData.value = {
+        sp500: sp500Change,
+        nasdaq: nasdaqChange,
+        dow: sp500Change, // Using S&P as proxy for Dow
+        vix: vixValue,
+        lastUpdate: new Date()
+      }
+      
+      // Update market status based on real data
+      marketStatus.value = calculateMarketStatus.value
+      
+      console.log('Market data updated:', marketData.value)
+    }
+  } catch (error) {
+    console.error('Error fetching market data:', error)
+    // Fallback to mock data for development
+    marketData.value = {
+      sp500: Math.random() * 4 - 2, // Random between -2% and +2%
+      nasdaq: Math.random() * 4 - 2,
+      dow: Math.random() * 4 - 2,
+      vix: 15 + Math.random() * 20, // Random between 15-35
+      lastUpdate: new Date()
+    }
+    marketStatus.value = calculateMarketStatus.value
+  }
+}
+
+// Update market data every 5 minutes
+let marketDataInterval: NodeJS.Timeout | null = null
+
 // Event listeners
 onMounted(() => {
   document.addEventListener('mousemove', handleMouseMove)
   document.addEventListener('mouseup', handleMouseUp)
   updateGridTemplate()
+  
+  // Fetch initial market data
+  fetchMarketData()
+  
+  // Set up interval to update market data every 5 minutes
+  marketDataInterval = setInterval(fetchMarketData, 5 * 60 * 1000)
 })
 
 onUnmounted(() => {
   document.removeEventListener('mousemove', handleMouseMove)
   document.removeEventListener('mouseup', handleMouseUp)
+  
+  // Clear market data interval
+  if (marketDataInterval) {
+    clearInterval(marketDataInterval)
+  }
 })
 
 // Set page title
@@ -372,9 +445,16 @@ useHead({
 </script>
 
 <style scoped>
-.dashboard-container {
-  padding: 0;
+.strategy-builder-page {
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #121212;
+}
+
+.dashboard-container {
+  flex: 1;
+  padding: 2px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -385,11 +465,8 @@ useHead({
 
 .grid-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
   gap: 8px;
-  height: calc(100vh - 50px - 24px);
-  padding: 2px;
+  flex: 1;
   box-sizing: border-box;
 }
 
@@ -438,10 +515,44 @@ useHead({
   font-weight: 500;
 }
 
+
+.market-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 12px;
+}
+
+.market-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.market-status-text {
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Roboto Mono', monospace;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .window-header-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin-left: auto;
 }
 
@@ -469,47 +580,7 @@ useHead({
   color: #ff4444;
 }
 
-.save-strategy-btn {
-  background-color: #0e8212;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  height: 28px;
-  padding: 0 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: 'Geist', sans-serif;
-  font-weight: 500;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.save-strategy-btn:hover {
-  background-color: #0a6b0e;
-}
-
-.test-strategy-btn {
-  background-color: #404040;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  height: 28px;
-  padding: 0 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: 'Geist', sans-serif;
-  font-weight: 500;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.test-strategy-btn:hover {
-  background-color: #555555;
-}
+/* Action button styles removed - will be moved to topbar/toolbar components */
 
 .window-content {
   flex: 1;
