@@ -51,7 +51,9 @@ export default defineNuxtConfig({
         { name: 'description', content: 'Professional securities lending platform with real-time analytics and risk management' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/png', href: '/Favicon.png' },
+        { rel: 'shortcut icon', type: 'image/png', href: '/Favicon.png' },
+        { rel: 'apple-touch-icon', href: '/Favicon.png' }
       ],
       script: [
         { src: 'https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js' },
