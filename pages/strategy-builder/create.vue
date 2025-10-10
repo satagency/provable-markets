@@ -195,45 +195,85 @@ function handleMouseUp() {
   dragWindowId.value = 0
 }
 
-// Update grid template
+// Update grid template - responsive horizontal-first configuration
 function updateGridTemplate() {
   const windowCount = windows.value.length
-
+  
   if (windowCount === 1) {
-    gridTemplate.value = '1fr'
+    gridTemplate.value = '1fr / 1fr'
     gridColumns.value = 1
     gridRows.value = 1
+    windows.value[0].gridArea = '1 / 1 / 2 / 2'
     return
-  }
-
-  const rowConfig = analyzeRowConfiguration()
-  const maxRow = Math.max(...windows.value.map(w => {
-    const match = w.gridArea.match(/(\d+)/)
-    return match ? parseInt(match[1]) : 1
-  }))
-
-  const rows = []
-  for (let row = 1; row <= maxRow; row++) {
-    const rowWindows = windows.value.filter(w => {
-      const match = w.gridArea.match(/(\d+)/)
-      const windowRow = match ? parseInt(match[1]) : 1
-      return windowRow === row
+  } else if (windowCount === 2) {
+    // Two windows: side by side horizontally
+    gridTemplate.value = '1fr / 1fr 1fr'
+    gridColumns.value = 2
+    gridRows.value = 1
+    windows.value[0].gridArea = '1 / 1 / 2 / 2'
+    windows.value[1].gridArea = '1 / 2 / 2 / 3'
+  } else if (windowCount === 3) {
+    // Three windows: all in top row horizontally
+    gridTemplate.value = '1fr / 1fr 1fr 1fr'
+    gridColumns.value = 3
+    gridRows.value = 1
+    windows.value[0].gridArea = '1 / 1 / 2 / 2'
+    windows.value[1].gridArea = '1 / 2 / 2 / 3'
+    windows.value[2].gridArea = '1 / 3 / 2 / 4'
+  } else if (windowCount === 4) {
+    // Four windows: 2x2 grid
+    gridTemplate.value = '1fr 1fr / 1fr 1fr'
+    gridColumns.value = 2
+    gridRows.value = 2
+    windows.value[0].gridArea = '1 / 1 / 2 / 2'
+    windows.value[1].gridArea = '1 / 2 / 2 / 3'
+    windows.value[2].gridArea = '2 / 1 / 3 / 2'
+    windows.value[3].gridArea = '2 / 2 / 3 / 3'
+  } else if (windowCount === 5) {
+    // Five windows: 3 in top row, 2 in bottom row
+    gridTemplate.value = '1fr 1fr / 1fr 1fr 1fr'
+    gridColumns.value = 3
+    gridRows.value = 2
+    windows.value[0].gridArea = '1 / 1 / 2 / 2'
+    windows.value[1].gridArea = '1 / 2 / 2 / 3'
+    windows.value[2].gridArea = '1 / 3 / 2 / 4'
+    windows.value[3].gridArea = '2 / 1 / 3 / 2'
+    windows.value[4].gridArea = '2 / 2 / 3 / 3'
+  } else if (windowCount === 6) {
+    // Six windows: 3x2 grid
+    gridTemplate.value = '1fr 1fr / 1fr 1fr 1fr'
+    gridColumns.value = 3
+    gridRows.value = 2
+    windows.value[0].gridArea = '1 / 1 / 2 / 2'
+    windows.value[1].gridArea = '1 / 2 / 2 / 3'
+    windows.value[2].gridArea = '1 / 3 / 2 / 4'
+    windows.value[3].gridArea = '2 / 1 / 3 / 2'
+    windows.value[4].gridArea = '2 / 2 / 3 / 3'
+    windows.value[5].gridArea = '2 / 3 / 3 / 4'
+  } else {
+    // More than 6 windows: flexible layout
+    const cols = Math.ceil(Math.sqrt(windowCount))
+    const rows = Math.ceil(windowCount / cols)
+    const rowTemplate = Array(rows).fill('1fr').join(' ')
+    const colTemplate = Array(cols).fill('1fr').join(' ')
+    gridTemplate.value = `${rowTemplate} / ${colTemplate}`
+    gridColumns.value = cols
+    gridRows.value = rows
+    
+    // Position windows in grid
+    windows.value.forEach((window, index) => {
+      const row = Math.floor(index / cols) + 1
+      const col = (index % cols) + 1
+      window.gridArea = `${row} / ${col} / ${row + 1} / ${col + 1}`
     })
-
-    if (rowWindows.length === 0) {
-      continue
-    } else if (rowWindows.length === 1) {
-      rows.push('1fr')
-    } else if (rowWindows.length === 2) {
-      rows.push('1fr 1fr')
-    } else {
-      rows.push('1fr')
-    }
   }
-
-  gridTemplate.value = rows.join(' ')
-  gridColumns.value = Math.max(...rows.map(r => r.split(' ').length))
-  gridRows.value = rows.length
+  
+  console.log('Grid template updated:', {
+    template: gridTemplate.value,
+    columns: gridColumns.value,
+    rows: gridRows.value,
+    windowCount: windowCount
+  })
 }
 
 // Analyze row configuration

@@ -76,7 +76,7 @@
       
       <!-- Add Window Button -->
       <div 
-        v-if="windows.length < 3"
+        v-if="windows.length < 6"
         class="add-window-btn"
         @click="addWindow('New Window', null)"
       >
@@ -116,22 +116,13 @@ const windows = ref([
 // Show archived toggle state
 const showArchived = ref(false)
 
-// Available grid positions - flexible row-based layout
+// Available grid positions - quadrant-based layout
 const gridPositions = ref([
-  // Row 1 positions
-  { id: 1, area: '1 / 1 / 2 / 2', name: 'Row 1 - Full Width' },
-  { id: 2, area: '1 / 1 / 2 / 2', name: 'Row 1 - Left Half' },
-  { id: 3, area: '1 / 2 / 2 / 3', name: 'Row 1 - Right Half' },
-  
-  // Row 2 positions
-  { id: 4, area: '2 / 1 / 3 / 2', name: 'Row 2 - Full Width' },
-  { id: 5, area: '2 / 1 / 3 / 2', name: 'Row 2 - Left Half' },
-  { id: 6, area: '2 / 2 / 3 / 3', name: 'Row 2 - Right Half' },
-  
-  // Row 3 positions
-  { id: 7, area: '3 / 1 / 4 / 2', name: 'Row 3 - Full Width' },
-  { id: 8, area: '3 / 1 / 4 / 2', name: 'Row 3 - Left Half' },
-  { id: 9, area: '3 / 2 / 4 / 3', name: 'Row 3 - Right Half' }
+  // Quadrant positions
+  { id: 1, area: '1 / 1 / 2 / 2', name: 'Top Left' },
+  { id: 2, area: '1 / 2 / 2 / 3', name: 'Top Right' },
+  { id: 3, area: '2 / 1 / 3 / 2', name: 'Bottom Left' },
+  { id: 4, area: '2 / 2 / 3 / 3', name: 'Bottom Right' }
 ])
 
 // Drag state
@@ -265,56 +256,84 @@ function updateWindowStyles() {
 // Computed grid template based on window count
 const gridTemplate = ref('')
 
-// Update grid template - flexible row-based configuration
+// Update grid template - responsive horizontal-first configuration
 function updateGridTemplate() {
   const windowCount = windows.value.length
   
   if (windowCount === 1) {
-    gridTemplate.value = '1fr'
+    gridTemplate.value = '1fr / 1fr'
     gridColumns.value = 1
     gridRows.value = 1
+    windows.value[0].gridArea = '1 / 1 / 2 / 2'
     return
-  }
-  
-  // Analyze window positions to determine row configuration
-  const rowConfig = analyzeRowConfiguration()
-  
-  // Build grid template based on row configuration
-  const rows = []
-  const maxRow = Math.max(...windows.value.map(w => {
-    const match = w.gridArea.match(/(\d+)/)
-    return match ? parseInt(match[1]) : 1
-  }))
-  
-  for (let row = 1; row <= maxRow; row++) {
-    const rowWindows = windows.value.filter(w => {
-      const match = w.gridArea.match(/(\d+)/)
-      const windowRow = match ? parseInt(match[1]) : 1
-      return windowRow === row
-    })
+  } else if (windowCount === 2) {
+    // Two windows: side by side horizontally
+    gridTemplate.value = '1fr / 1fr 1fr'
+    gridColumns.value = 2
+    gridRows.value = 1
+    windows.value[0].gridArea = '1 / 1 / 2 / 2'
+    windows.value[1].gridArea = '1 / 2 / 2 / 3'
+  } else if (windowCount === 3) {
+    // Three windows: all in top row horizontally
+    gridTemplate.value = '1fr / 1fr 1fr 1fr'
+    gridColumns.value = 3
+    gridRows.value = 1
+    windows.value[0].gridArea = '1 / 1 / 2 / 2'
+    windows.value[1].gridArea = '1 / 2 / 2 / 3'
+    windows.value[2].gridArea = '1 / 3 / 2 / 4'
+  } else if (windowCount === 4) {
+    // Four windows: 2x2 grid
+    gridTemplate.value = '1fr 1fr / 1fr 1fr'
+    gridColumns.value = 2
+    gridRows.value = 2
+    windows.value[0].gridArea = '1 / 1 / 2 / 2'
+    windows.value[1].gridArea = '1 / 2 / 2 / 3'
+    windows.value[2].gridArea = '2 / 1 / 3 / 2'
+    windows.value[3].gridArea = '2 / 2 / 3 / 3'
+  } else if (windowCount === 5) {
+    // Five windows: 3 in top row, 2 in bottom row
+    gridTemplate.value = '1fr 1fr / 1fr 1fr 1fr'
+    gridColumns.value = 3
+    gridRows.value = 2
+    windows.value[0].gridArea = '1 / 1 / 2 / 2'
+    windows.value[1].gridArea = '1 / 2 / 2 / 3'
+    windows.value[2].gridArea = '1 / 3 / 2 / 4'
+    windows.value[3].gridArea = '2 / 1 / 3 / 2'
+    windows.value[4].gridArea = '2 / 2 / 3 / 3'
+  } else if (windowCount === 6) {
+    // Six windows: 3x2 grid
+    gridTemplate.value = '1fr 1fr / 1fr 1fr 1fr'
+    gridColumns.value = 3
+    gridRows.value = 2
+    windows.value[0].gridArea = '1 / 1 / 2 / 2'
+    windows.value[1].gridArea = '1 / 2 / 2 / 3'
+    windows.value[2].gridArea = '1 / 3 / 2 / 4'
+    windows.value[3].gridArea = '2 / 1 / 3 / 2'
+    windows.value[4].gridArea = '2 / 2 / 3 / 3'
+    windows.value[5].gridArea = '2 / 3 / 3 / 4'
+  } else {
+    // More than 6 windows: flexible layout
+    const cols = Math.ceil(Math.sqrt(windowCount))
+    const rows = Math.ceil(windowCount / cols)
+    const rowTemplate = Array(rows).fill('1fr').join(' ')
+    const colTemplate = Array(cols).fill('1fr').join(' ')
+    gridTemplate.value = `${rowTemplate} / ${colTemplate}`
+    gridColumns.value = cols
+    gridRows.value = rows
     
-    if (rowWindows.length === 0) {
-      // Empty row - skip it
-      continue
-    } else if (rowWindows.length === 1) {
-      rows.push('1fr') // Full width row
-    } else if (rowWindows.length === 2) {
-      rows.push('1fr 1fr') // Split row
-    } else {
-      rows.push('1fr') // Default to full width
-    }
+    // Position windows in grid
+    windows.value.forEach((window, index) => {
+      const row = Math.floor(index / cols) + 1
+      const col = (index % cols) + 1
+      window.gridArea = `${row} / ${col} / ${row + 1} / ${col + 1}`
+    })
   }
-  
-  // Set grid template
-  gridTemplate.value = rows.join(' ')
-  gridColumns.value = Math.max(...rows.map(r => r.split(' ').length))
-  gridRows.value = rows.length
   
   console.log('Grid template updated:', {
     template: gridTemplate.value,
     columns: gridColumns.value,
     rows: gridRows.value,
-    rowConfig: rowConfig
+    windowCount: windowCount
   })
 }
 
@@ -379,26 +398,25 @@ function getAvailablePositions(windowId: number) {
 
 // Add new window
 function addWindow(title: string, component: any) {
-  if (windows.value.length >= 3) {
-    console.log('Maximum 3 windows allowed')
+  if (windows.value.length >= 6) {
+    console.log('Maximum 6 windows allowed')
     return
   }
   
   const newId = Math.max(...windows.value.map(w => w.id)) + 1
-  const availablePositions = getAvailablePositions(newId)
   
-  if (availablePositions.length > 0) {
-    windows.value.push({
-      id: newId,
-      title,
-      component,
-      gridArea: availablePositions[0].area,
-      zIndex: 1
-    })
-    
-    updateGridTemplate()
-    updateWindowStyles()
-  }
+  // Add the new window
+  windows.value.push({
+    id: newId,
+    title,
+    component,
+    gridArea: '1 / 1 / 2 / 2', // Temporary position
+    zIndex: 1
+  })
+  
+  // Update grid template which will automatically position all windows
+  updateGridTemplate()
+  updateWindowStyles()
 }
 
 // Remove window
