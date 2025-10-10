@@ -378,7 +378,7 @@ useHead({
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  background-image: radial-gradient(circle, rgba(85, 85, 85, 0.3) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(85, 85, 85, 0.15) 1px, transparent 1px);
   background-size: 20px 20px;
 }
 

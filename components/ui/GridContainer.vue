@@ -80,7 +80,7 @@ watch(() => props.windows, (newWindows) => {
 
 // Grid background style
 const gridBackgroundStyle = computed(() => ({
-  backgroundImage: 'radial-gradient(circle, rgba(85, 85, 85, 0.3) 1px, transparent 1px)',
+  backgroundImage: 'radial-gradient(circle, rgba(85, 85, 85, 0.15) 1px, transparent 1px)',
   backgroundSize: `${props.gridSize}px ${props.gridSize}px`
 }))
 
