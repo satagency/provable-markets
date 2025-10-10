@@ -184,8 +184,12 @@
         <div class="header-left">
           <div class="market-status">
             <div class="status-indicator">
-              <PhSun v-if="isMarketOpen" class="market-icon sun-icon" />
-              <PhMoonStars v-else class="market-icon moon-icon" />
+              <svg v-if="isMarketOpen" class="market-icon sun-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M120,40V32a8,8,0,0,1,16,0v8a8,8,0,0,1-16,0Zm8,24a64,64,0,1,0,64,64A64.07,64.07,0,0,0,128,64ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-8-8A8,8,0,0,0,50.34,61.66Zm0,116.68-8,8a8,8,0,0,0,11.32,11.32l8-8a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l8-8a8,8,0,0,0-11.32-11.32l-8,8A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l8,8a8,8,0,0,0,11.32-11.32ZM40,120H32a8,8,0,0,0,0,16h8a8,8,0,0,0,0-16Zm88,88a8,8,0,0,0-8,8v8a8,8,0,0,0,16,0v-8A8,8,0,0,0,128,208Zm96-88h-8a8,8,0,0,0,0,16h8a8,8,0,0,0,0-16Z"></path>
+              </svg>
+              <svg v-else class="market-icon moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M240,96a8,8,0,0,1-8,8H216v16a8,8,0,0,1-16,0V104H184a8,8,0,0,1,0-16h16V72a8,8,0,0,1,16,0V88h16A8,8,0,0,1,240,96ZM144,56h8v8a8,8,0,0,0,16,0V56h8a8,8,0,0,0,0-16h-8V32a8,8,0,0,0-16,0v8h-8a8,8,0,0,0,0,16Zm65.14,94.33A88.07,88.07,0,0,1,105.67,46.86a8,8,0,0,0-10.6-9.06A96,96,0,1,0,218.2,160.93a8,8,0,0,0-9.06-10.6Z"></path>
+              </svg>
             </div>
             <span class="status-text" :class="{ 'market-closed': !isMarketOpen }">{{ currentDateTime.toUpperCase() }} • {{ marketStatus }}</span>
           </div>
@@ -251,8 +255,7 @@ import {
   SettingsIcon
 } from '~/components/icons'
 
-// Import Phosphor icons for market status
-import { PhSun, PhMoonStars } from '@phosphor-icons/vue'
+// Market status icons - using custom inline SVGs
 
 // Sidebar toggle state
 const sidebarCollapsed = ref(false)
@@ -748,35 +751,38 @@ watch(() => route.path, (newPath) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
 }
 
 .market-icon {
-  width: 14px;
-  height: 14px;
-  transition: all 0.3s ease;
+  width: 16px;
+  height: 16px;
+  animation: gentlePulse 3s ease-in-out infinite;
 }
 
 .sun-icon {
-  color: #f59e0b;
-  animation: pulse 2s infinite;
+  color: #fbbf24;
+  filter: drop-shadow(0 0 4px rgba(251, 191, 36, 0.4));
 }
 
 .moon-icon {
   color: #9ca3af;
-  animation: pulse 2s infinite;
+  filter: drop-shadow(0 0 4px rgba(156, 163, 175, 0.4));
 }
 
-@keyframes pulse {
+@keyframes gentlePulse {
   0% {
-    opacity: 1;
+    opacity: 0.8;
+    transform: scale(1);
   }
   50% {
-    opacity: 0.6;
+    opacity: 1;
+    transform: scale(1.05);
   }
   100% {
-    opacity: 1;
+    opacity: 0.8;
+    transform: scale(1);
   }
 }
 
