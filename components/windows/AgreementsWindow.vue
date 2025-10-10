@@ -1703,7 +1703,7 @@ const { densityClasses } = useTableDensity()
 .select-col { width: 50px; min-width: 50px; }
 .status-col { width: 60px; min-width: 60px; }
 .agreement-id-col { width: 90px; min-width: 90px; }
-.side-col { width: 60px; min-width: 60px; }
+.side-col { width: 80px; min-width: 80px; }
 .counterparty-id-col { width: 120px; min-width: 120px; }
 .short-name-col { width: 100px; min-width: 100px; }
 .booking-account-col { width: 80px; min-width: 80px; }
@@ -1843,17 +1843,15 @@ const { densityClasses } = useTableDensity()
 }
 
 .lending-badge {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%), 
-              linear-gradient(90deg, rgba(37, 99, 235, 0.43) 0%, rgba(37, 99, 235, 0.43) 100%);
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0.43) 0%, rgba(37, 99, 235, 0.43) 100%);
   border: 1px solid #42BED9;
   border-radius: 4px;
-  padding: 4px 10px;
-  display: flex;
+  padding: 4px 4px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  max-height: 16px;
-  height: 16px;
+  min-width: fit-content;
+  height: 20px;
 }
 
 .lend-text {
@@ -1867,17 +1865,15 @@ const { densityClasses } = useTableDensity()
 }
 
 .borrowing-badge {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 100%), 
-              linear-gradient(90deg, rgba(81, 207, 102, 0.43) 0%, rgba(81, 207, 102, 0.43) 100%);
+  background: linear-gradient(90deg, rgba(81, 207, 102, 0.43) 0%, rgba(81, 207, 102, 0.43) 100%);
   border: 1px solid #51cf66;
   border-radius: 4px;
-  padding: 4px 10px;
-  display: flex;
+  padding: 4px 4px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  max-height: 16px;
-  height: 16px;
+  min-width: fit-content;
+  height: 20px;
 }
 
 .borrow-text {
@@ -2040,7 +2036,7 @@ const { densityClasses } = useTableDensity()
   background-color: transparent;
   border: 1px solid #333;
   color: #ccc;
-  padding: 4px 8px;
+  padding: 4px 4px;
   border-radius: 4px;
   font-size: 12px;
   cursor: pointer;
