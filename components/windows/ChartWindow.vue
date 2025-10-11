@@ -1,8 +1,8 @@
 <template>
-  <div class="chart-window">
+  <div class="chart-window" ref="container">
     <AreaChart
       :data="data"
-      :height="300"
+      :height="400"
       :categories="categories"
       :y-grid-line="true"
       :x-formatter="xFormatter"
@@ -45,10 +45,19 @@ const xFormatter = (tick: number): string => {
 
 <style scoped>
 .chart-window {
-  padding: 20px;
+  padding: 10px;
   height: 100%;
+  width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.chart-window :deep(svg) {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
 }
 </style>
