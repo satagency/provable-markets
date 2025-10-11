@@ -19,7 +19,6 @@ if (!Chart.defaults.color || Chart.defaults.color === '#666') {
 
 const chartCanvas = ref<HTMLCanvasElement | null>(null)
 let chart: Chart | null = null
-let updateInterval: NodeJS.Timeout | null = null
 
 // Generate initial time series data for stock price
 const generateTimeSeriesData = (points: number = 50) => {
@@ -59,7 +58,7 @@ const createChart = () => {
         borderWidth: 2,
         fill: true,
         tension: 0.4,
-        pointRadius: 0,
+        pointRadius: 1,
         pointHoverRadius: 6,
         pointHoverBackgroundColor: '#04CF8B',
         pointHoverBorderColor: '#ffffff',
@@ -70,8 +69,7 @@ const createChart = () => {
       responsive: true,
       maintainAspectRatio: false,
       animation: {
-        duration: 750,
-        easing: 'easeInOutQuart'
+        duration: 0
       },
       interaction: {
         intersect: false,
@@ -155,29 +153,6 @@ const createChart = () => {
       }
     }
   })
-
-  // Simulate real-time updates
-  updateInterval = setInterval(() => {
-    if (!chart) return
-
-    const lastPoint = chart.data.datasets[0].data[chart.data.datasets[0].data.length - 1] as any
-    const lastPrice = lastPoint.y
-    const change = (Math.random() - 0.48) * 2
-    const newPrice = Math.max(100, lastPrice + change)
-
-    // Add new point
-    chart.data.datasets[0].data.push({
-      x: new Date(),
-      y: parseFloat(newPrice.toFixed(2))
-    } as any)
-
-    // Remove old points (keep last 50)
-    if (chart.data.datasets[0].data.length > 50) {
-      chart.data.datasets[0].data.shift()
-    }
-
-    chart.update('none') // Update without animation for smooth real-time feel
-  }, 2000) // Update every 2 seconds
 }
 
 onMounted(() => {
@@ -185,9 +160,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (updateInterval) {
-    clearInterval(updateInterval)
-  }
   if (chart) {
     chart.destroy()
   }

@@ -20,7 +20,6 @@ if (!Chart.defaults.color || Chart.defaults.color === '#666') {
 // Custom candlestick chart using Chart.js bar chart
 const chartCanvas = ref<HTMLCanvasElement | null>(null)
 let chart: Chart | null = null
-let updateInterval: NodeJS.Timeout | null = null
 
 interface CandlestickData {
   x: Date
@@ -111,8 +110,7 @@ const createChart = () => {
       responsive: true,
       maintainAspectRatio: false,
       animation: {
-        duration: 500,
-        easing: 'easeOutQuart'
+        duration: 0
       },
       interaction: {
         intersect: false,
@@ -203,55 +201,6 @@ const createChart = () => {
       }
     }
   })
-
-  // Simulate real-time updates
-  updateInterval = setInterval(() => {
-    if (!chart || !candleData.length) return
-
-    const lastCandle = candleData[candleData.length - 1]
-    const open = lastCandle.c
-    const change = (Math.random() - 0.5) * 10
-    const close = Math.max(100, open + change)
-    const high = Math.max(open, close) + Math.random() * 5
-    const low = Math.min(open, close) - Math.random() * 5
-
-    const newCandle: CandlestickData = {
-      x: new Date(),
-      o: parseFloat(open.toFixed(2)),
-      h: parseFloat(high.toFixed(2)),
-      l: parseFloat(low.toFixed(2)),
-      c: parseFloat(close.toFixed(2))
-    }
-
-    candleData.push(newCandle)
-
-    const color = newCandle.c >= newCandle.o ? 'rgba(4, 207, 139, 0.8)' : 'rgba(239, 68, 68, 0.8)'
-
-    // Update datasets
-    chart.data.datasets[0].data.push({
-      x: newCandle.x,
-      y: [newCandle.l, newCandle.h]
-    } as any);
-
-    chart.data.datasets[1].data.push({
-      x: newCandle.x,
-      y: [Math.min(newCandle.o, newCandle.c), Math.max(newCandle.o, newCandle.c)]
-    } as any);
-
-    (chart.data.datasets[0].backgroundColor as string[]).push(color);
-    (chart.data.datasets[1].backgroundColor as string[]).push(color);
-
-    // Remove old candles (keep last 20)
-    if (candleData.length > 20) {
-      candleData.shift()
-      chart.data.datasets[0].data.shift()
-      chart.data.datasets[1].data.shift()
-      ;(chart.data.datasets[0].backgroundColor as string[]).shift()
-      ;(chart.data.datasets[1].backgroundColor as string[]).shift()
-    }
-
-    chart.update('none')
-  }, 15000) // Update every 15 seconds
 }
 
 onMounted(() => {
@@ -259,9 +208,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (updateInterval) {
-    clearInterval(updateInterval)
-  }
   if (chart) {
     chart.destroy()
   }

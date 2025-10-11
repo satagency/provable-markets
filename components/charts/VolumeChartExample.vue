@@ -19,7 +19,6 @@ if (!Chart.defaults.color || Chart.defaults.color === '#666') {
 
 const chartCanvas = ref<HTMLCanvasElement | null>(null)
 let chart: Chart | null = null
-let updateInterval: NodeJS.Timeout | null = null
 
 // Generate volume data
 const generateVolumeData = (points: number = 30) => {
@@ -64,8 +63,7 @@ const createChart = () => {
       responsive: true,
       maintainAspectRatio: false,
       animation: {
-        duration: 500,
-        easing: 'easeOutQuart'
+        duration: 0
       },
       interaction: {
         intersect: false,
@@ -166,36 +164,6 @@ const createChart = () => {
       }
     }
   })
-
-  // Simulate real-time updates
-  updateInterval = setInterval(() => {
-    if (!chart) return
-
-    const volume = Math.floor(Math.random() * 50000) + 10000
-    const isGreen = Math.random() > 0.5
-    const color = isGreen ? 'rgba(4, 207, 139, 0.8)' : 'rgba(239, 68, 68, 0.8)'
-
-    // Add new bar
-    const newData = {
-      x: new Date(),
-      y: volume,
-      backgroundColor: color
-    }
-
-    chart.data.datasets[0].data.push(newData as any)
-    
-    // Update colors array
-    const bgColors = chart.data.datasets[0].backgroundColor as string[]
-    bgColors.push(color)
-
-    // Remove old bars (keep last 30)
-    if (chart.data.datasets[0].data.length > 30) {
-      chart.data.datasets[0].data.shift()
-      bgColors.shift()
-    }
-
-    chart.update('none')
-  }, 5000) // Update every 5 seconds
 }
 
 onMounted(() => {
@@ -203,9 +171,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  if (updateInterval) {
-    clearInterval(updateInterval)
-  }
   if (chart) {
     chart.destroy()
   }
