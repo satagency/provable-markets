@@ -17,175 +17,89 @@
         </span>
       </div>
     </div>
-    <canvas ref="chartCanvas"></canvas>
+    <VisXYContainer :data="data" :height="height">
+      <VisArea :x="(d: DataRecord) => d.x" :y="(d: DataRecord) => d.y" :color="areaColor" :opacity="0.2" />
+      <VisLine :x="(d: DataRecord) => d.x" :y="(d: DataRecord) => d.y" :color="lineColor" />
+      <VisAxis type="x" :numTicks="5" :tickFormat="formatTime" />
+      <VisAxis type="y" :numTicks="6" :tickFormat="formatPrice" position="right" />
+    </VisXYContainer>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { Chart, registerables } from 'chart.js'
-import 'chartjs-adapter-date-fns'
+import { VisXYContainer, VisLine, VisArea, VisAxis } from '@unovis/vue'
 
-// Register Chart.js components once
-if (!Chart.defaults.color || Chart.defaults.color === '#666') {
-  Chart.register(...registerables)
-  // Set global chart defaults for dark theme
-  Chart.defaults.color = '#ffffff'
-  Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)'
+interface DataRecord {
+  x: number
+  y: number
 }
 
-const chartCanvas = ref<HTMLCanvasElement | null>(null)
+const lineColor = '#04CF8B'
+const areaColor = '#04CF8B'
+const height = 250
 const lastPrice = ref(175.50)
 const lastChange = ref(0)
-let chart: Chart | null = null
 let updateInterval: NodeJS.Timeout | null = null
 
-// Generate high-frequency tick data
-const generateTickData = (points: number = 100) => {
-  const now = new Date()
-  const data = []
+// Generate initial tick data
+const generateData = (points: number = 100): DataRecord[] => {
+  const now = Date.now()
+  const result: DataRecord[] = []
   let price = 175 + Math.random() * 10
   
   for (let i = points; i >= 0; i--) {
-    const timestamp = new Date(now.getTime() - i * 1000) // 1 second intervals
+    const timestamp = now - i * 1000 // 1 second intervals
     const change = (Math.random() - 0.5) * 0.5
     price = Math.max(150, Math.min(200, price + change))
-    data.push({
+    result.push({
       x: timestamp,
       y: parseFloat(price.toFixed(2))
     })
   }
   
-  return data
+  lastPrice.value = result[result.length - 1].y
+  return result
 }
 
-const createChart = () => {
-  if (!chartCanvas.value) return
+const data = ref<DataRecord[]>(generateData())
 
-  const ctx = chartCanvas.value.getContext('2d')
-  if (!ctx) return
-
-  const data = generateTickData()
-  lastPrice.value = data[data.length - 1].y
-
-  chart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      datasets: [{
-        label: 'Price',
-        data: data,
-        borderColor: '#04CF8B',
-        backgroundColor: 'rgba(4, 207, 139, 0.05)',
-        borderWidth: 1.5,
-        fill: true,
-        tension: 0.2,
-        pointRadius: 0,
-        pointHoverRadius: 4,
-        pointHoverBackgroundColor: '#04CF8B',
-        pointHoverBorderColor: '#ffffff',
-        pointHoverBorderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: false, // Disable animation for real-time feel
-      interaction: {
-        intersect: false,
-        mode: 'index'
-      },
-      plugins: {
-        legend: {
-          display: false
-        },
-        tooltip: {
-          enabled: false // Disable tooltip for speed
-        }
-      },
-      scales: {
-        x: {
-          type: 'time',
-          time: {
-            unit: 'second',
-            displayFormats: {
-              second: 'HH:mm:ss'
-            }
-          },
-          grid: {
-            color: 'rgba(255, 255, 255, 0.03)',
-            drawBorder: false
-          },
-          ticks: {
-            color: 'rgba(255, 255, 255, 0.4)',
-            font: {
-              family: 'Roboto Mono',
-              size: 9
-            },
-            maxRotation: 0,
-            autoSkipPadding: 30
-          }
-        },
-        y: {
-          position: 'right',
-          grid: {
-            color: 'rgba(255, 255, 255, 0.03)',
-            drawBorder: false
-          },
-          ticks: {
-            color: 'rgba(255, 255, 255, 0.4)',
-            font: {
-              family: 'Roboto Mono',
-              size: 9
-            },
-            callback: function(value) {
-              return '$' + (value as number).toFixed(2)
-            }
-          }
-        }
-      }
-    }
-  })
-
-  // High-frequency real-time updates (every 500ms)
+// Real-time updates
+onMounted(() => {
   updateInterval = setInterval(() => {
-    if (!chart) return
-
-    const lastPoint = chart.data.datasets[0].data[chart.data.datasets[0].data.length - 1] as any
+    const lastPoint = data.value[data.value.length - 1]
     const prevPrice = lastPoint.y
     const change = (Math.random() - 0.5) * 0.5
     const newPrice = Math.max(150, Math.min(200, prevPrice + change))
-
-    // Update reactive values
+    
     lastChange.value = newPrice - prevPrice
     lastPrice.value = newPrice
-
-    // Add new point
-    chart.data.datasets[0].data.push({
-      x: new Date(),
+    
+    data.value.push({
+      x: Date.now(),
       y: parseFloat(newPrice.toFixed(2))
-    } as any)
-
-    // Remove old points (keep last 100)
-    if (chart.data.datasets[0].data.length > 100) {
-      chart.data.datasets[0].data.shift()
+    })
+    
+    // Keep last 100 points
+    if (data.value.length > 100) {
+      data.value.shift()
     }
-
-    chart.update('none') // Update without animation for real-time
-  }, 500) // Update twice per second for real-time feel
-}
-
-onMounted(() => {
-  createChart()
+  }, 500)
 })
 
 onUnmounted(() => {
   if (updateInterval) {
     clearInterval(updateInterval)
   }
-  if (chart) {
-    chart.destroy()
-  }
 })
+
+// Format functions
+const formatTime = (value: number) => {
+  const date = new Date(value)
+  return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+}
+
+const formatPrice = (value: number) => `$${value.toFixed(2)}`
 </script>
 
 <style scoped>
@@ -249,10 +163,20 @@ onUnmounted(() => {
   color: #ef4444;
 }
 
-canvas {
-  flex: 1;
-  width: 100% !important;
-  height: auto !important;
+.chart-wrapper :deep(.unovis-xy-container) {
+  background: transparent;
+}
+
+.chart-wrapper :deep(.unovis-axis) {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.chart-wrapper :deep(.unovis-axis line) {
+  stroke: rgba(255, 255, 255, 0.05);
+}
+
+.chart-wrapper :deep(.unovis-axis text) {
+  fill: rgba(255, 255, 255, 0.4);
+  font-size: 10px;
 }
 </style>
-

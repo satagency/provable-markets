@@ -1,54 +1,63 @@
 <template>
   <div class="chart-wrapper">
-    <canvas ref="chartCanvas"></canvas>
+    <VisXYContainer :data="data" :height="height">
+      <VisCrosshair :template="crosshairTemplate" />
+      <VisGroupedBar 
+        :x="(d: DataRecord) => d.x"
+        :y="[(d: DataRecord) => [d.low, d.high]]"
+        :color="(d: DataRecord) => d.color"
+        :barWidth="1"
+      />
+      <VisGroupedBar 
+        :x="(d: DataRecord) => d.x"
+        :y="[(d: DataRecord) => [d.open, d.close]]"
+        :color="(d: DataRecord) => d.color"
+        :barWidth="8"
+      />
+      <VisAxis type="x" :numTicks="5" :tickFormat="formatTime" />
+      <VisAxis type="y" :numTicks="6" :tickFormat="formatPrice" />
+      <VisTooltip />
+    </VisXYContainer>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import { Chart, registerables } from 'chart.js'
-import 'chartjs-adapter-date-fns'
+import { ref } from 'vue'
+import { VisXYContainer, VisGroupedBar, VisAxis, VisTooltip, VisCrosshair } from '@unovis/vue'
 
-// Register Chart.js components once
-if (!Chart.defaults.color || Chart.defaults.color === '#666') {
-  Chart.register(...registerables)
-  // Set global chart defaults for dark theme
-  Chart.defaults.color = '#ffffff'
-  Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)'
+interface DataRecord {
+  x: number
+  open: number
+  high: number
+  low: number
+  close: number
+  color: string
 }
 
-// Custom candlestick chart using Chart.js bar chart
-const chartCanvas = ref<HTMLCanvasElement | null>(null)
-let chart: Chart | null = null
+const height = 300
 
-interface CandlestickData {
-  x: Date
-  o: number // open
-  h: number // high
-  l: number // low
-  c: number // close
-}
-
-// Generate OHLC candlestick data
-const generateCandlestickData = (points: number = 20): CandlestickData[] => {
-  const now = new Date()
-  const data: CandlestickData[] = []
+// Generate OHLC data
+const generateData = (points: number = 20): DataRecord[] => {
+  const now = Date.now()
+  const data: DataRecord[] = []
   let price = 150 + Math.random() * 50
   
   for (let i = points; i >= 0; i--) {
-    const timestamp = new Date(now.getTime() - i * 900000) // 15 minute intervals
+    const timestamp = now - i * 900000 // 15 minute intervals
     const open = price
     const change = (Math.random() - 0.5) * 10
     const close = Math.max(100, open + change)
     const high = Math.max(open, close) + Math.random() * 5
     const low = Math.min(open, close) - Math.random() * 5
+    const color = close >= open ? '#04CF8B' : '#ef4444'
     
     data.push({
       x: timestamp,
-      o: parseFloat(open.toFixed(2)),
-      h: parseFloat(high.toFixed(2)),
-      l: parseFloat(low.toFixed(2)),
-      c: parseFloat(close.toFixed(2))
+      open: parseFloat(open.toFixed(2)),
+      high: parseFloat(high.toFixed(2)),
+      low: parseFloat(low.toFixed(2)),
+      close: parseFloat(close.toFixed(2)),
+      color
     })
     
     price = close
@@ -57,161 +66,26 @@ const generateCandlestickData = (points: number = 20): CandlestickData[] => {
   return data
 }
 
-const createChart = () => {
-  if (!chartCanvas.value) return
+const data = ref<DataRecord[]>(generateData())
 
-  const ctx = chartCanvas.value.getContext('2d')
-  if (!ctx) return
-
-  const candleData = generateCandlestickData()
-
-  // Transform candlestick data for rendering
-  const bodyData = candleData.map(d => ({
-    x: d.x,
-    y: [Math.min(d.o, d.c), Math.max(d.o, d.c)]
-  }))
-
-  const wickData = candleData.map(d => ({
-    x: d.x,
-    y: [d.l, d.h]
-  }))
-
-  const colors = candleData.map(d => 
-    d.c >= d.o ? 'rgba(4, 207, 139, 0.8)' : 'rgba(239, 68, 68, 0.8)'
-  )
-
-  chart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      datasets: [
-        {
-          label: 'Wick',
-          data: wickData as any,
-          backgroundColor: colors,
-          borderColor: colors,
-          borderWidth: 1,
-          barPercentage: 0.1,
-          categoryPercentage: 1.0,
-          order: 2
-        },
-        {
-          label: 'Body',
-          data: bodyData as any,
-          backgroundColor: colors,
-          borderColor: colors,
-          borderWidth: 1,
-          barPercentage: 0.6,
-          categoryPercentage: 1.0,
-          order: 1
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: {
-        duration: 0
-      },
-      interaction: {
-        intersect: false,
-        mode: 'index'
-      },
-      plugins: {
-        legend: {
-          display: true,
-          position: 'top',
-          labels: {
-            color: 'rgba(255, 255, 255, 0.8)',
-            font: {
-              family: 'Roboto',
-              size: 12
-            },
-            padding: 15,
-            filter: (item) => item.text !== 'Wick' // Hide wick from legend
-          }
-        },
-        tooltip: {
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          titleColor: '#ffffff',
-          bodyColor: '#ffffff',
-          borderColor: 'rgba(255, 255, 255, 0.2)',
-          borderWidth: 1,
-          padding: 12,
-          displayColors: false,
-          callbacks: {
-            title: (context) => {
-              const date = new Date(context[0].parsed.x)
-              return date.toLocaleTimeString('en-US', { 
-                hour: '2-digit', 
-                minute: '2-digit'
-              })
-            },
-            label: (context) => {
-              const candle = candleData[context.dataIndex]
-              if (!candle) return ''
-              return [
-                `Open: $${candle.o.toFixed(2)}`,
-                `High: $${candle.h.toFixed(2)}`,
-                `Low: $${candle.l.toFixed(2)}`,
-                `Close: $${candle.c.toFixed(2)}`
-              ]
-            }
-          }
-        }
-      },
-      scales: {
-        x: {
-          type: 'time',
-          time: {
-            unit: 'minute',
-            displayFormats: {
-              minute: 'HH:mm'
-            }
-          },
-          grid: {
-            display: false,
-            drawBorder: false
-          },
-          ticks: {
-            color: 'rgba(255, 255, 255, 0.6)',
-            font: {
-              family: 'Roboto',
-              size: 10
-            },
-            maxRotation: 0,
-            autoSkipPadding: 20
-          }
-        },
-        y: {
-          grid: {
-            color: 'rgba(255, 255, 255, 0.05)',
-            drawBorder: false
-          },
-          ticks: {
-            color: 'rgba(255, 255, 255, 0.6)',
-            font: {
-              family: 'Roboto',
-              size: 10
-            },
-            callback: function(value) {
-              return '$' + value
-            }
-          }
-        }
-      }
-    }
-  })
+const crosshairTemplate = (d: DataRecord) => {
+  return `
+    <div style="padding: 8px;">
+      <div>O: $${d.open.toFixed(2)}</div>
+      <div>H: $${d.high.toFixed(2)}</div>
+      <div>L: $${d.low.toFixed(2)}</div>
+      <div>C: $${d.close.toFixed(2)}</div>
+    </div>
+  `
 }
 
-onMounted(() => {
-  createChart()
-})
+// Format functions
+const formatTime = (value: number) => {
+  const date = new Date(value)
+  return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+}
 
-onUnmounted(() => {
-  if (chart) {
-    chart.destroy()
-  }
-})
+const formatPrice = (value: number) => `$${value.toFixed(0)}`
 </script>
 
 <style scoped>
@@ -223,9 +97,34 @@ onUnmounted(() => {
   box-sizing: border-box;
 }
 
-canvas {
-  width: 100% !important;
-  height: 100% !important;
+.chart-wrapper :deep(.unovis-xy-container) {
+  background: transparent;
+}
+
+.chart-wrapper :deep(.unovis-axis) {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.chart-wrapper :deep(.unovis-axis line) {
+  stroke: rgba(255, 255, 255, 0.1);
+}
+
+.chart-wrapper :deep(.unovis-axis text) {
+  fill: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+}
+
+.chart-wrapper :deep(.unovis-tooltip) {
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.chart-wrapper :deep(.unovis-crosshair-line) {
+  stroke: rgba(255, 255, 255, 0.3);
+  stroke-width: 1px;
 }
 </style>
-

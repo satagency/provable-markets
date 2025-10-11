@@ -4,7 +4,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   
   // CSS Framework
-  css: ['~/assets/css/main.css'],
+  css: [
+    '~/assets/css/main.css',
+    '@unovis/ts/dist/styles.css'
+  ],
   
   // Modules
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', '@nuxtjs/google-fonts', 'nuxt-charts'],
@@ -60,6 +63,6 @@ export default defineNuxtConfig({
   
   // Build Configuration
   build: {
-    transpile: ['chart.js']
+    transpile: ['@unovis/ts', '@unovis/vue']
   }
 })
