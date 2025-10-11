@@ -2,10 +2,12 @@
   <div class="chart-content">
     <h3 class="chart-title">Real-Time Market Feed</h3>
     <div class="chart-container">
-      <Chart
-        type="line"
+      <LineChart
         :data="chartData"
-        :options="chartOptions"
+        :categories="chartCategories"
+        :height="300"
+        xLabel="Time"
+        yLabel="Price"
       />
     </div>
   </div>
@@ -14,44 +16,21 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-const chartData = ref({
-  labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-  datasets: [{
-    label: 'Price',
-    data: [175, 176, 174, 178, 177, 179, 180, 181, 179, 182],
-    borderColor: '#04CF8B',
-    backgroundColor: 'rgba(4, 207, 139, 0.1)',
-    tension: 0.4,
-    fill: true
-  }]
-})
+const chartData = ref([
+  { time: '1', price: 175 },
+  { time: '2', price: 176 },
+  { time: '3', price: 174 },
+  { time: '4', price: 178 },
+  { time: '5', price: 177 },
+  { time: '6', price: 179 },
+  { time: '7', price: 180 },
+  { time: '8', price: 181 },
+  { time: '9', price: 179 },
+  { time: '10', price: 182 }
+])
 
-const chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      display: false
-    }
-  },
-  scales: {
-    x: {
-      grid: {
-        color: 'rgba(255, 255, 255, 0.1)'
-      },
-      ticks: {
-        color: 'rgba(255, 255, 255, 0.7)'
-      }
-    },
-    y: {
-      grid: {
-        color: 'rgba(255, 255, 255, 0.1)'
-      },
-      ticks: {
-        color: 'rgba(255, 255, 255, 0.7)'
-      }
-    }
-  }
+const chartCategories = {
+  price: { name: 'Price', color: '#04CF8B' }
 }
 
 let updateInterval: NodeJS.Timeout | null = null
@@ -59,13 +38,11 @@ let updateInterval: NodeJS.Timeout | null = null
 onMounted(() => {
   // Update chart every second
   updateInterval = setInterval(() => {
-    const newValue = chartData.value.datasets[0].data[chartData.value.datasets[0].data.length - 1] + (Math.random() - 0.5) * 2
-    chartData.value.datasets[0].data.push(newValue)
-    chartData.value.labels?.push((chartData.value.labels.length + 1).toString())
+    const newValue = chartData.value[chartData.value.length - 1].price + (Math.random() - 0.5) * 2
+    chartData.value.push({ time: (chartData.value.length + 1).toString(), price: newValue })
     
-    if (chartData.value.datasets[0].data.length > 20) {
-      chartData.value.datasets[0].data.shift()
-      chartData.value.labels?.shift()
+    if (chartData.value.length > 20) {
+      chartData.value.shift()
     }
   }, 1000)
 })

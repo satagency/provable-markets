@@ -2,53 +2,33 @@
   <div class="chart-content">
     <h3 class="chart-title">Stock Price Trend</h3>
     <div class="chart-container">
-      <Chart
-        type="line"
+      <LineChart
         :data="chartData"
-        :options="chartOptions"
+        :categories="chartCategories"
+        :height="300"
+        xLabel="Time"
+        yLabel="Price"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const chartData = {
-  labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-  datasets: [{
-    label: 'Price',
-    data: [10, 20, 15, 25, 30, 22, 35, 28, 40, 32],
-    borderColor: '#04CF8B',
-    backgroundColor: 'rgba(4, 207, 139, 0.1)',
-    tension: 0.4
-  }]
-}
+const chartData = [
+  { time: '1', price: 10 },
+  { time: '2', price: 20 },
+  { time: '3', price: 15 },
+  { time: '4', price: 25 },
+  { time: '5', price: 30 },
+  { time: '6', price: 22 },
+  { time: '7', price: 35 },
+  { time: '8', price: 28 },
+  { time: '9', price: 40 },
+  { time: '10', price: 32 }
+]
 
-const chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      display: false
-    }
-  },
-  scales: {
-    x: {
-      grid: {
-        color: 'rgba(255, 255, 255, 0.1)'
-      },
-      ticks: {
-        color: 'rgba(255, 255, 255, 0.7)'
-      }
-    },
-    y: {
-      grid: {
-        color: 'rgba(255, 255, 255, 0.1)'
-      },
-      ticks: {
-        color: 'rgba(255, 255, 255, 0.7)'
-      }
-    }
-  }
+const chartCategories = {
+  price: { name: 'Price', color: '#04CF8B' }
 }
 </script>
 

@@ -2,52 +2,33 @@
   <div class="chart-content">
     <h3 class="chart-title">Trading Volume</h3>
     <div class="chart-container">
-      <Chart
-        type="bar"
+      <BarChart
         :data="chartData"
-        :options="chartOptions"
+        :categories="chartCategories"
+        :height="300"
+        xLabel="Time"
+        yLabel="Volume"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const chartData = {
-  labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-  datasets: [{
-    label: 'Volume',
-    data: [100, 150, 120, 200, 180, 160, 220, 190, 250, 210],
-    backgroundColor: '#04CF8B',
-    borderColor: '#04CF8B'
-  }]
-}
+const chartData = [
+  { time: '1', volume: 100 },
+  { time: '2', volume: 150 },
+  { time: '3', volume: 120 },
+  { time: '4', volume: 200 },
+  { time: '5', volume: 180 },
+  { time: '6', volume: 160 },
+  { time: '7', volume: 220 },
+  { time: '8', volume: 190 },
+  { time: '9', volume: 250 },
+  { time: '10', volume: 210 }
+]
 
-const chartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      display: false
-    }
-  },
-  scales: {
-    x: {
-      grid: {
-        color: 'rgba(255, 255, 255, 0.1)'
-      },
-      ticks: {
-        color: 'rgba(255, 255, 255, 0.7)'
-      }
-    },
-    y: {
-      grid: {
-        color: 'rgba(255, 255, 255, 0.1)'
-      },
-      ticks: {
-        color: 'rgba(255, 255, 255, 0.7)'
-      }
-    }
-  }
+const chartCategories = {
+  volume: { name: 'Volume', color: '#04CF8B' }
 }
 </script>
 
