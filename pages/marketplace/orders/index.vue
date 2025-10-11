@@ -78,136 +78,12 @@
         :style="{ gridArea: '3 / 1 / 4 / 2', zIndex: 1 }"
         @mousedown="startDrag(2, $event)"
       >
-        <!-- Window Header with Controls -->
-        <div class="window-header">
-          <div class="window-title-section">
-            <span class="window-title">Order Details</span>
-          </div>
-          <div class="window-controls">
-            <button class="close-btn" @click="closeWindow(2)">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
-          </div>
-        </div>
-        
-        <!-- Window Content -->
-        <div class="window-content">
-          <div class="order-details-content">
-            <!-- Tab Menu -->
-            <div class="tab-menu">
-              <div 
-                v-for="tab in orderDetailTabs"
-                :key="tab.id"
-                class="tab-item"
-                :class="{ active: activeOrderDetailTab === tab.id }"
-                @click="activeOrderDetailTab = tab.id"
-              >
-                {{ tab.label }}
-              </div>
-            </div>
-            
-            <!-- Tab Content -->
-            <div class="tab-content">
-              <div v-if="activeOrderDetailTab === 'history'" class="tab-panel">
-                <!-- History Table - Using exact Orders table design -->
-                <div class="table-container">
-                  <!-- Table Header -->
-                  <div class="table-header">
-                    <div class="header-cell when-col">
-                      <span class="header-text">When</span>
-                    </div>
-                    <div class="header-cell event-col">
-                      <span class="header-text">Event</span>
-                    </div>
-                    <div class="header-cell order-qty-col">
-                      <span class="header-text">Order Qty</span>
-                    </div>
-                    <div class="header-cell open-qty-col">
-                      <span class="header-text">Open Qty</span>
-                    </div>
-                    <div class="header-cell firm-qty-col">
-                      <span class="header-text">Firm Qty</span>
-                    </div>
-                    <div class="header-cell exec-qty-col">
-                      <span class="header-text">Exec Qty</span>
-                    </div>
-                    <div class="header-cell avg-exec-fee-col">
-                      <span class="header-text">Avg Exec Fee</span>
-                      <span class="header-subtext">%</span>
-                    </div>
-                    <div class="header-cell avg-exec-rebate-col">
-                      <span class="header-text">Avg Exec Rebate</span>
-                      <span class="header-subtext">%</span>
-                    </div>
-                    <div class="header-cell agreements-col">
-                      <span class="header-text">Agreements</span>
-                    </div>
-                    <div class="header-cell initiator-col">
-                      <span class="header-text">Initiator</span>
-                    </div>
-                  </div>
-                  
-                  <!-- Table Rows Container with Scroll -->
-                  <div class="table-rows-container">
-                    <!-- Row Wrapper -->
-                    <div class="row-wrapper">
-                      <!-- Dynamic Table Rows -->
-                      <div 
-                        v-for="historyItem in orderHistory" 
-                        :key="historyItem.id"
-                        class="table-row"
-                      >
-                        <div class="row-cell when-col">
-                          <div class="date-time">
-                            <span class="date">{{ historyItem.date }}</span>
-                            <span class="time">{{ historyItem.time }}</span>
-                          </div>
-                        </div>
-                        <div class="row-cell event-col">
-                          <span>{{ historyItem.event }}</span>
-                        </div>
-                        <div class="row-cell order-qty-col">
-                          <span class="quantity">{{ historyItem.orderQty }}</span>
-                        </div>
-                        <div class="row-cell open-qty-col">
-                          <span class="quantity">{{ historyItem.openQty }}</span>
-                        </div>
-                        <div class="row-cell firm-qty-col">
-                          <span class="quantity">{{ historyItem.firmQty }}</span>
-                        </div>
-                        <div class="row-cell exec-qty-col">
-                          <span class="quantity">{{ historyItem.execQty }}</span>
-                        </div>
-                        <div class="row-cell avg-exec-fee-col">
-                          <span class="percentage">{{ historyItem.avgExecFee }}%</span>
-                        </div>
-                        <div class="row-cell avg-exec-rebate-col">
-                          <span class="percentage">{{ historyItem.avgExecRebate }}%</span>
-                        </div>
-                        <div class="row-cell agreements-col">
-                          <span class="quantity">{{ historyItem.agreements }}</span>
-                        </div>
-                        <div class="row-cell initiator-col">
-                          <span class="email">{{ historyItem.initiator }}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div v-else-if="activeOrderDetailTab === 'child-orders'" class="tab-panel">
-                <h4>Child Orders</h4>
-                <p>Child orders content will go here</p>
-              </div>
-              <div v-else-if="activeOrderDetailTab === 'details'" class="tab-panel">
-                <h4>Order Details</h4>
-                <p>Detailed order information will go here</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <OrderDetailsWindow 
+          @close="closeWindow(2)" 
+          @deactivate="handleDeactivate" 
+          @cancel="handleCancel" 
+          @edit="handleEdit" 
+        />
       </div>
     </div>
   </div>
@@ -216,6 +92,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import OrdersWindow from '~/components/windows/OrdersWindow.vue'
+import OrderDetailsWindow from '~/components/windows/OrderDetailsWindow.vue'
 
 // Grid system state
 const gridColumns = ref(1)
@@ -280,50 +157,25 @@ function startSplitterDrag(e: MouseEvent) {
 const gridTemplateRows = computed(() => {
   const topSize = splitterPosition.value
   const bottomSize = 100 - splitterPosition.value
-  return `${topSize}fr 8px ${bottomSize}fr`
+  return `${topSize}fr 12px ${bottomSize}fr`
 })
 
-// Order Details tab state
-const activeOrderDetailTab = ref('history')
-const orderDetailTabs = ref([
-  { id: 'history', label: 'History' },
-  { id: 'child-orders', label: 'Child Orders' },
-  { id: 'details', label: 'Details' }
-])
-
-// Order History data
-const orderHistory = ref([])
-
-// Generate sample order history data
-const generateOrderHistory = () => {
-  const events = ['Created', 'Modified', 'Partially Filled', 'Filled', 'Cancelled', 'Rejected', 'Updated']
-  const initiators = ['trader1@provable.com', 'trader2@provable.com', 'trader3@provable.com', 'SYSTEM']
-  
-  const history = []
-  // Only generate 1 row
-  const event = events[Math.floor(Math.random() * events.length)]
-  const initiator = initiators[Math.floor(Math.random() * initiators.length)]
-  
-  history.push({
-    id: 1,
-    date: '10/12/23',
-    time: '8:30A',
-    event,
-    orderQty: Math.floor(Math.random() * 500) + 50,
-    openQty: Math.floor(Math.random() * 400) + 30,
-    firmQty: Math.floor(Math.random() * 300) + 20,
-    execQty: Math.floor(Math.random() * 200) + 10,
-    avgExecFee: (Math.random() * 2).toFixed(2),
-    avgExecRebate: (Math.random() * 1.5).toFixed(2),
-    agreements: Math.floor(Math.random() * 5) + 1,
-    initiator
-  })
-  
-  return history
+// Order Details button handlers
+function handleDeactivate() {
+  console.log('Deactivate order')
+  // Add deactivate logic here
 }
 
-// Initialize order history
-orderHistory.value = generateOrderHistory()
+function handleCancel() {
+  console.log('Cancel order')
+  // Add cancel logic here
+}
+
+function handleEdit() {
+  console.log('Edit order')
+  // Add edit logic here
+}
+
 
 // Available grid positions - quadrant-based layout
 const gridPositions = ref([
@@ -605,28 +457,6 @@ function getAvailablePositions(windowId: number) {
   return gridPositions.value.filter(pos => !usedPositions.includes(pos.area))
 }
 
-// Add new window
-function addWindow(title: string, component: any) {
-  if (windows.value.length >= 6) {
-    console.log('Maximum 6 windows allowed')
-    return
-  }
-  
-  const newId = Math.max(...windows.value.map(w => w.id)) + 1
-  
-  // Add the new window
-  windows.value.push({
-    id: newId,
-    title,
-    component,
-    gridArea: '1 / 1 / 2 / 2', // Temporary position
-    zIndex: 1
-  })
-  
-  // Update grid template which will automatically position all windows
-  updateGridTemplate()
-  updateWindowStyles()
-}
 
 // Remove window
 function removeWindow(windowId: number) {
@@ -694,7 +524,7 @@ useHead({
 /* Grid Container */
 .grid-container {
   display: grid;
-  gap: 8px;
+  gap: 0;
   height: calc(100vh - 50px - 24px); /* Full viewport minus header and padding */
   padding: 2px;
   box-sizing: border-box;
@@ -896,66 +726,73 @@ useHead({
 
 /* Horizontal Splitter */
 .horizontal-splitter {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.08);
   cursor: row-resize;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
   position: relative;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .horizontal-splitter:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .horizontal-splitter.dragging {
-  background: rgba(4, 207, 139, 0.2);
-  border-top: 1px solid rgba(4, 207, 139, 0.5);
-  border-bottom: 1px solid rgba(4, 207, 139, 0.5);
+  background: rgba(4, 207, 139, 0.25);
+  border-top: 1px solid rgba(4, 207, 139, 0.6);
+  border-bottom: 1px solid rgba(4, 207, 139, 0.6);
 }
 
 .splitter-handle {
-  width: 40px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 2px;
+  width: 60px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 3px;
   transition: all 0.2s ease;
+  position: relative;
+  margin: 0 auto;
+}
+
+.splitter-handle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 1px;
 }
 
 .horizontal-splitter:hover .splitter-handle {
-  background: rgba(255, 255, 255, 0.5);
-  width: 60px;
+  background: rgba(255, 255, 255, 0.6);
+  width: 80px;
+  height: 8px;
+}
+
+.horizontal-splitter:hover .splitter-handle::before {
+  background: rgba(255, 255, 255, 0.8);
+  width: 40px;
 }
 
 .horizontal-splitter.dragging .splitter-handle {
-  background: rgba(4, 207, 139, 0.8);
-  width: 80px;
+  background: rgba(4, 207, 139, 0.9);
+  width: 100px;
+  height: 10px;
 }
 
-/* Add Window Button */
-.add-window-btn {
-  border: 2px dashed #404040;
-  border-radius: 6px;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #666;
-  font-size: 14px;
-  transition: all 0.2s ease;
+.horizontal-splitter.dragging .splitter-handle::before {
+  background: rgba(255, 255, 255, 1);
+  width: 50px;
 }
 
-.add-window-btn:hover {
-  border-color: rgba(4, 207, 139, 0.5);
-  color: rgba(4, 207, 139, 0.8);
-  background: rgba(4, 207, 139, 0.05);
-}
 
 /* Window Placeholder */
 .window-placeholder {
@@ -980,205 +817,6 @@ useHead({
 }
 
 /* Order Details Tab Menu */
-.order-details-content {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.tab-menu {
-  display: flex;
-  border-bottom: 1px solid #404040;
-  background: #1a1a1a;
-}
-
-.tab-item {
-  padding: 12px 16px;
-  color: #888;
-  font-size: 14px;
-  font-weight: 400;
-  cursor: pointer;
-  border-right: 1px solid #404040;
-  transition: all 0.2s ease;
-  background: transparent;
-}
-
-.tab-item:last-child {
-  border-right: none;
-}
-
-.tab-item:hover {
-  color: #ccc;
-  background: #2a2a2a;
-}
-
-.tab-item.active {
-  color: #ffffff;
-  background: #2a2a2a;
-}
-
-.tab-content {
-  flex: 1;
-  padding: 0;
-  overflow-y: auto;
-}
-
-.tab-panel h4 {
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 12px;
-}
-
-.tab-panel p {
-  color: #888;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-/* History Table Styles - Using exact Orders table design */
-.table-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-/* Table Rows Container with Scroll */
-.table-rows-container {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-}
-
-/* Row Wrapper */
-.row-wrapper {
-  width: 100%;
-  min-width: max-content;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Table Header */
-.table-header {
-  display: flex;
-  background-color: #161818;
-  padding: 0;
-  gap: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  width: 100%;
-  min-width: max-content;
-  flex-shrink: 0;
-}
-
-.header-cell {
-  background-color: rgba(224, 224, 224, 0);
-  display: flex;
-  align-items: center;
-  font-family: 'Roboto', sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.6);
-  letter-spacing: 0.1px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  height: 40px;
-  padding: 0 12px;
-}
-
-.header-text {
-  font-weight: 400;
-}
-
-.header-subtext {
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 10px;
-  margin-left: 2px;
-}
-
-/* Table Row */
-.table-row {
-  display: flex;
-  padding: 0;
-  gap: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: background-color 0.15s ease;
-  width: 100%;
-  min-width: max-content;
-}
-
-.table-row:hover {
-  background-color: rgba(255, 255, 255, 0.02);
-}
-
-.row-cell {
-  display: flex;
-  align-items: center;
-  font-family: 'Roboto', sans-serif;
-  font-size: 13px;
-  color: #ffffff;
-  white-space: nowrap;
-  height: 48px;
-  padding: 0 12px;
-}
-
-/* Column Widths */
-.when-col { width: 120px; min-width: 120px; }
-.event-col { width: 120px; min-width: 120px; }
-.order-qty-col { width: 80px; min-width: 80px; }
-.open-qty-col { width: 80px; min-width: 80px; }
-.firm-qty-col { width: 80px; min-width: 80px; }
-.exec-qty-col { width: 80px; min-width: 80px; }
-.avg-exec-fee-col { width: 100px; min-width: 100px; }
-.avg-exec-rebate-col { width: 120px; min-width: 120px; }
-.agreements-col { width: 80px; min-width: 80px; }
-.initiator-col { width: 180px; min-width: 180px; }
-
-/* Data Element Styling - EXACT copy from OrdersWindow.vue */
-
-.date-time {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.date {
-  color: #ffffff;
-  font-weight: 500;
-}
-
-.time {
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.quantity {
-  color: #ffffff;
-  font-weight: 500;
-  text-align: right;
-  width: 100%;
-}
-
-.percentage {
-  font-family: 'Roboto', sans-serif;
-  font-size: 12px;
-  color: #ffffff;
-  font-weight: 500;
-  letter-spacing: 0.12px;
-}
-
-.email {
-  color: #ffffff;
-  font-weight: 500;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
-}
 
 
 

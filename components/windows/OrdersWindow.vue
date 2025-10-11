@@ -581,7 +581,7 @@ const handleViewOrder = (order) => {
   min-width: max-content;
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 40;
 }
 
 .header-cell {
@@ -672,7 +672,9 @@ const handleViewOrder = (order) => {
 }
 
 .table-row:hover {
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: rgba(255, 255, 255, 0.03);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .row-cell {
@@ -682,18 +684,19 @@ const handleViewOrder = (order) => {
   font-size: 13px;
   color: #ffffff;
   white-space: nowrap;
+  gap: 8px;
 }
 
 /* Normal density (default - current Orders spacing) */
 .table-density-normal .row-cell {
-  height: 48px;
-  padding: 0 12px;
+  height: 52px;
+  padding: 0 16px;
 }
 
 /* Dense density (Agreements spacing) */
 .table-density-dense .row-cell {
-  height: 40px;
-  padding: 0 6px;
+  height: 44px;
+  padding: 0 12px;
 }
 
 .row-cell.select-col {
@@ -703,7 +706,7 @@ const handleViewOrder = (order) => {
 
 /* Normal density (default - current Orders spacing) */
 .table-density-normal .row-cell.select-col {
-  padding: 0 12px;
+  padding: 0 16px;
 }
 
 /* Dense density (Agreements spacing) */
