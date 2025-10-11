@@ -7,6 +7,7 @@
         :categories="categories"
         :height="300"
         :xFormatter="xFormatter"
+        :yAxis="yAxis"
         xLabel="Time"
         yLabel="Price"
       />
@@ -36,6 +37,12 @@ const categories = {
 }
 
 const xFormatter = (i: number) => data[i].time
+
+const yAxis = {
+  title: {
+    text: 'Price'
+  }
+}
 </script>
 
 <style scoped>

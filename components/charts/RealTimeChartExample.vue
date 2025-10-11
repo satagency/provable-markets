@@ -7,6 +7,7 @@
         :categories="categories"
         :height="300"
         :xFormatter="xFormatter"
+        :yAxis="yAxis"
         xLabel="Time"
         yLabel="Price"
       />
@@ -38,6 +39,12 @@ const categories = {
 }
 
 const xFormatter = (i: number) => data.value[i].time
+
+const yAxis = {
+  title: {
+    text: 'Price'
+  }
+}
 
 let updateInterval: NodeJS.Timeout | null = null
 
