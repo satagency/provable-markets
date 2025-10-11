@@ -9,7 +9,13 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { Chart, registerables } from 'chart.js'
 import 'chartjs-adapter-date-fns'
 
-Chart.register(...registerables)
+// Register Chart.js components once
+if (!Chart.defaults.color || Chart.defaults.color === '#666') {
+  Chart.register(...registerables)
+  // Set global chart defaults for dark theme
+  Chart.defaults.color = '#ffffff'
+  Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)'
+}
 
 const chartCanvas = ref<HTMLCanvasElement | null>(null)
 let chart: Chart | null = null
@@ -81,6 +87,7 @@ const createChart = () => {
                 text: 'Buy Volume',
                 fillStyle: 'rgba(4, 207, 139, 0.8)',
                 strokeStyle: 'rgba(4, 207, 139, 0.8)',
+                fontColor: 'rgba(255, 255, 255, 0.8)',
                 lineWidth: 0,
                 hidden: false
               },
@@ -88,6 +95,7 @@ const createChart = () => {
                 text: 'Sell Volume',
                 fillStyle: 'rgba(239, 68, 68, 0.8)',
                 strokeStyle: 'rgba(239, 68, 68, 0.8)',
+                fontColor: 'rgba(255, 255, 255, 0.8)',
                 lineWidth: 0,
                 hidden: false
               }

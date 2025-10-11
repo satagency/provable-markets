@@ -26,7 +26,13 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { Chart, registerables } from 'chart.js'
 import 'chartjs-adapter-date-fns'
 
-Chart.register(...registerables)
+// Register Chart.js components once
+if (!Chart.defaults.color || Chart.defaults.color === '#666') {
+  Chart.register(...registerables)
+  // Set global chart defaults for dark theme
+  Chart.defaults.color = '#ffffff'
+  Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)'
+}
 
 const chartCanvas = ref<HTMLCanvasElement | null>(null)
 const lastPrice = ref(175.50)
