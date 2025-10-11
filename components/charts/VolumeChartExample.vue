@@ -7,6 +7,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { Chart, registerables } from 'chart.js'
+import 'chartjs-adapter-date-fns'
 
 Chart.register(...registerables)
 
