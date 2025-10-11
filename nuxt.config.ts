@@ -68,13 +68,18 @@ export default defineNuxtConfig({
   // Vite Configuration
   vite: {
     optimizeDeps: {
-      include: ['@unovis/ts', '@unovis/vue']
+      include: ['@unovis/ts', '@unovis/vue', 'to-px']
     },
     ssr: {
-      noExternal: ['@unovis/ts', '@unovis/vue']
+      noExternal: ['@unovis/ts', '@unovis/vue', 'to-px']
     },
     define: {
       global: 'globalThis'
+    },
+    resolve: {
+      alias: {
+        'to-px': 'to-px/browser.js'
+      }
     }
   }
 })
