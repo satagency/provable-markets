@@ -50,7 +50,7 @@ interface CandlestickData {
 }
 
 const data = ref<CandlestickData[]>([])
-const lastOHLC = ref({ o: 150.25, h: 以上の152.80, l: 149.50, c: 151.75 })
+const lastOHLC = ref({ o: 150.25, h: 152.80, l: 149.50, c: 151.75 })
 
 function generateCandlestickData(points: number): CandlestickData[] {
   const now = new Date()
