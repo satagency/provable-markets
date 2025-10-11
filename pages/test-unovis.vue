@@ -68,6 +68,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import ChartWindow from '~/components/windows/ChartWindow.vue'
+import MultiLineChartWindow from '~/components/windows/MultiLineChartWindow.vue'
 
 // Grid system state
 const gridColumns = ref(2)
@@ -85,9 +86,9 @@ const windows = ref([
   },
   {
     id: 2,
-    title: 'Window 2',
-    component: null,
-    gridArea: '2 / 1 / 3 / 2',
+    title: 'Multi-Line Chart',
+    component: MultiLineChartWindow,
+    gridArea: '1 / 2 / 2 / 3',
     zIndex: 1
   }
 ])
