@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, markRaw } from 'vue'
+import { ref, onMounted, shallowRef } from 'vue'
 import GridContainer from '~/components/ui/GridContainer.vue'
 import LineChartWindow from '~/components/windows/LineChartWindow.vue'
 import VolumeChartWindow from '~/components/windows/VolumeChartWindow.vue'
@@ -43,15 +43,15 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-// Window configurations - use markRaw to prevent components from becoming reactive
-const windows = ref([
+// Window configurations - use shallowRef to prevent deep reactivity
+const windows = shallowRef([
   {
     id: 'line-chart',
     x: 40,
     y: 40,
     width: 600,
     height: 400,
-    component: markRaw(LineChartWindow),
+    component: LineChartWindow,
     minWidth: 400,
     minHeight: 300,
     zIndex: 1
@@ -62,7 +62,7 @@ const windows = ref([
     y: 40,
     width: 600,
     height: 400,
-    component: markRaw(VolumeChartWindow),
+    component: VolumeChartWindow,
     minWidth: 400,
     minHeight: 300,
     zIndex: 2
@@ -73,7 +73,7 @@ const windows = ref([
     y: 480,
     width: 600,
     height: 400,
-    component: markRaw(CandlestickChartWindow),
+    component: CandlestickChartWindow,
     minWidth: 400,
     minHeight: 300,
     zIndex: 3
@@ -84,42 +84,78 @@ const windows = ref([
     y: 480,
     width: 600,
     height: 400,
-    component: markRaw(RealTimeChartWindow),
+    component: RealTimeChartWindow,
     minWidth: 400,
     minHeight: 300,
     zIndex: 4
   }
 ])
 
-// Store initial layout - need to preserve the markRaw components
-const createInitialLayout = () => windows.value.map(w => ({
-  ...w,
-  component: markRaw(w.component)
-}))
-
-const initialLayout = createInitialLayout()
+// Store initial layout
+const initialLayout = [
+  {
+    id: 'line-chart',
+    x: 40,
+    y: 40,
+    width: 600,
+    height: 400,
+    component: LineChartWindow,
+    minWidth: 400,
+    minHeight: 300,
+    zIndex: 1
+  },
+  {
+    id: 'volume-chart',
+    x: 680,
+    y: 40,
+    width: 600,
+    height: 400,
+    component: VolumeChartWindow,
+    minWidth: 400,
+    minHeight: 300,
+    zIndex: 2
+  },
+  {
+    id: 'candlestick-chart',
+    x: 40,
+    y: 480,
+    width: 600,
+    height: 400,
+    component: CandlestickChartWindow,
+    minWidth: 400,
+    minHeight: 300,
+    zIndex: 3
+  },
+  {
+    id: 'realtime-chart',
+    x: 680,
+    y: 480,
+    width: 600,
+    height: 400,
+    component: RealTimeChartWindow,
+    minWidth: 400,
+    minHeight: 300,
+    zIndex: 4
+  }
+]
 
 // Event handlers
 const handleWindowMove = (id: string, x: number, y: number) => {
-  const window = windows.value.find(w => w.id === id)
-  if (window) {
-    window.x = x
-    window.y = y
-  }
+  const updatedWindows = windows.value.map(w => 
+    w.id === id ? { ...w, x, y } : w
+  )
+  windows.value = updatedWindows
 }
 
 const handleWindowResize = (id: string, x: number, y: number, width: number, height: number) => {
-  const window = windows.value.find(w => w.id === id)
-  if (window) {
-    window.x = x
-    window.y = y
-    window.width = width
-    window.height = height
-  }
+  const updatedWindows = windows.value.map(w => 
+    w.id === id ? { ...w, x, y, width, height } : w
+  )
+  windows.value = updatedWindows
 }
 
 const resetLayout = () => {
-  windows.value = createInitialLayout()
+  windows.value = [...initialLayout]
 }
 
 onMounted(() => {
