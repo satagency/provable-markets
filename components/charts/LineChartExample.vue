@@ -1,17 +1,22 @@
 <template>
   <div class="chart-wrapper">
-    <div class="chart-title">Stock Price Over Time</div>
-    <VisXYContainer :data="data" :height="height">
-      <VisLine 
-        :x="xAccessor" 
-        :y="yAccessor" 
-        :color="lineColor"
-        :curveType="'basis'"
-      />
-      <VisAxis type="x" :numTicks="5" :tickFormat="formatTime" />
-      <VisAxis type="y" :numTicks="6" :tickFormat="formatPrice" />
-      <VisTooltip />
-    </VisXYContainer>
+    <h3 class="chart-title">Stock Price Trend</h3>
+    <div class="chart-container">
+      <VisXYContainer 
+        :data="data" 
+        :height="280"
+      >
+        <VisLine 
+          :x="(d) => d.x" 
+          :y="(d) => d.y" 
+          color="#04CF8B"
+          :lineWidth="2"
+        />
+        <VisAxis type="x" label="Time" />
+        <VisAxis type="y" label="Price ($)" />
+        <VisTooltip />
+      </VisXYContainer>
+    </div>
   </div>
 </template>
 
@@ -19,73 +24,57 @@
 import { ref } from 'vue'
 import { VisXYContainer, VisLine, VisAxis, VisTooltip } from '@unovis/vue'
 
-interface DataRecord {
+interface DataPoint {
   x: number
   y: number
 }
 
-const lineColor = '#04CF8B'
-const height = 300
-
-// Generate time series data
-const generateData = (points: number = 50): DataRecord[] => {
+// Generate simple test data
+const generateData = (): DataPoint[] => {
+  const points: DataPoint[] = []
   const now = Date.now()
-  const data: DataRecord[] = []
-  let price = 150 + Math.random() * 50
+  let price = 150
   
-  for (let i = points; i >= 0; i--) {
-    const timestamp = now - i * 60000 // 1 minute intervals
-    const change = (Math.random() - 0.48) * 2
-    price = Math.max(100, price + change)
-    data.push({
-      x: timestamp,
-      y: parseFloat(price.toFixed(2))
+  for (let i = 0; i < 30; i++) {
+    price += (Math.random() - 0.5) * 10
+    points.push({
+      x: now - (30 - i) * 60000,
+      y: price
     })
   }
   
-  return data
+  return points
 }
 
-const data = ref<DataRecord[]>(generateData())
-
-// Accessor functions
-const xAccessor = (d: DataRecord) => d.x
-const yAccessor = (d: DataRecord) => d.y
-
-// Format functions
-const formatTime = (value: number) => {
-  const date = new Date(value)
-  return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
-}
-
-const formatPrice = (value: number) => `$${value.toFixed(0)}`
+const data = ref<DataPoint[]>(generateData())
 </script>
 
 <style scoped>
 .chart-wrapper {
   width: 100%;
   height: 100%;
-  padding: 16px;
-  background: #1a1a1a;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  padding: 20px;
+  background: #1a1a1a;
+  box-sizing: border-box;
 }
 
 .chart-title {
-  font-size: 14px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 16px;
 }
 
-/* Unovis dark theme overrides */
-.chart-wrapper :deep(.unovis-xy-container) {
+.chart-container {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Unovis dark theme styling */
+.chart-wrapper :deep(svg) {
   background: transparent;
-}
-
-.chart-wrapper :deep(.unovis-axis) {
-  color: rgba(255, 255, 255, 0.6);
 }
 
 .chart-wrapper :deep(.unovis-axis line) {
@@ -93,16 +82,11 @@ const formatPrice = (value: number) => `$${value.toFixed(0)}`
 }
 
 .chart-wrapper :deep(.unovis-axis text) {
-  fill: rgba(255, 255, 255, 0.6);
-  font-size: 11px;
+  fill: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
 }
 
-.chart-wrapper :deep(.unovis-tooltip) {
-  background: rgba(0, 0, 0, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  border-radius: 4px;
-  padding: 8px 12px;
-  font-size: 12px;
+.chart-wrapper :deep(.unovis-xy-container) {
+  background: transparent;
 }
 </style>

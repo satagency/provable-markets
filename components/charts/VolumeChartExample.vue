@@ -1,75 +1,79 @@
 <template>
   <div class="chart-wrapper">
-    <VisXYContainer :data="data" :height="height">
-      <VisGroupedBar 
-        :x="(d: DataRecord) => d.x" 
-        :y="(d: DataRecord) => d.y"
-        :color="(d: DataRecord) => d.color"
-      />
-      <VisAxis type="x" :numTicks="5" :tickFormat="formatTime" />
-      <VisAxis type="y" :numTicks="6" :tickFormat="formatVolume" />
-      <VisTooltip />
-    </VisXYContainer>
+    <h3 class="chart-title">Trading Volume</h3>
+    <div class="chart-container">
+      <VisXYContainer 
+        :data="data" 
+        :height="280"
+      >
+        <VisStackedBar 
+          :x="(d) => d.x" 
+          :y="[(d) => d.buy, (d) => d.sell]"
+          :color="['#04CF8B', '#FF4444']"
+        />
+        <VisAxis type="x" label="Time" />
+        <VisAxis type="y" label="Volume" />
+        <VisTooltip />
+      </VisXYContainer>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { VisXYContainer, VisGroupedBar, VisAxis, VisTooltip } from '@unovis/vue'
+import { VisXYContainer, VisStackedBar, VisAxis, VisTooltip } from '@unovis/vue'
 
-interface DataRecord {
+interface VolumeData {
   x: number
-  y: number
-  color: string
+  buy: number
+  sell: number
 }
 
-const height = 300
-
 // Generate volume data
-const generateData = (points: number = 30): DataRecord[] => {
+const generateData = (): VolumeData[] => {
+  const points: VolumeData[] = []
   const now = Date.now()
-  const data: DataRecord[] = []
   
-  for (let i = points; i >= 0; i--) {
-    const timestamp = now - i * 300000 // 5 minute intervals
-    const volume = Math.floor(Math.random() * 50000) + 10000
-    const isBuy = Math.random() > 0.5
-    data.push({
-      x: timestamp,
-      y: volume,
-      color: isBuy ? '#04CF8B' : '#ef4444'
+  for (let i = 0; i < 30; i++) {
+    points.push({
+      x: now - (30 - i) * 60000,
+      buy: Math.floor(Math.random() * 100000) + 50000,
+      sell: Math.floor(Math.random() * 100000) + 50000
     })
   }
   
-  return data
+  return points
 }
 
-const data = ref<DataRecord[]>(generateData())
-
-// Format functions
-const formatTime = (value: number) => {
-  const date = new Date(value)
-  return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
-}
-
-const formatVolume = (value: number) => value.toLocaleString()
+const data = ref<VolumeData[]>(generateData())
 </script>
 
 <style scoped>
 .chart-wrapper {
   width: 100%;
   height: 100%;
-  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
   background: #1a1a1a;
   box-sizing: border-box;
 }
 
-.chart-wrapper :deep(.unovis-xy-container) {
-  background: transparent;
+.chart-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 16px;
 }
 
-.chart-wrapper :deep(.unovis-axis) {
-  color: rgba(255, 255, 255, 0.6);
+.chart-container {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Unovis dark theme styling */
+.chart-wrapper :deep(svg) {
+  background: transparent;
 }
 
 .chart-wrapper :deep(.unovis-axis line) {
@@ -77,16 +81,7 @@ const formatVolume = (value: number) => value.toLocaleString()
 }
 
 .chart-wrapper :deep(.unovis-axis text) {
-  fill: rgba(255, 255, 255, 0.6);
-  font-size: 11px;
-}
-
-.chart-wrapper :deep(.unovis-tooltip) {
-  background: rgba(0, 0, 0, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  border-radius: 4px;
-  padding: 8px 12px;
+  fill: rgba(255, 255, 255, 0.7);
   font-size: 12px;
 }
 </style>
