@@ -2,7 +2,7 @@
   <div class="test-page">
     <h1>Unovis Test Page</h1>
     <div class="chart-container">
-      <VisXYContainer :data="data" :height="400">
+      <VisXYContainer :data="data" :height="400" :width="800">
         <VisLine :x="x" :y="y" />
         <VisAxis type="x" />
         <VisAxis type="y" />
@@ -44,5 +44,10 @@ h1 {
   padding: 20px;
   border-radius: 8px;
   border: 1px solid #404040;
+  width: 100%;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
