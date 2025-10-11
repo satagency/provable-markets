@@ -1,18 +1,64 @@
-<script setup lang="ts">
-import { VisXYContainer, VisBar, VisAxis } from '@unovis/vue'
-import { volumeData } from './data'
-</script>
-
 <template>
   <div class="chart-content">
     <h3 class="chart-title">Trading Volume</h3>
-    <VisXYContainer :height="300" :data="volumeData">
-      <VisBar :x="d => d.x" :y="d => d.y" />
-      <VisAxis type="x" />
-      <VisAxis type="y" />
-    </VisXYContainer>
+    <div class="chart-container">
+      <canvas ref="chartCanvas"></canvas>
+    </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { Chart, registerables } from 'chart.js'
+
+Chart.register(...registerables)
+
+const chartCanvas = ref<HTMLCanvasElement | null>(null)
+
+onMounted(() => {
+  if (chartCanvas.value) {
+    new Chart(chartCanvas.value, {
+      type: 'bar',
+      data: {
+        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+        datasets: [{
+          label: 'Volume',
+          data: [100, 150, 120, 200, 180, 160, 220, 190, 250, 210],
+          backgroundColor: '#04CF8B',
+          borderColor: '#04CF8B'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)'
+            },
+            ticks: {
+              color: 'rgba(255, 255, 255, 0.7)'
+            }
+          },
+          y: {
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)'
+            },
+            ticks: {
+              color: 'rgba(255, 255, 255, 0.7)'
+            }
+          }
+        }
+      }
+    })
+  }
+})
+</script>
 
 <style scoped>
 .chart-content {
@@ -29,5 +75,11 @@ import { volumeData } from './data'
   font-weight: 600;
   color: #ffffff;
   margin: 0 0 16px 0;
+}
+
+.chart-container {
+  flex: 1;
+  position: relative;
+  height: 300px;
 }
 </style>

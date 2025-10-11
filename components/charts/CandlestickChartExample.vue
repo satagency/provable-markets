@@ -1,24 +1,65 @@
-<script setup lang="ts">
-import { VisXYContainer, VisCandlestick, VisAxis } from '@unovis/vue'
-import { candlestickData } from './data'
-</script>
-
 <template>
   <div class="chart-content">
     <h3 class="chart-title">OHLC Candlestick</h3>
-    <VisXYContainer :height="300" :data="candlestickData">
-      <VisCandlestick 
-        :x="d => d.x" 
-        :open="d => d.open"
-        :high="d => d.high"
-        :low="d => d.low"
-        :close="d => d.close"
-      />
-      <VisAxis type="x" />
-      <VisAxis type="y" />
-    </VisXYContainer>
+    <div class="chart-container">
+      <canvas ref="chartCanvas"></canvas>
+    </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { Chart, registerables } from 'chart.js'
+
+Chart.register(...registerables)
+
+const chartCanvas = ref<HTMLCanvasElement | null>(null)
+
+onMounted(() => {
+  if (chartCanvas.value) {
+    new Chart(chartCanvas.value, {
+      type: 'line',
+      data: {
+        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+        datasets: [{
+          label: 'Price',
+          data: [105, 108, 104, 118, 122, 120, 125, 128, 132, 138],
+          borderColor: '#04CF8B',
+          backgroundColor: 'rgba(4, 207, 139, 0.1)',
+          tension: 0.4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)'
+            },
+            ticks: {
+              color: 'rgba(255, 255, 255, 0.7)'
+            }
+          },
+          y: {
+            grid: {
+              color: 'rgba(255, 255, 255, 0.1)'
+            },
+            ticks: {
+              color: 'rgba(255, 255, 255, 0.7)'
+            }
+          }
+        }
+      }
+    })
+  }
+})
+</script>
 
 <style scoped>
 .chart-content {
@@ -35,5 +76,11 @@ import { candlestickData } from './data'
   font-weight: 600;
   color: #ffffff;
   margin: 0 0 16px 0;
+}
+
+.chart-container {
+  flex: 1;
+  position: relative;
+  height: 300px;
 }
 </style>
