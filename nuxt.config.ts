@@ -7,12 +7,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   
   // Modules
-  modules: [
-    '@nuxtjs/tailwindcss',
-    '@pinia/nuxt',
-    '@vueuse/nuxt',
-    '@nuxtjs/google-fonts'
-  ],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', '@nuxtjs/google-fonts', 'nuxt-charts'],
   
   // Google Fonts
   googleFonts: {
