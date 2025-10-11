@@ -2,39 +2,48 @@
   <div class="test-page">
     <h1>Nuxt Charts Test Page</h1>
     <div class="chart-container">
-      <LineChart
+      <AreaChart
         :data="data"
-        :categories="categories"
         :height="300"
-        :xFormatter="xFormatter"
-        xLabel="Month"
-        yLabel="Amount"
+        :categories="categories"
+        :y-grid-line="true"
+        :x-formatter="xFormatter"
+        :legend-position="LegendPosition.Top"
+        :hide-legend="false"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const data = [
-  { month: 'Jan', sales: 100, profit: 50 },
-  { month: 'Feb', sales: 120, profit: 55 },
-  { month: 'Mar', sales: 180, profit: 80 },
-  { month: 'Apr', sales: 110, profit: 40 },
-  { month: 'May', sales: 90, profit: 30 },
-]
+interface AreaChartItem {
+  date: string
+  desktop: number
+  mobile: number
+}
 
-const categories = {
-  sales: {
-    name: 'Sales',
+const categories: Record<string, BulletLegendItemInterface> = {
+  desktop: {
+    name: 'Desktop',
     color: '#3b82f6',
   },
-  profit: {
-    name: 'Profit',
-    color: '#10b981',
+  mobile: {
+    name: 'Mobile',
+    color: '#22c55e',
   },
 }
 
-const xFormatter = (i: number) => data[i].month
+const data: AreaChartItem[] = [
+  { date: '2024-04-01', desktop: 222, mobile: 150 },
+  { date: '2024-04-02', desktop: 180, mobile: 97 },
+  { date: '2024-04-03', desktop: 167, mobile: 120 },
+  { date: '2024-04-04', desktop: 260, mobile: 240 },
+  { date: '2024-04-05', desktop: 240, mobile: 290 },
+]
+
+const xFormatter = (tick: number): string => {
+  return `${data[tick]?.date}`
+}
 </script>
 
 <style scoped>
