@@ -14,7 +14,7 @@
         >
           <span>{{ isOrderActive ? 'Deactivate' : 'Activate' }}</span>
         </button>
-        <button class="batch-orders-btn cancel-btn" @click="$emit('cancel')">
+        <button class="batch-orders-btn cancel-btn" @click="handleCancelOrder">
           <span>Cancel</span>
         </button>
         <button class="batch-orders-btn edit-btn" @click="$emit('edit')">
@@ -87,39 +87,40 @@
               </div>
             </div>
             
-            <!-- Single Order Entry -->
-            <div class="order-entry">
+            <!-- Order History Entries -->
+            <div v-for="entry in orderHistory" :key="entry.id" class="order-entry">
               <div class="entry-row">
                 <div class="entry-cell when-col">
-                  <span class="date-time">10/12/23 8:30A</span>
+                  <span class="date">{{ entry.date }}</span>
+                  <span class="time">{{ entry.time }}</span>
                 </div>
                 <div class="entry-cell event-col">
-                  <StatusPill status="CREATED" />
+                  <StatusPill :status="entry.event.toUpperCase()" />
                 </div>
                 <div class="entry-cell order-qty-col">
-                  <span class="quantity">1,000</span>
+                  <span class="quantity">{{ entry.orderQty.toLocaleString() }}</span>
                 </div>
                 <div class="entry-cell open-qty-col">
-                  <span class="quantity">750</span>
+                  <span class="quantity">{{ entry.openQty.toLocaleString() }}</span>
                 </div>
                 <div class="entry-cell ioi-qty-col">
                   <span class="quantity">0</span>
                 </div>
                 <div class="entry-cell firm-qty-col">
-                  <span class="quantity">500</span>
+                  <span class="quantity">{{ entry.firmQty.toLocaleString() }}</span>
                 </div>
                 <div class="entry-cell exec-qty-col">
-                  <span class="quantity">250</span>
+                  <span class="quantity">{{ entry.execQty.toLocaleString() }}</span>
                 </div>
                 <div class="entry-cell avg-exec-fee-col">
-                  <span class="percentage">0.15%</span>
+                  <span class="percentage">{{ entry.avgExecFee }}%</span>
                 </div>
                 <div class="entry-cell avg-exec-rebate-col">
-                  <span class="percentage">0.08%</span>
+                  <span class="percentage">{{ entry.avgExecRebate }}%</span>
                 </div>
                 <div class="entry-cell agreements-col">
                   <div class="agreements-info">
-                    <div class="agreement-count">3</div>
+                    <div class="agreement-count">{{ entry.agreements }}</div>
                     <span class="available-text">available</span>
                     <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -127,7 +128,7 @@
                   </div>
                 </div>
                 <div class="entry-cell initiator-col">
-                  <span class="email">trader1@provable.com</span>
+                  <span class="email">{{ entry.initiator }}</span>
                 </div>
               </div>
             </div>
@@ -308,9 +309,13 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import StatusPill from '~/components/ui/StatusPill.vue'
+import { useConfirmDialog } from '~/composables/useConfirmDialog'
 
 // Define emits
-defineEmits(['close', 'deactivate', 'cancel', 'edit'])
+const emit = defineEmits(['close', 'deactivate', 'cancel', 'edit'])
+
+// Confirm dialog composable
+const { confirmDelete, showDialog } = useConfirmDialog()
 
 // Order activation state
 const isOrderActive = ref(true)
@@ -329,34 +334,97 @@ const toggleOrderActivation = () => {
   console.log(`Order ${isOrderActive.value ? 'activated' : 'deactivated'}`)
 }
 
+// Handle cancel order with confirmation dialog
+const handleCancelOrder = async () => {
+  console.log('Cancel button clicked!') // Debug log
+  
+  try {
+    const confirmed = await showDialog({
+      title: 'Order cancellation',
+      message: 'You are about to cancel the order. This cannot be undone.',
+      confirmText: 'Cancel Order',
+      cancelText: 'Keep Order',
+      variant: 'danger',
+      allowBackdropClose: false
+    })
+    
+    console.log('Dialog result:', confirmed) // Debug log
+    
+    if (confirmed) {
+      // Perform the actual cancel operation
+      console.log('Order cancelled successfully')
+      emit('cancel')
+    }
+  } catch (error) {
+    console.error('Error cancelling order:', error)
+  }
+}
+
+// Test dialog function
+
 // Order History data
 const orderHistory = ref([])
 
 // Generate sample order history data
 const generateOrderHistory = () => {
-  const events = ['Created', 'Modified', 'Partially Filled', 'Filled', 'Cancelled', 'Rejected', 'Updated']
-  const dates = ['2024-01-15', '2024-01-14', '2024-01-13', '2024-01-12', '2024-01-11']
-  const times = ['09:30:15', '14:22:08', '11:45:33', '16:18:42', '08:55:27']
-  const initiators = ['john.doe@firm.com', 'jane.smith@trader.com', 'mike.wilson@hedge.com', 'sarah.jones@fund.com', 'alex.brown@prop.com']
-  
-  const history = []
-  
-  for (let i = 0; i < 25; i++) {
-    history.push({
-      id: `history-${i + 1}`,
-      date: dates[Math.floor(Math.random() * dates.length)],
-      time: times[Math.floor(Math.random() * times.length)],
-      event: events[Math.floor(Math.random() * events.length)],
-      orderQty: Math.floor(Math.random() * 10000) + 1000,
-      openQty: Math.floor(Math.random() * 5000) + 500,
-      firmQty: Math.floor(Math.random() * 3000) + 200,
-      execQty: Math.floor(Math.random() * 2000) + 100,
-      avgExecFee: (Math.random() * 0.5 + 0.1).toFixed(3),
-      avgExecRebate: (Math.random() * 0.3 + 0.05).toFixed(3),
-      agreements: Math.floor(Math.random() * 10) + 1,
-      initiator: initiators[Math.floor(Math.random() * initiators.length)]
-    })
-  }
+  const history = [
+    {
+      id: 'history-1',
+      date: '01/15',
+      time: '9:30AM',
+      event: 'New',
+      orderQty: 10000,
+      openQty: 10000,
+      firmQty: 0,
+      execQty: 0,
+      avgExecFee: '0.000',
+      avgExecRebate: '0.000',
+      agreements: 0,
+      initiator: 'john.doe@firm.com'
+    },
+    {
+      id: 'history-2',
+      date: '01/15',
+      time: '10:15AM',
+      event: 'Amended',
+      orderQty: 10000,
+      openQty: 10000,
+      firmQty: 0,
+      execQty: 0,
+      avgExecFee: '0.000',
+      avgExecRebate: '0.000',
+      agreements: 0,
+      initiator: 'john.doe@firm.com'
+    },
+    {
+      id: 'history-3',
+      date: '01/15',
+      time: '11:22AM',
+      event: 'Amended',
+      orderQty: 10000,
+      openQty: 10000,
+      firmQty: 0,
+      execQty: 0,
+      avgExecFee: '0.000',
+      avgExecRebate: '0.000',
+      agreements: 0,
+      initiator: 'john.doe@firm.com'
+    },
+    {
+      id: 'history-4',
+      date: '01/15',
+      time: '2:45PM',
+      event: 'Executed',
+      orderQty: 10000,
+      openQty: 0,
+      firmQty: 10000,
+      execQty: 10000,
+      avgExecFee: '0.125',
+      avgExecRebate: '0.075',
+      agreements: 5,
+      initiator: 'system@execution.com'
+    }
+  ]
   
   return history
 }
@@ -644,30 +712,36 @@ onMounted(() => {
 
 /* Data Element Styling - EXACT copy from OrdersWindow.vue */
 
-.date-time {
+.date {
   color: #ffffff;
-  font-weight: 500;
+  font-weight: 400;
+  margin-right: 8px;
+}
+
+.time {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
 }
 
 .quantity {
   color: #ffffff;
-  font-weight: 500;
+  font-weight: 400;
   text-align: right;
   width: 100%;
 }
 
 .percentage {
   font-family: 'Roboto', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   color: #ffffff;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0.12px;
 }
 
 .email {
   font-size: 14px;
   color: #ffffff;
-  font-weight: 500;
+  font-weight: 400;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

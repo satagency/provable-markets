@@ -51,13 +51,30 @@
       <NuxtLayout>
         <NuxtPage />
       </NuxtLayout>
+      
+      <!-- Global Confirm Dialog -->
+      <ConfirmDialog
+        :config="confirmDialogState.config"
+        :is-open="confirmDialogState.isOpen"
+        :loading="confirmDialogState.loading"
+        @confirm="handleConfirm"
+        @cancel="handleCancel"
+        @close="handleClose"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import ConfirmDialog from '~/components/ui/ConfirmDialog.vue'
+import { useConfirmDialog, confirmDialogState } from '~/composables/useConfirmDialog'
+
 // Global app configuration
 const showLoader = ref(true)
+
+// Confirm dialog handlers
+const { handleConfirm, handleCancel, handleClose } = useConfirmDialog()
 
 onMounted(() => {
   // Start loader animation immediately

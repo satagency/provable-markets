@@ -183,7 +183,7 @@
                 <span class="price">${{ order.unitPrice }}</span>
               </div>
               <div class="row-cell market-value-col">
-                <span class="market-value">${{ order.marketValue.toLocaleString() }}</span>
+                <span class="market-value">${{ order.formattedMarketValue }}</span>
               </div>
               <div class="row-cell total-qty-col">
                 <span class="quantity">{{ order.totalQty }}</span>
@@ -195,7 +195,7 @@
                 <span class="quantity">{{ order.timeForce }}</span>
               </div>
               <div class="row-cell counterparty-col">
-                <span class="loss-amount">{{ order.counterpartyAmount > 0 ? '+' : '' }}${{ Math.abs(order.counterpartyAmount) }}</span>
+                <span class="loss-amount">{{ order.formattedCounterpartyAmount }}</span>
               </div>
               <div class="row-cell sec-type-col">
                 <span class="sec-type">{{ order.secType }}</span>
@@ -335,7 +335,7 @@ const generateOrders = () => {
       id: i,
       status,
       date: '10/12/23',
-      time: `${9 + Math.floor(i / 10)}:${(i * 3) % 60}${i % 2 === 0 ? 'A' : 'P'}`,
+      time: `${9 + Math.floor(i / 10)}:${String((i * 3) % 60).padStart(2, '0')}${i % 2 === 0 ? 'A' : 'P'}`,
       side,
       intent,
       ticker,
@@ -350,15 +350,17 @@ const generateOrders = () => {
       agreements: Math.floor(Math.random() * 5) + 1,
       unitPrice: (Math.random() * 500 + 50).toFixed(2),
       marketValue: Math.floor(Math.random() * 200000) + 10000,
+      formattedMarketValue: '',
       totalQty: Math.floor(Math.random() * 500) + 50,
       minQty: Math.floor(Math.random() * 100) + 25,
       timeForce: Math.floor(Math.random() * 500) + 50,
       counterpartyAmount: Math.floor(Math.random() * 2000) - 1000,
+      formattedCounterpartyAmount: '',
       priority,
       isToggled: false,
       secType: ['EQ', 'ETF', 'REIT', 'ADR'][Math.floor(Math.random() * 4)],
       createdDate: '10/12/23',
-      createdTime: `${8 + Math.floor(i / 15)}:${(i * 2) % 60}${i % 2 === 0 ? 'A' : 'P'}`,
+      createdTime: `${8 + Math.floor(i / 15)}:${String((i * 2) % 60).padStart(2, '0')}${i % 2 === 0 ? 'A' : 'P'}`,
       createdBy: `trader${Math.floor(Math.random() * 10) + 1}@provable.com`,
       lastUpdateBy: `trader${Math.floor(Math.random() * 10) + 1}@provable.com`,
       bboQty: Math.floor(Math.random() * 1000) + 100,
@@ -369,6 +371,12 @@ const generateOrders = () => {
       bboAgreements: Math.floor(Math.random() * 8) + 1
     })
   }
+  
+  // Pre-compute formatted values for performance
+  orders.forEach(order => {
+    order.formattedMarketValue = order.marketValue.toLocaleString()
+    order.formattedCounterpartyAmount = `${order.counterpartyAmount > 0 ? '+' : ''}$${Math.abs(order.counterpartyAmount)}`
+  })
   
   return orders
 }
@@ -741,7 +749,7 @@ const handleViewOrder = (order) => {
 
 .date {
   color: #ffffff;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .time {
@@ -749,7 +757,7 @@ const handleViewOrder = (order) => {
 }
 
 .ticker {
-  font-weight: 600;
+  font-weight: 400;
   color: #ffffff;
 }
 
@@ -769,7 +777,7 @@ const handleViewOrder = (order) => {
 
 .quantity {
   color: #ffffff;
-  font-weight: 500;
+  font-weight: 400;
   text-align: right;
   width: 100%;
 }
@@ -783,28 +791,28 @@ const handleViewOrder = (order) => {
 
 .price {
   color: #ffffff;
-  font-weight: 500;
+  font-weight: 400;
   font-family: 'Roboto Mono', monospace;
 }
 
 .market-value {
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 400;
   font-family: 'Roboto Mono', monospace;
 }
 
 .loss-amount {
   color: #ffffff;
   font-family: 'Roboto Mono', monospace;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 /* New column content styles */
 .sec-type {
   font-family: 'Roboto', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   color: #ffffff;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0.12px;
 }
 
@@ -821,9 +829,9 @@ const handleViewOrder = (order) => {
 
 .percentage {
   font-family: 'Roboto', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   color: #ffffff;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0.12px;
 }
 

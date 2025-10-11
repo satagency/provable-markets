@@ -153,3 +153,23 @@ export interface MarketData {
   ask: number
   spread: number
 }
+
+// Confirm Dialog Types
+export interface ConfirmDialogConfig {
+  title: string
+  message: string
+  confirmText?: string
+  cancelText?: string
+  variant?: 'danger' | 'warning' | 'info'
+  allowBackdropClose?: boolean
+  confirmButtonClass?: string
+}
+
+export type ConfirmDialogVariant = 'danger' | 'warning' | 'info'
+
+export interface ConfirmDialogState {
+  isOpen: boolean
+  config: ConfirmDialogConfig
+  loading: boolean
+  resolve?: (value: boolean) => void
+}
