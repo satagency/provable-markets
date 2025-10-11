@@ -76,8 +76,39 @@
             <div class="header-cell counterparty-col">
               <span class="header-text">CounterParty</span>
             </div>
-            <div class="header-cell last-col">
-              <span class="header-text">Last</span>
+            <div class="header-cell sec-type-col">
+              <span class="header-text">Sec Type</span>
+            </div>
+            <div class="header-cell created-time-col">
+              <span class="header-text">Created Time</span>
+            </div>
+            <div class="header-cell created-by-col">
+              <span class="header-text">Created By</span>
+            </div>
+            <div class="header-cell last-update-by-col">
+              <span class="header-text">Last Update By</span>
+            </div>
+            <div class="header-cell bbo-qty-col">
+              <span class="header-text">BBO Qty</span>
+            </div>
+            <div class="header-cell bbo-fee-col">
+              <span class="header-text">BBO Fee</span>
+              <span class="header-subtext">%</span>
+            </div>
+            <div class="header-cell bbo-rebate-col">
+              <span class="header-text">BBO Rebate</span>
+              <span class="header-subtext">%</span>
+            </div>
+            <div class="header-cell spread-rebate-col">
+              <span class="header-text">Spread %</span>
+              <span class="header-subtext">(Rebate)</span>
+            </div>
+            <div class="header-cell spread-bbo-col">
+              <span class="header-text">Spread vs. BBO</span>
+              <span class="header-subtext">(fee)</span>
+            </div>
+            <div class="header-cell bbo-agreements-col">
+              <span class="header-text">BBO Agreements</span>
             </div>
             <div class="header-cell actions-col sticky-actions">
               <span class="header-text">Actions</span>
@@ -171,8 +202,38 @@
               <div class="row-cell counterparty-col">
                 <span class="loss-amount">{{ order.counterpartyAmount > 0 ? '+' : '' }}${{ Math.abs(order.counterpartyAmount) }}</span>
               </div>
-              <div class="row-cell last-col">
-                <div :class="`priority-badge ${order.priority.toLowerCase()}`">{{ order.priority }}</div>
+              <div class="row-cell sec-type-col">
+                <span class="sec-type">{{ order.secType }}</span>
+              </div>
+              <div class="row-cell created-time-col">
+                <div class="date-time">
+                  <span class="date">{{ order.createdDate }}</span>
+                  <span class="time">{{ order.createdTime }}</span>
+                </div>
+              </div>
+              <div class="row-cell created-by-col">
+                <span class="email">{{ order.createdBy }}</span>
+              </div>
+              <div class="row-cell last-update-by-col">
+                <span class="email">{{ order.lastUpdateBy }}</span>
+              </div>
+              <div class="row-cell bbo-qty-col">
+                <span class="quantity">{{ order.bboQty }}</span>
+              </div>
+              <div class="row-cell bbo-fee-col">
+                <span class="percentage">{{ order.bboFee }}%</span>
+              </div>
+              <div class="row-cell bbo-rebate-col">
+                <span class="percentage">{{ order.bboRebate }}%</span>
+              </div>
+              <div class="row-cell spread-rebate-col">
+                <span class="percentage">{{ order.spreadRebate }}%</span>
+              </div>
+              <div class="row-cell spread-bbo-col">
+                <span class="percentage">{{ order.spreadBbo }}%</span>
+              </div>
+              <div class="row-cell bbo-agreements-col">
+                <span class="quantity">{{ order.bboAgreements }}</span>
               </div>
               <div class="row-cell actions-col sticky-actions">
                 <div class="docked-actions-panel">
@@ -292,7 +353,18 @@ const generateOrders = () => {
       timeForce: Math.floor(Math.random() * 500) + 50,
       counterpartyAmount: Math.floor(Math.random() * 2000) - 1000,
       priority,
-      isToggled: false
+      isToggled: false,
+      secType: ['EQ', 'ETF', 'REIT', 'ADR'][Math.floor(Math.random() * 4)],
+      createdDate: '10/12/23',
+      createdTime: `${8 + Math.floor(i / 15)}:${(i * 2) % 60}${i % 2 === 0 ? 'A' : 'P'}`,
+      createdBy: `trader${Math.floor(Math.random() * 10) + 1}@provable.com`,
+      lastUpdateBy: `trader${Math.floor(Math.random() * 10) + 1}@provable.com`,
+      bboQty: Math.floor(Math.random() * 1000) + 100,
+      bboFee: (Math.random() * 2).toFixed(2),
+      bboRebate: (Math.random() * 1.5).toFixed(2),
+      spreadRebate: (Math.random() * 3).toFixed(2),
+      spreadBbo: (Math.random() * 2.5).toFixed(2),
+      bboAgreements: Math.floor(Math.random() * 8) + 1
     })
   }
   
@@ -576,7 +648,16 @@ const handleViewOrder = (order) => {
 .min-qty-col { width: 80px; min-width: 80px; }
 .time-force-col { width: 80px; min-width: 80px; }
 .counterparty-col { width: 120px; min-width: 120px; }
-.last-col { width: 80px; min-width: 80px; }
+.sec-type-col { width: 80px; min-width: 80px; }
+.created-time-col { width: 120px; min-width: 120px; }
+.created-by-col { width: 160px; min-width: 160px; }
+.last-update-by-col { width: 160px; min-width: 160px; }
+.bbo-qty-col { width: 80px; min-width: 80px; }
+.bbo-fee-col { width: 80px; min-width: 80px; }
+.bbo-rebate-col { width: 90px; min-width: 90px; }
+.spread-rebate-col { width: 100px; min-width: 100px; }
+.spread-bbo-col { width: 120px; min-width: 120px; }
+.bbo-agreements-col { width: 120px; min-width: 120px; }
 .actions-col { width: 180px; min-width: 180px; }
 
 /* Table Row */
@@ -717,6 +798,31 @@ const handleViewOrder = (order) => {
   color: #ffffff;
   font-family: 'Roboto Mono', monospace;
   font-weight: 500;
+}
+
+/* New column content styles */
+.sec-type {
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  color: #ffffff;
+  font-weight: 500;
+  letter-spacing: 0.12px;
+}
+
+.email {
+  font-family: 'Roboto', sans-serif;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+  letter-spacing: 0.11px;
+}
+
+.percentage {
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  color: #ffffff;
+  font-weight: 500;
+  letter-spacing: 0.12px;
 }
 
 
