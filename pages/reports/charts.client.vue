@@ -33,7 +33,12 @@
       
         <!-- Window Content -->
         <div class="window-content">
-          <component v-if="window.component" :is="window.component" />
+          <ClientOnly>
+            <component v-if="window.component" :is="window.component" />
+            <template #fallback>
+              <div class="loading-message">Loading chart...</div>
+            </template>
+          </ClientOnly>
         </div>
       </div>
     </div>
