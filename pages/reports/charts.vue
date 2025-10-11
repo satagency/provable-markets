@@ -1,43 +1,50 @@
 <template>
-  <div class="dashboard-container">
-    <!-- Grid Container for Windows -->
-    <div 
-      class="grid-container"
-      :style="{ gridTemplateColumns: gridTemplate }"
-    >
-      <!-- Dynamic Windows -->
+  <ClientOnly>
+    <div class="dashboard-container">
+      <!-- Grid Container for Windows -->
       <div 
-        v-for="window in windows"
-        :key="window.id"
-        class="grid-window"
-        :style="{ gridArea: window.gridArea, zIndex: window.zIndex }"
-        @mousedown="startDrag(window.id, $event)"
+        class="grid-container"
+        :style="{ gridTemplateColumns: gridTemplate }"
       >
-        <!-- Window Header with Controls -->
-        <div class="window-header">
-          <div class="window-title-section">
-            <span class="window-title">{{ window.title }}</span>
+        <!-- Dynamic Windows -->
+        <div 
+          v-for="window in windows"
+          :key="window.id"
+          class="grid-window"
+          :style="{ gridArea: window.gridArea, zIndex: window.zIndex }"
+          @mousedown="startDrag(window.id, $event)"
+        >
+          <!-- Window Header with Controls -->
+          <div class="window-header">
+            <div class="window-title-section">
+              <span class="window-title">{{ window.title }}</span>
+            </div>
+            <div class="window-controls">
+              <button 
+                v-if="windows.length > 1"
+                @click="removeWindow(window.id)"
+                class="close-btn"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
+            </div>
           </div>
-          <div class="window-controls">
-            <button 
-              v-if="windows.length > 1"
-              @click="removeWindow(window.id)"
-              class="close-btn"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
+        
+          <!-- Window Content -->
+          <div class="window-content">
+            <component v-if="window.component" :is="window.component" />
           </div>
-        </div>
-      
-        <!-- Window Content -->
-        <div class="window-content">
-          <component v-if="window.component" :is="window.component" />
         </div>
       </div>
     </div>
-  </div>
+    <template #fallback>
+      <div class="dashboard-container">
+        <div class="loading-message">Loading charts...</div>
+      </div>
+    </template>
+  </ClientOnly>
 </template>
 
 <script setup lang="ts">
@@ -342,5 +349,14 @@ onUnmounted(() => {
 
 .h-4 {
   height: 1rem;
+}
+
+.loading-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
 }
 </style>
