@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, markRaw } from 'vue'
 import GridContainer from '~/components/ui/GridContainer.vue'
 import LineChartWindow from '~/components/windows/LineChartWindow.vue'
 import VolumeChartWindow from '~/components/windows/VolumeChartWindow.vue'
@@ -43,7 +43,7 @@ definePageMeta({
   layout: 'dashboard'
 })
 
-// Window configurations
+// Window configurations - use markRaw to prevent components from becoming reactive
 const windows = ref([
   {
     id: 'line-chart',
@@ -51,7 +51,7 @@ const windows = ref([
     y: 40,
     width: 600,
     height: 400,
-    component: LineChartWindow,
+    component: markRaw(LineChartWindow),
     minWidth: 400,
     minHeight: 300,
     zIndex: 1
@@ -62,7 +62,7 @@ const windows = ref([
     y: 40,
     width: 600,
     height: 400,
-    component: VolumeChartWindow,
+    component: markRaw(VolumeChartWindow),
     minWidth: 400,
     minHeight: 300,
     zIndex: 2
@@ -73,7 +73,7 @@ const windows = ref([
     y: 480,
     width: 600,
     height: 400,
-    component: CandlestickChartWindow,
+    component: markRaw(CandlestickChartWindow),
     minWidth: 400,
     minHeight: 300,
     zIndex: 3
@@ -84,15 +84,20 @@ const windows = ref([
     y: 480,
     width: 600,
     height: 400,
-    component: RealTimeChartWindow,
+    component: markRaw(RealTimeChartWindow),
     minWidth: 400,
     minHeight: 300,
     zIndex: 4
   }
 ])
 
-// Store initial layout
-const initialLayout = JSON.parse(JSON.stringify(windows.value))
+// Store initial layout - need to preserve the markRaw components
+const createInitialLayout = () => windows.value.map(w => ({
+  ...w,
+  component: markRaw(w.component)
+}))
+
+const initialLayout = createInitialLayout()
 
 // Event handlers
 const handleWindowMove = (id: string, x: number, y: number) => {
@@ -114,7 +119,7 @@ const handleWindowResize = (id: string, x: number, y: number, width: number, hei
 }
 
 const resetLayout = () => {
-  windows.value = JSON.parse(JSON.stringify(initialLayout))
+  windows.value = createInitialLayout()
 }
 
 onMounted(() => {
