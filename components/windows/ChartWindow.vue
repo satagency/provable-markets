@@ -47,3 +47,9 @@ const xFormatter = (tick: number): string => {
 }
 </script>
 
+<style scoped>
+.chart-window {
+  padding: 20px;
+}
+</style>
+
