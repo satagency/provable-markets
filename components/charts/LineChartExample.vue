@@ -1,7 +1,13 @@
 <template>
   <div class="chart-wrapper">
+    <div class="chart-title">Stock Price Over Time</div>
     <VisXYContainer :data="data" :height="height">
-      <VisLine :x="(d: DataRecord) => d.x" :y="(d: DataRecord) => d.y" :color="lineColor" />
+      <VisLine 
+        :x="xAccessor" 
+        :y="yAccessor" 
+        :color="lineColor"
+        :curveType="'basis'"
+      />
       <VisAxis type="x" :numTicks="5" :tickFormat="formatTime" />
       <VisAxis type="y" :numTicks="6" :tickFormat="formatPrice" />
       <VisTooltip />
@@ -42,6 +48,10 @@ const generateData = (points: number = 50): DataRecord[] => {
 
 const data = ref<DataRecord[]>(generateData())
 
+// Accessor functions
+const xAccessor = (d: DataRecord) => d.x
+const yAccessor = (d: DataRecord) => d.y
+
 // Format functions
 const formatTime = (value: number) => {
   const date = new Date(value)
@@ -58,6 +68,15 @@ const formatPrice = (value: number) => `$${value.toFixed(0)}`
   padding: 16px;
   background: #1a1a1a;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 12px;
 }
 
 /* Unovis dark theme overrides */
