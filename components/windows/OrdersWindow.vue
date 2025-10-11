@@ -45,15 +45,12 @@
             </div>
             <div class="header-cell fee-col">
               <span class="header-text">Fee</span>
-              <span class="header-subtext">%</span>
             </div>
             <div class="header-cell exec-fee-col">
               <span class="header-text">Exec Fee</span>
-              <span class="header-subtext">%</span>
             </div>
             <div class="header-cell rebates-col">
               <span class="header-text">Rebates</span>
-              <span class="header-subtext">%</span>
             </div>
             <div class="header-cell agreements-col">
               <span class="header-text">Agreements</span>
@@ -93,11 +90,9 @@
             </div>
             <div class="header-cell bbo-fee-col">
               <span class="header-text">BBO Fee</span>
-              <span class="header-subtext">%</span>
             </div>
             <div class="header-cell bbo-rebate-col">
               <span class="header-text">BBO Rebate</span>
-              <span class="header-subtext">%</span>
             </div>
             <div class="header-cell spread-rebate-col">
               <span class="header-text">Spread %</span>
@@ -167,13 +162,13 @@
                 <span v-else class="dash">--</span>
               </div>
               <div class="row-cell fee-col">
-                <span :class="order.fee < 0 ? 'fee-negative' : 'fee-positive'">{{ order.fee }}%</span>
+                <span class="percentage">{{ order.fee }}%</span>
               </div>
               <div class="row-cell exec-fee-col">
-                <span class="fee-positive">{{ order.execFee }}%</span>
+                <span class="percentage">{{ order.execFee }}%</span>
               </div>
               <div class="row-cell rebates-col">
-                <span class="fee-positive">{{ order.rebates }}%</span>
+                <span class="percentage">{{ order.rebates }}%</span>
               </div>
               <div class="row-cell agreements-col">
                 <div class="agreements-info">
@@ -312,22 +307,29 @@ const generateOrders = () => {
   
   for (let i = 1; i <= 50; i++) {
     const ticker = tickers[i % tickers.length]
-    const side = sides[i % sides.length]
     const intent = intents[i % intents.length]
     const priority = priorities[i % priorities.length]
     
-    // Realistic status distribution: 96% PARTIAL, 4% other statuses
-    const statusRandom = Math.random()
+    // Put 3 filled orders at the top, then realistic distribution for the rest
     let status
-    if (statusRandom < 0.96) {
-      status = 'PARTIAL'
-    } else if (statusRandom < 0.98) {
-      status = 'OPEN'
-    } else if (statusRandom < 0.99) {
+    if (i <= 3) {
       status = 'FILLED'
     } else {
-      status = 'CANCEL'
+      // Realistic status distribution: 90% PARTIAL, 8% FILLED, 2% other statuses
+      const statusRandom = Math.random()
+      if (statusRandom < 0.90) {
+        status = 'PARTIAL'
+      } else if (statusRandom < 0.98) {
+        status = 'FILLED'
+      } else if (statusRandom < 0.99) {
+        status = 'OPEN'
+      } else {
+        status = 'CANCEL'
+      }
     }
+    
+    // Lender is majority, only filled orders have borrow side
+    const side = status === 'FILLED' ? 'BORROWER' : 'LENDER'
     
     orders.push({
       id: i,
@@ -672,9 +674,7 @@ const handleViewOrder = (order) => {
 }
 
 .table-row:hover {
-  background-color: rgba(255, 255, 255, 0.03);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .row-cell {
@@ -695,7 +695,7 @@ const handleViewOrder = (order) => {
 
 /* Dense density (Agreements spacing) */
 .table-density-dense .row-cell {
-  height: 44px;
+  height: 40px;
   padding: 0 12px;
 }
 
@@ -732,6 +732,11 @@ const handleViewOrder = (order) => {
   display: flex;
   flex-direction: column;
   gap: 1px;
+}
+
+/* Dense density adjustments for date-time spacing */
+.table-density-dense .date-time {
+  gap: 0px;
 }
 
 .date {
@@ -775,15 +780,6 @@ const handleViewOrder = (order) => {
   width: 100%;
 }
 
-.fee-negative {
-  color: #ff6b6b;
-  font-weight: 500;
-}
-
-.fee-positive {
-  color: #51cf66;
-  font-weight: 500;
-}
 
 .price {
   color: #ffffff;
@@ -814,10 +810,13 @@ const handleViewOrder = (order) => {
 
 .email {
   font-family: 'Roboto', sans-serif;
-  font-size: 11px;
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.8);
   font-weight: 400;
   letter-spacing: 0.11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .percentage {

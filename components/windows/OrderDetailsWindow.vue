@@ -7,8 +7,12 @@
         <StatusPill status="PARTIAL" />
       </div>
       <div class="window-controls">
-        <button class="batch-orders-btn deactivate-btn" @click="$emit('deactivate')">
-          <span>Deactivate</span>
+        <button 
+          class="batch-orders-btn toggle-activation-btn" 
+          :class="{ 'active': isOrderActive, 'inactive': !isOrderActive }"
+          @click="toggleOrderActivation"
+        >
+          <span>{{ isOrderActive ? 'Deactivate' : 'Activate' }}</span>
         </button>
         <button class="batch-orders-btn cancel-btn" @click="$emit('cancel')">
           <span>Cancel</span>
@@ -60,6 +64,9 @@
               <div class="header-cell open-qty-col">
                 <span class="header-text">Open Qty</span>
               </div>
+              <div class="header-cell ioi-qty-col">
+                <span class="header-text">IOI Qty</span>
+              </div>
               <div class="header-cell firm-qty-col">
                 <span class="header-text">Firm Qty</span>
               </div>
@@ -68,11 +75,9 @@
               </div>
               <div class="header-cell avg-exec-fee-col">
                 <span class="header-text">Avg Exec Fee</span>
-                <span class="header-subtext">%</span>
               </div>
               <div class="header-cell avg-exec-rebate-col">
                 <span class="header-text">Avg Exec Rebate</span>
-                <span class="header-subtext">%</span>
               </div>
               <div class="header-cell agreements-col">
                 <span class="header-text">Agreements</span>
@@ -86,19 +91,19 @@
             <div class="order-entry">
               <div class="entry-row">
                 <div class="entry-cell when-col">
-                  <div class="date-time">
-                    <span class="date">10/12/23</span>
-                    <span class="time">8:30A</span>
-                  </div>
+                  <span class="date-time">10/12/23 8:30A</span>
                 </div>
                 <div class="entry-cell event-col">
-                  <span>Created</span>
+                  <StatusPill status="CREATED" />
                 </div>
                 <div class="entry-cell order-qty-col">
                   <span class="quantity">1,000</span>
                 </div>
                 <div class="entry-cell open-qty-col">
                   <span class="quantity">750</span>
+                </div>
+                <div class="entry-cell ioi-qty-col">
+                  <span class="quantity">0</span>
                 </div>
                 <div class="entry-cell firm-qty-col">
                   <span class="quantity">500</span>
@@ -113,7 +118,13 @@
                   <span class="percentage">0.08%</span>
                 </div>
                 <div class="entry-cell agreements-col">
-                  <span class="quantity">3</span>
+                  <div class="agreements-info">
+                    <div class="agreement-count">3</div>
+                    <span class="available-text">available</span>
+                    <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                  </div>
                 </div>
                 <div class="entry-cell initiator-col">
                   <span class="email">trader1@provable.com</span>
@@ -125,14 +136,168 @@
 
         <!-- Child Orders Tab -->
         <div v-else-if="activeOrderDetailTab === 'child-orders'" class="tab-panel">
-          <h4>Child Orders</h4>
-          <p>Child orders content will go here</p>
+          <!-- Table Container -->
+          <div class="table-container">
+            <!-- Table Header -->
+            <div class="table-header">
+              <div class="header-cell status-col">
+                <span class="header-text">Status</span>
+              </div>
+              <div class="header-cell intent-col">
+                <span class="header-text">Intent</span>
+              </div>
+              <div class="header-cell side-col">
+                <span class="header-text">Side</span>
+              </div>
+              <div class="header-cell ticker-col">
+                <span class="header-text">Ticker</span>
+              </div>
+              <div class="header-cell open-qty-col">
+                <span class="header-text">Open Qty</span>
+              </div>
+              <div class="header-cell total-qty-col">
+                <span class="header-text">Total Qty</span>
+              </div>
+              <div class="header-cell exec-qty-col">
+                <span class="header-text">Exec Qty</span>
+              </div>
+              <div class="header-cell fee-col">
+                <span class="header-text">Fee</span>
+              </div>
+              <div class="header-cell rebate-col">
+                <span class="header-text">Rebate</span>
+              </div>
+              <div class="header-cell min-qty-col">
+                <span class="header-text">Min Qty</span>
+              </div>
+              <div class="header-cell agreements-col">
+                <span class="header-text">Agreements</span>
+              </div>
+            </div>
+            
+            <!-- Single Order Entry -->
+            <div class="order-entry">
+              <div class="entry-row">
+                <div class="entry-cell status-col">
+                  <StatusPill status="OPEN" />
+                </div>
+                <div class="entry-cell intent-col">
+                  <span>Firm</span>
+                </div>
+                <div class="entry-cell side-col">
+                  <span>LENDER</span>
+                </div>
+                <div class="entry-cell ticker-col">
+                  <span class="ticker">VIAV</span>
+                </div>
+                <div class="entry-cell open-qty-col">
+                  <span class="quantity">50,000</span>
+                </div>
+                <div class="entry-cell total-qty-col">
+                  <span class="quantity">150,000</span>
+                </div>
+                <div class="entry-cell exec-qty-col">
+                  <span class="quantity">100,000</span>
+                </div>
+                <div class="entry-cell fee-col">
+                  <span class="percentage">3.0900%</span>
+                </div>
+                <div class="entry-cell rebate-col">
+                  <span class="percentage">1.0100%</span>
+                </div>
+                <div class="entry-cell min-qty-col">
+                  <span class="quantity">100</span>
+                </div>
+                <div class="entry-cell agreements-col">
+                  <div class="agreements-info">
+                    <div class="agreement-count">1</div>
+                    <span class="available-text">available</span>
+                    <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Details Tab -->
         <div v-else-if="activeOrderDetailTab === 'details'" class="tab-panel">
-          <h4>Order Details</h4>
-          <p>Detailed order information will go here</p>
+          <div class="details-grid">
+            <div class="detail-column">
+              <div class="detail-row">
+                <div class="detail-label">Security</div>
+                <div class="detail-value">VIAV [925550105]</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Side</div>
+                <div class="detail-value">lender</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Fee</div>
+                <div class="detail-value">3.0900%</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Rebate</div>
+                <div class="detail-value">1.0100%</div>
+              </div>
+            </div>
+            <div class="detail-column">
+              <div class="detail-row">
+                <div class="detail-label">Quantity</div>
+                <div class="detail-value">150,000  (min. 100)</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Open Qty.</div>
+                <div class="detail-value">50,000</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Filled Qty.</div>
+                <div class="detail-value">100,000</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">IOI Qty.</div>
+                <div class="detail-value">–</div>
+              </div>
+            </div>
+            <div class="detail-column">
+              <div class="detail-row">
+                <div class="detail-label">Firm Qty.</div>
+                <div class="detail-value">50,000</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Avg. Exec. Fee</div>
+                <div class="detail-value">3.0900%</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Avg. Exec. Rebate</div>
+                <div class="detail-value">1.0100%</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Created Time</div>
+                <div class="detail-value">Oct 06 3:27 AM</div>
+              </div>
+            </div>
+            <div class="detail-column">
+              <div class="detail-row">
+                <div class="detail-label">Agreements</div>
+                <div class="detail-value">LEND TO SOHO - NSCC</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Time in Force</div>
+                <div class="detail-value">Good till cancel</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Anonymous Order</div>
+                <div class="detail-value">No</div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-label">Order Intent</div>
+                <div class="detail-value">Firm</div>
+              </div>
+            </div>
+          </div>
         </div>
         </div>
       </div>
@@ -147,6 +312,9 @@ import StatusPill from '~/components/ui/StatusPill.vue'
 // Define emits
 defineEmits(['close', 'deactivate', 'cancel', 'edit'])
 
+// Order activation state
+const isOrderActive = ref(true)
+
 // Order Details tab state
 const activeOrderDetailTab = ref('history')
 const orderDetailTabs = ref([
@@ -154,6 +322,12 @@ const orderDetailTabs = ref([
   { id: 'child-orders', label: 'Child Orders' },
   { id: 'details', label: 'Details' }
 ])
+
+// Toggle order activation
+const toggleOrderActivation = () => {
+  isOrderActive.value = !isOrderActive.value
+  console.log(`Order ${isOrderActive.value ? 'activated' : 'deactivated'}`)
+}
 
 // Order History data
 const orderHistory = ref([])
@@ -264,6 +438,25 @@ onMounted(() => {
   background-color: #555555;
 }
 
+/* Toggle Activation Button Styles */
+.toggle-activation-btn.active {
+  background-color: rgba(220, 38, 38, 0.8); /* Muted red for deactivate */
+  color: white;
+}
+
+.toggle-activation-btn.active:hover {
+  background-color: rgba(220, 38, 38, 1); /* Slightly brighter red on hover */
+}
+
+.toggle-activation-btn.inactive {
+  background-color: rgba(34, 197, 94, 0.8); /* Muted green for activate */
+  color: white;
+}
+
+.toggle-activation-btn.inactive:hover {
+  background-color: rgba(34, 197, 94, 1); /* Slightly brighter green on hover */
+}
+
 .close-btn {
   width: 20px;
   height: 20px;
@@ -363,7 +556,7 @@ onMounted(() => {
   display: flex;
   background-color: #161818;
   padding: 0;
-  gap: 0;
+  gap: 8px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   width: 100%;
   min-width: max-content;
@@ -398,16 +591,21 @@ onMounted(() => {
 
 /* Order Entry */
 .order-entry {
-  padding: 16px;
+  padding: 0;
 }
 
 .entry-row {
   display: flex;
   padding: 0;
-  gap: 0;
+  gap: 8px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   width: 100%;
   min-width: max-content;
+  transition: background-color 0.15s ease;
+}
+
+.entry-row:hover {
+  background-color: rgba(255, 255, 255, 0.08);
 }
 
 .entry-cell {
@@ -417,7 +615,7 @@ onMounted(() => {
   font-size: 14px;
   color: #ffffff;
   white-space: nowrap;
-  height: 48px;
+  height: 32px;
   padding: 0 12px;
 }
 
@@ -426,28 +624,29 @@ onMounted(() => {
 .event-col { width: 120px; min-width: 120px; }
 .order-qty-col { width: 80px; min-width: 80px; }
 .open-qty-col { width: 80px; min-width: 80px; }
+.ioi-qty-col { width: 80px; min-width: 80px; }
 .firm-qty-col { width: 80px; min-width: 80px; }
 .exec-qty-col { width: 80px; min-width: 80px; }
 .avg-exec-fee-col { width: 100px; min-width: 100px; }
 .avg-exec-rebate-col { width: 120px; min-width: 120px; }
-.agreements-col { width: 80px; min-width: 80px; }
+.agreements-col { width: 160px; min-width: 160px; }
 .initiator-col { width: 180px; min-width: 180px; }
+
+/* Child Orders Column Widths */
+.status-col { width: 80px; min-width: 80px; }
+.intent-col { width: 80px; min-width: 80px; }
+.side-col { width: 80px; min-width: 80px; }
+.ticker-col { width: 80px; min-width: 80px; }
+.total-qty-col { width: 80px; min-width: 80px; }
+.fee-col { width: 80px; min-width: 80px; }
+.rebate-col { width: 80px; min-width: 80px; }
+.min-qty-col { width: 80px; min-width: 80px; }
 
 /* Data Element Styling - EXACT copy from OrdersWindow.vue */
 
 .date-time {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.date {
   color: #ffffff;
   font-weight: 500;
-}
-
-.time {
-  color: rgba(255, 255, 255, 0.6);
 }
 
 .quantity {
@@ -509,5 +708,87 @@ onMounted(() => {
 
 .table-container::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
+}
+
+/* Agreements Info Styling - EXACT copy from OrdersWindow.vue */
+.agreements-info {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.agreement-count {
+  border: 1px solid #484848;
+  border-radius: 3px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #ffffff;
+}
+
+.available-text {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.search-icon {
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.search-icon:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Details Tab Styling */
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 60px;
+  padding: 12px 20px 0 20px;
+}
+
+.detail-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  height: 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+  min-width: 100px;
+}
+
+.detail-value {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: #ffffff;
+  font-weight: 500;
+  text-align: right;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

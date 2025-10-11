@@ -8,7 +8,7 @@
 import { computed } from 'vue'
 
 interface Props {
-  status: 'OPEN' | 'HELD' | 'PARTIAL' | 'FILLED' | 'EXPIRED' | 'CLOSED' | 'CANCEL'
+  status: 'OPEN' | 'HELD' | 'PARTIAL' | 'FILLED' | 'EXPIRED' | 'CLOSED' | 'CANCEL' | 'CREATED' | 'AMENDED' | 'EXECUTED' | 'NEW'
 }
 
 const props = defineProps<Props>()
@@ -81,6 +81,34 @@ const statusClass = computed(() => {
 .status-cancel {
   background: linear-gradient(90deg, rgba(244, 67, 54, 0.8) 0%, rgba(244, 67, 54, 0.8) 100%);
   border: 1px solid #f44336;
+  color: white;
+}
+
+/* CREATED - Blue */
+.status-created {
+  background: linear-gradient(90deg, rgba(33, 150, 243, 0.8) 0%, rgba(33, 150, 243, 0.8) 100%);
+  border: 1px solid #2196f3;
+  color: white;
+}
+
+/* AMENDED - Gray */
+.status-amended {
+  background: linear-gradient(90deg, rgba(136, 136, 136, 0.8) 0%, rgba(136, 136, 136, 0.8) 100%);
+  border: 1px solid #888888;
+  color: white;
+}
+
+/* EXECUTED - Orange */
+.status-executed {
+  background: linear-gradient(90deg, rgba(255, 140, 0, 0.8) 0%, rgba(255, 140, 0, 0.8) 100%);
+  border: 1px solid #ff8c00;
+  color: white;
+}
+
+/* NEW - Green */
+.status-new {
+  background: linear-gradient(90deg, rgba(34, 197, 94, 0.8) 0%, rgba(34, 197, 94, 0.8) 100%);
+  border: 1px solid #22c55e;
   color: white;
 }
 </style>
