@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ComputedRef } from 'vue'
+import { computed } from 'vue'
 
 interface AreaChartItem {
   date: string
@@ -22,17 +22,16 @@ interface AreaChartItem {
   mobile: number
 }
 
-const categories: ComputedRef<Record<string, BulletLegendItemInterface>> =
-  computed(() => ({
-    desktop: {
-      name: 'Desktop',
-      color: '#3b82f6',
-    },
-    mobile: {
-      name: 'Mobile',
-      color: '#22c55e',
-    },
-  }))
+const categories = computed(() => ({
+  desktop: {
+    name: 'Desktop',
+    color: '#3b82f6',
+  },
+  mobile: {
+    name: 'Mobile',
+    color: '#22c55e',
+  },
+}))
 
 const AreaChartData: AreaChartItem[] = [
   { date: '2024-04-01', desktop: 222, mobile: 150 },
