@@ -64,7 +64,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ['@unovis/ts', '@unovis/vue']
   },
-  
+
   // Vite Configuration
   vite: {
     optimizeDeps: {
@@ -72,6 +72,9 @@ export default defineNuxtConfig({
     },
     ssr: {
       noExternal: ['@unovis/ts', '@unovis/vue']
+    },
+    define: {
+      global: 'globalThis'
     }
   }
 })

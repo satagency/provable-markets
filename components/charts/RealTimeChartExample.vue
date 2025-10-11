@@ -1,136 +1,93 @@
 <template>
-  <ChartWrapper>
-    <div class="chart-content">
-      <div class="chart-header">
-        <h3 class="chart-title">Real-Time Market Feed</h3>
-        <div class="live-indicator">
-          <span class="pulse-dot"></span>
-          <span class="live-text">LIVE</span>
-        </div>
-      </div>
-      <div class="chart-display">
-        <svg viewBox="0 0 400 200" class="chart-svg">
-          <!-- Grid lines -->
-          <line v-for="i in 5" :key="`h-${i}`" 
-                :x1="0" :y1="i * 40" 
-                :x2="400" :y2="i * 40" 
-                stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-          
-          <!-- Area fill -->
-          <path 
-            :d="areaPath" 
-            fill="url(#gradient)" 
-            opacity="0.3"/>
-          
-          <!-- Price line -->
-          <polyline 
-            :points="linePoints" 
-            fill="none" 
-            stroke="#04CF8B" 
-            stroke-width="2"/>
-          
-          <!-- Gradient definition -->
-          <defs>
-            <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" style="stop-color:#04CF8B;stop-opacity:1" />
-              <stop offset="100%" style="stop-color:#04CF8B;stop-opacity:0" />
-            </linearGradient>
-          </defs>
-        </svg>
-        <div class="chart-stats">
-          <div class="stat">
-            <span class="stat-label">Price:</span>
-            <span class="stat-value">${{ currentPrice.toFixed(2) }}</span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">Change:</span>
-            <span :class="['stat-value', priceChange >= 0 ? 'positive' : 'negative']">
-              {{ priceChange >= 0 ? '+' : '' }}{{ priceChange.toFixed(2) }}%
-            </span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">Updates:</span>
-            <span class="stat-value">{{ updateCount }}</span>
-          </div>
-        </div>
+  <div class="chart-content">
+    <div class="chart-header">
+      <h3 class="chart-title">Real-Time Market Feed</h3>
+      <div class="stats">
+        <span class="stat-item">
+          <span class="stat-label">Last:</span>
+          <span class="stat-value" :class="{ positive: lastChange >= 0, negative: lastChange < 0 }">
+            ${{ lastPrice.toFixed(2) }}
+          </span>
+        </span>
+        <span class="stat-item">
+          <span class="stat-label">Change:</span>
+          <span class="stat-value" :class="{ positive: lastChange >= 0, negative: lastChange < 0 }">
+            {{ lastChange >= 0 ? '+' : '' }}{{ lastChange.toFixed(2) }}%
+          </span>
+        </span>
+        <span class="stat-item live-indicator">
+          <span class="live-dot"></span>
+          <span class="stat-label">LIVE</span>
+        </span>
       </div>
     </div>
-  </ChartWrapper>
+    <ClientOnly>
+      <VisXYContainer :data="data" :height="300">
+        <VisArea 
+          :x="(d: any) => d.date" 
+          :y="(d: any) => d.price"
+          :color="'#04CF8B'"
+          :opacity="0.3"
+        />
+        <VisLine 
+          :x="(d: any) => d.date" 
+          :y="(d: any) => d.price"
+          :color="'#04CF8B'"
+          :stroke-width="2"
+        />
+        <VisAxis type="x" :tick-format="(d: Date) => d.toLocaleTimeString()" />
+        <VisAxis type="y" :tick-format="(d: number) => `$${d.toFixed(2)}`" />
+        <VisTooltip />
+      </VisXYContainer>
+    </ClientOnly>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import ChartWrapper from './ChartWrapper.vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-const data = ref<number[]>([])
-const currentPrice = ref(175.50)
-const priceChange = ref(0)
-const updateCount = ref(0)
+interface DataPoint {
+  date: Date
+  price: number
+}
+
+const data = ref<DataPoint[]>([])
+const lastPrice = ref(175.50)
+const lastChange = ref(0)
 let updateInterval: NodeJS.Timeout | null = null
 
-const maxDataPoints = 50
+function generateTimeSeriesData(points: number): DataPoint[] {
+  const generatedData: DataPoint[] = []
+  let currentPrice = 175.50
+  const now = new Date()
 
-const generateInitialData = () => {
-  const points: number[] = []
-  let price = 175.50
-  
-  for (let i = 0; i < maxDataPoints; i++) {
-    price += (Math.random() - 0.5) * 0.5
-    points.push(price)
+  for (let i = 0; i < points; i++) {
+    const date = new Date(now.getTime() - (points - 1 - i) * 1000)
+    currentPrice += (Math.random() - 0.5) * 0.5
+    generatedData.push({ date, price: currentPrice })
   }
-  
-  return points
+  return generatedData
 }
 
-const updateData = () => {
-  const lastPrice = data.value[data.value.length - 1]
-  const newPrice = lastPrice + (Math.random() - 0.5) * 1
-  
-  data.value = [...data.value.slice(1), newPrice]
-  currentPrice.value = newPrice
-  
-  const startPrice = data.value[0]
-  priceChange.value = ((newPrice - startPrice) / startPrice) * 100
-  updateCount.value++
-}
+function updateRealTimeData() {
+  const lastDataPoint = data.value[data.value.length - 1]
+  const newPrice = lastDataPoint.price + (Math.random() - 0.5) * 0.5
+  const newDate = new Date(lastDataPoint.date.getTime() + 1000)
 
-const dataPoints = computed(() => {
-  if (!data.value.length) return []
-  
-  const min = Math.min(...data.value)
-  const max = Math.max(...data.value)
-  const range = max - min || 1
-  
-  return data.value.map((value, i) => ({
-    x: (i / (data.value.length - 1)) * 400,
-    y: 190 - ((value - min) / range) * 180
-  }))
-})
+  const previousPrice = lastPrice.value
+  lastPrice.value = newPrice
+  lastChange.value = ((newPrice - previousPrice) / previousPrice) * 100
 
-const linePoints = computed(() => {
-  return dataPoints.value.map(p => `${p.x},${p.y}`).join(' ')
-})
-
-const areaPath = computed(() => {
-  if (!dataPoints.value.length) return ''
-  
-  const points = dataPoints.value
-  let path = `M 0,200 L ${points[0].x},${points[0].y}`
-  
-  for (let i = 1; i < points.length; i++) {
-    path += ` L ${points[i].x},${points[i].y}`
+  data.value.push({ date: newDate, price: newPrice })
+  if (data.value.length > 50) {
+    data.value.shift()
   }
-  
-  path += ` L 400,200 Z`
-  return path
-})
+}
 
 onMounted(() => {
-  data.value = generateInitialData()
-  currentPrice.value = data.value[data.value.length - 1]
-  
-  // Update every 500ms
-  updateInterval = setInterval(updateData, 500)
+  data.value = generateTimeSeriesData(50)
+  lastPrice.value = data.value[data.value.length - 1].price
+  updateInterval = setInterval(updateRealTimeData, 500)
 })
 
 onBeforeUnmount(() => {
@@ -164,83 +121,59 @@ onBeforeUnmount(() => {
   margin: 0;
 }
 
-.live-indicator {
+.stats {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.stat-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 12px;
-  background: rgba(4, 207, 139, 0.1);
-  border-radius: 12px;
-}
-
-.pulse-dot {
-  width: 8px;
-  height: 8px;
-  background: #04CF8B;
-  border-radius: 50%;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.3;
-  }
-}
-
-.live-text {
-  font-size: 11px;
-  font-weight: 600;
-  color: #04CF8B;
-  letter-spacing: 0.5px;
-}
-
-.chart-display {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.chart-svg {
-  flex: 1;
-  width: 100%;
-  min-height: 0;
-}
-
-.chart-stats {
-  display: flex;
-  gap: 24px;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 4px;
-  justify-content: space-around;
-}
-
-.stat {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
 
 .stat-label {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .stat-value {
-  font-size: 18px;
-  font-weight: 600;
-  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
 }
 
-.stat-value.positive {
+.positive {
   color: #04CF8B;
 }
 
-.stat-value.negative {
+.negative {
   color: #EF4444;
+}
+
+.live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #04CF8B;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(4, 207, 139, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(4, 207, 139, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(4, 207, 139, 0);
+  }
 }
 </style>

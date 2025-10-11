@@ -1,97 +1,64 @@
 <template>
-  <ChartWrapper>
-    <div class="chart-content">
-      <h3 class="chart-title">Stock Price Trend</h3>
-      <div class="chart-display">
-        <svg viewBox="0 0 400 200" class="chart-svg">
-          <!-- Grid lines -->
-          <line v-for="i in 5" :key="`h-${i}`" 
-                :x1="0" :y1="i * 40" 
-                :x2="400" :y2="i * 40" 
-                stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-          <line v-for="i in 10" :key="`v-${i}`" 
-                :x1="i * 40" :y1="0" 
-                :x2="i * 40" :y2="200" 
-                stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-          
-          <!-- Price line -->
-          <polyline 
-            :points="linePoints" 
-            fill="none" 
-            stroke="#04CF8B" 
-            stroke-width="2"/>
-          
-          <!-- Data points -->
-          <circle v-for="(point, i) in dataPoints" :key="i"
-                  :cx="point.x" :cy="point.y" r="3" 
-                  fill="#04CF8B"/>
-        </svg>
-        <div class="chart-stats">
-          <div class="stat">
-            <span class="stat-label">Current:</span>
-            <span class="stat-value">${{ currentPrice.toFixed(2) }}</span>
-          </div>
-          <div class="stat">
-            <span class="stat-label">Change:</span>
-            <span :class="['stat-value', priceChange >= 0 ? 'positive' : 'negative']">
-              {{ priceChange >= 0 ? '+' : '' }}{{ priceChange.toFixed(2) }}%
-            </span>
-          </div>
-        </div>
-      </div>
+  <div class="chart-content">
+    <h3 class="chart-title">Stock Price Trend</h3>
+    <div class="chart-stats">
+      <span class="stat-item">
+        <span class="stat-label">Last:</span>
+        <span class="stat-value" :class="{ positive: lastChange >= 0, negative: lastChange < 0 }">
+          ${{ lastPrice.toFixed(2) }}
+        </span>
+      </span>
+      <span class="stat-item">
+        <span class="stat-label">Change:</span>
+        <span class="stat-value" :class="{ positive: lastChange >= 0, negative: lastChange < 0 }">
+          {{ lastChange >= 0 ? '+' : '' }}{{ lastChange.toFixed(2) }}%
+        </span>
+      </span>
     </div>
-  </ChartWrapper>
+    <ClientOnly>
+      <VisXYContainer :data="data" :height="300">
+        <VisLine 
+          :x="(d: any) => d.date" 
+          :y="(d: any) => d.price"
+          :color="'#04CF8B'"
+          :stroke-width="2"
+        />
+        <VisAxis type="x" :tick-format="(d: Date) => d.toLocaleTimeString()" />
+        <VisAxis type="y" :tick-format="(d: number) => `$${d.toFixed(2)}`" />
+        <VisTooltip />
+      </VisXYContainer>
+    </ClientOnly>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import ChartWrapper from './ChartWrapper.vue'
+import { ref, onMounted } from 'vue'
 
 interface DataPoint {
-  value: number
-  x: number
-  y: number
+  date: Date
+  price: number
 }
 
-const data = ref<number[]>([])
-const currentPrice = ref(150)
-const priceChange = ref(0)
+const data = ref<DataPoint[]>([])
+const lastPrice = ref(175.50)
+const lastChange = ref(2.34)
 
-const generateData = () => {
-  const points: number[] = []
-  let price = 150
-  
-  for (let i = 0; i < 30; i++) {
-    price += (Math.random() - 0.5) * 5
-    points.push(price)
+function generateTimeSeriesData(points: number): DataPoint[] {
+  const generatedData: DataPoint[] = []
+  let currentPrice = 175.50
+  const now = new Date()
+
+  for (let i = 0; i < points; i++) {
+    const date = new Date(now.getTime() - (points - 1 - i) * 1000 * 3600 / 50)
+    currentPrice += (Math.random() - 0.5) * 0.5
+    generatedData.push({ date, price: currentPrice })
   }
-  
-  return points
+  return generatedData
 }
-
-const dataPoints = computed(() => {
-  if (!data.value.length) return []
-  
-  const min = Math.min(...data.value)
-  const max = Math.max(...data.value)
-  const range = max - min
-  
-  return data.value.map((value, i) => ({
-    value,
-    x: (i / (data.value.length - 1)) * 400,
-    y: 200 - ((value - min) / range) * 180 - 10
-  }))
-})
-
-const linePoints = computed(() => {
-  return dataPoints.value.map(p => `${p.x},${p.y}`).join(' ')
-})
 
 onMounted(() => {
-  data.value = generateData()
-  currentPrice.value = data.value[data.value.length - 1]
-  const startPrice = data.value[0]
-  priceChange.value = ((currentPrice.value - startPrice) / startPrice) * 100
+  data.value = generateTimeSeriesData(50)
+  lastPrice.value = data.value[data.value.length - 1].price
 })
 </script>
 
@@ -112,49 +79,33 @@ onMounted(() => {
   margin: 0 0 16px 0;
 }
 
-.chart-display {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.chart-svg {
-  flex: 1;
-  width: 100%;
-  min-height: 0;
-}
-
 .chart-stats {
   display: flex;
-  gap: 24px;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 4px;
+  gap: 20px;
+  margin-bottom: 16px;
 }
 
-.stat {
+.stat-item {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 5px;
 }
 
 .stat-label {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .stat-value {
-  font-size: 18px;
-  font-weight: 600;
-  color: #ffffff;
+  font-size: 16px;
+  font-weight: bold;
 }
 
-.stat-value.positive {
+.positive {
   color: #04CF8B;
 }
 
-.stat-value.negative {
+.negative {
   color: #EF4444;
 }
 </style>
