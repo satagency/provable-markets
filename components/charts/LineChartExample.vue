@@ -192,9 +192,9 @@ onUnmounted(() => {
 .chart-wrapper {
   width: 100%;
   height: 100%;
-  padding: 20px;
-  background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
-  border-radius: 6px;
+  padding: 16px;
+  background: #1a1a1a;
+  box-sizing: border-box;
 }
 
 canvas {

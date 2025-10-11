@@ -187,8 +187,8 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   padding: 16px;
-  background: linear-gradient(135deg, #0a0a0a 0%, #000000 100%);
-  border-radius: 6px;
+  background: #1a1a1a;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
 }
