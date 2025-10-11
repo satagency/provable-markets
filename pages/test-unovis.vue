@@ -1,30 +1,40 @@
 <template>
   <div class="test-page">
-    <h1>Unovis Test Page</h1>
+    <h1>Nuxt Charts Test Page</h1>
     <div class="chart-container">
-      <VisXYContainer :data="data" :height="400" :width="800">
-        <VisLine :x="x" :y="y" />
-        <VisAxis type="x" />
-        <VisAxis type="y" />
-      </VisXYContainer>
+      <LineChart
+        :data="data"
+        :categories="categories"
+        :height="300"
+        :xFormatter="xFormatter"
+        xLabel="Month"
+        yLabel="Amount"
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { VisXYContainer, VisLine, VisAxis } from '@unovis/vue'
-
-// Simple static data - no real-time logic
 const data = [
-  { x: 1, y: 10 },
-  { x: 2, y: 20 },
-  { x: 3, y: 15 },
-  { x: 4, y: 25 },
-  { x: 5, y: 30 }
+  { month: 'Jan', sales: 100, profit: 50 },
+  { month: 'Feb', sales: 120, profit: 55 },
+  { month: 'Mar', sales: 180, profit: 80 },
+  { month: 'Apr', sales: 110, profit: 40 },
+  { month: 'May', sales: 90, profit: 30 },
 ]
 
-const x = (d: any) => d.x
-const y = (d: any) => d.y
+const categories = {
+  sales: {
+    name: 'Sales',
+    color: '#3b82f6',
+  },
+  profit: {
+    name: 'Profit',
+    color: '#10b981',
+  },
+}
+
+const xFormatter = (i: number) => data[i].month
 </script>
 
 <style scoped>
