@@ -6,6 +6,7 @@
         :data="chartData"
         :categories="chartCategories"
         :height="300"
+        :yAxis="yAxisConfig"
         xLabel="Time"
         yLabel="Price"
       />
@@ -31,6 +32,17 @@ const chartData = ref([
 
 const chartCategories = {
   price: { name: 'Price', color: '#04CF8B' }
+}
+
+const yAxisConfig = {
+  title: {
+    text: 'Price'
+  },
+  labels: {
+    formatter: function() {
+      return this.value
+    }
+  }
 }
 
 let updateInterval: NodeJS.Timeout | null = null

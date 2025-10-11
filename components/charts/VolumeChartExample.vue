@@ -6,6 +6,7 @@
         :data="chartData"
         :categories="chartCategories"
         :height="300"
+        :yAxis="yAxisConfig"
         xLabel="Time"
         yLabel="Volume"
       />
@@ -29,6 +30,17 @@ const chartData = [
 
 const chartCategories = {
   volume: { name: 'Volume', color: '#04CF8B' }
+}
+
+const yAxisConfig = {
+  title: {
+    text: 'Volume'
+  },
+  labels: {
+    formatter: function() {
+      return this.value
+    }
+  }
 }
 </script>
 
