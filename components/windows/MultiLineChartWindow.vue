@@ -1,6 +1,6 @@
 <template>
   <div class="chart-window">
-    <LineChart
+    <AreaChart
       :data="LineChartData"
       :height="300"
       :categories="categories"
