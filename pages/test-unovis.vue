@@ -576,7 +576,6 @@ if (process.client) {
 /* Window Content */
 .window-content {
   flex: 1;
-  overflow: hidden;
 }
 
 /* Add Window Button */
