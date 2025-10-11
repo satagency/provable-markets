@@ -18,6 +18,60 @@ A professional securities lending platform built with Nuxt.js, featuring real-ti
 - **Framework**: Nuxt.js 3
 - **Styling**: Tailwind CSS
 - **Charts**: Chart.js with Vue integration
+
+## 📋 OrdersWindow Table Maintenance
+
+### ⚠️ CRITICAL: Do Not Break the Orders Table Structure
+
+The OrdersWindow component (`components/windows/OrdersWindow.vue`) contains a complex table with **horizontal scrolling** functionality. Follow these guidelines to avoid breaking it:
+
+### 🔧 Table Structure Rules
+
+1. **Header Structure**: The table header must contain ALL columns in the correct order
+2. **Row Structure**: Each row must have corresponding cells for every header column
+3. **CSS Classes**: Every column must have a corresponding CSS width class
+4. **Horizontal Scrolling**: The table uses `overflow-x: auto` on the container for horizontal scrolling
+
+### 📊 Current Column Order (DO NOT CHANGE ORDER)
+
+```
+Select → Status → Updated → Side → Intent → Ticker → Security Name → CUSIP → 
+Open QTY → IOI QTY → Firm QTY → Fee → Exec Fee → Rebates → Agreements → 
+Unit Price → Market Value → Total QTY → Min QTY → Time Force → CounterParty → 
+Sec Type → Created Time → Created By → Last Update By → BBO Qty → BBO Fee → 
+BBO Rebate → Spread % (Rebate) → Spread vs. BBO (fee) → BBO Agreements → Actions
+```
+
+### 🚫 What NOT to Do
+
+- ❌ **DO NOT** remove columns without updating both header AND row cells
+- ❌ **DO NOT** change the order of columns
+- ❌ **DO NOT** modify the CSS overflow properties
+- ❌ **DO NOT** add columns without updating sample data generation
+- ❌ **DO NOT** break the flex layout structure
+
+### ✅ What TO Do When Adding/Removing Columns
+
+1. **Add Header Cell**: `<div class="header-cell new-col">`
+2. **Add Row Cell**: `<div class="row-cell new-col">`
+3. **Add CSS Class**: `.new-col { width: Xpx; min-width: Xpx; }`
+4. **Update Sample Data**: Add field to `generateOrders()` function
+5. **Test Horizontal Scrolling**: Ensure table scrolls properly
+
+### 🔍 Key CSS Classes to Preserve
+
+```css
+.table-container { overflow-x: auto; overflow-y: hidden; }
+.table-rows-container { overflow-x: hidden; overflow-y: auto; }
+.table-header { min-width: max-content; }
+.table-row { min-width: max-content; }
+```
+
+### 📝 Last Working Commit
+
+- **Commit**: `6bf36ba` - "feat: add complete orders table with all columns"
+- **Status**: ✅ All columns working with horizontal scrolling
+- **Columns**: 32 total columns including all BBO and creation tracking fields
 - **State Management**: Pinia
 - **TypeScript**: Full type safety
 - **Design System**: Custom components with Figma MCP integration
