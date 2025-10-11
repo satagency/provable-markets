@@ -47,21 +47,3 @@ const xFormatter = (tick: number): string => {
 }
 </script>
 
-<style scoped>
-.chart-window {
-  padding: 10px;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-.chart-window :deep(svg) {
-  width: 100% !important;
-  height: 100% !important;
-  max-width: 100%;
-  max-height: 100%;
-}
-</style>
