@@ -63,5 +63,17 @@ export default defineNuxtConfig({
   // Build Configuration
   build: {
     transpile: ['@unovis/ts', '@unovis/vue']
+  },
+  
+  // Vite Configuration
+  vite: {
+    optimizeDeps: {
+      include: ['@unovis/ts', '@unovis/vue', 'to-px']
+    },
+    resolve: {
+      alias: {
+        'to-px': 'to-px/browser.js'
+      }
+    }
   }
 })
