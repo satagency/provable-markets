@@ -17,7 +17,7 @@
 import { LineChart } from 'nuxt-charts'
 
 definePageMeta({
-  layout: 'dashboard'
+  layout: 'default'
 })
 
 const chartData = [
