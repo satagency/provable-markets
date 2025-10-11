@@ -19,7 +19,7 @@
       </li>
       <li>
         <NuxtLink to="/reports/charts" class="submenu-item">
-          <span class="submenu-label">Charts Explorer</span>
+          <span class="submenu-label">Charts</span>
         </NuxtLink>
       </li>
     </ul>
