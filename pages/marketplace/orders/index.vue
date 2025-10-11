@@ -4,24 +4,19 @@
     <!-- Grid Container for Windows -->
     <div 
       class="grid-container"
-      :style="{ gridTemplateColumns: gridTemplate }"
+      :style="{ gridTemplateRows }"
     >
-      <!-- Dynamic Windows -->
+      <!-- Orders Window -->
       <div 
-        v-for="window in windows"
-        :key="window.id"
         class="grid-window"
-        :style="{ gridArea: window.gridArea, zIndex: window.zIndex }"
-        @mousedown="startDrag(window.id, $event)"
+        :style="{ gridArea: '1 / 1 / 2 / 2', zIndex: 1 }"
+        @mousedown="startDrag(1, $event)"
       >
         <!-- Window Header with Controls -->
         <div class="window-header">
           <div class="window-title-section">
-            <span class="window-title">{{ window.title }}</span>
-            <div 
-              v-if="window.title === 'Orders'"
-              class="show-archived-toggle"
-            >
+            <span class="window-title">Orders</span>
+            <div class="show-archived-toggle">
               <span class="toggle-label">Show Archived</span>
               <div 
                 class="switch"
@@ -34,7 +29,6 @@
           </div>
           <div class="window-header-actions">
             <button 
-              v-if="window.title === 'Orders'"
               class="create-order-btn"
               @click="createOrder"
             >
@@ -44,7 +38,6 @@
               </svg>
             </button>
             <button 
-              v-if="window.title === 'Orders'"
               class="batch-orders-btn"
               @click="batchOrders"
             >
@@ -66,8 +59,42 @@
       
         <!-- Window Content -->
         <div class="window-content">
-          <component v-if="window.component" :is="window.component" />
-          <div v-else-if="window.title === 'Order Details'" class="order-details-content">
+          <OrdersWindow />
+        </div>
+      </div>
+      
+      <!-- Horizontal Splitter -->
+      <div 
+        class="horizontal-splitter"
+        :class="{ dragging: isSplitterDragging }"
+        @mousedown="startSplitterDrag"
+      >
+        <div class="splitter-handle"></div>
+      </div>
+      
+      <!-- Order Details Window -->
+      <div 
+        class="grid-window"
+        :style="{ gridArea: '3 / 1 / 4 / 2', zIndex: 1 }"
+        @mousedown="startDrag(2, $event)"
+      >
+        <!-- Window Header with Controls -->
+        <div class="window-header">
+          <div class="window-title-section">
+            <span class="window-title">Order Details</span>
+          </div>
+          <div class="window-controls">
+            <button class="close-btn" @click="closeWindow(2)">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Window Content -->
+        <div class="window-content">
+          <div class="order-details-content">
             <!-- Tab Menu -->
             <div class="tab-menu">
               <div 
@@ -84,8 +111,91 @@
             <!-- Tab Content -->
             <div class="tab-content">
               <div v-if="activeOrderDetailTab === 'history'" class="tab-panel">
-                <h4>Order History</h4>
-                <p>Order history content will go here</p>
+                <!-- History Table - Using exact Orders table design -->
+                <div class="table-container">
+                  <!-- Table Header -->
+                  <div class="table-header">
+                    <div class="header-cell when-col">
+                      <span class="header-text">When</span>
+                    </div>
+                    <div class="header-cell event-col">
+                      <span class="header-text">Event</span>
+                    </div>
+                    <div class="header-cell order-qty-col">
+                      <span class="header-text">Order Qty</span>
+                    </div>
+                    <div class="header-cell open-qty-col">
+                      <span class="header-text">Open Qty</span>
+                    </div>
+                    <div class="header-cell firm-qty-col">
+                      <span class="header-text">Firm Qty</span>
+                    </div>
+                    <div class="header-cell exec-qty-col">
+                      <span class="header-text">Exec Qty</span>
+                    </div>
+                    <div class="header-cell avg-exec-fee-col">
+                      <span class="header-text">Avg Exec Fee</span>
+                      <span class="header-subtext">%</span>
+                    </div>
+                    <div class="header-cell avg-exec-rebate-col">
+                      <span class="header-text">Avg Exec Rebate</span>
+                      <span class="header-subtext">%</span>
+                    </div>
+                    <div class="header-cell agreements-col">
+                      <span class="header-text">Agreements</span>
+                    </div>
+                    <div class="header-cell initiator-col">
+                      <span class="header-text">Initiator</span>
+                    </div>
+                  </div>
+                  
+                  <!-- Table Rows Container with Scroll -->
+                  <div class="table-rows-container">
+                    <!-- Row Wrapper -->
+                    <div class="row-wrapper">
+                      <!-- Dynamic Table Rows -->
+                      <div 
+                        v-for="historyItem in orderHistory" 
+                        :key="historyItem.id"
+                        class="table-row"
+                      >
+                        <div class="row-cell when-col">
+                          <div class="date-time">
+                            <span class="date">{{ historyItem.date }}</span>
+                            <span class="time">{{ historyItem.time }}</span>
+                          </div>
+                        </div>
+                        <div class="row-cell event-col">
+                          <span>{{ historyItem.event }}</span>
+                        </div>
+                        <div class="row-cell order-qty-col">
+                          <span class="quantity">{{ historyItem.orderQty }}</span>
+                        </div>
+                        <div class="row-cell open-qty-col">
+                          <span class="quantity">{{ historyItem.openQty }}</span>
+                        </div>
+                        <div class="row-cell firm-qty-col">
+                          <span class="quantity">{{ historyItem.firmQty }}</span>
+                        </div>
+                        <div class="row-cell exec-qty-col">
+                          <span class="quantity">{{ historyItem.execQty }}</span>
+                        </div>
+                        <div class="row-cell avg-exec-fee-col">
+                          <span class="percentage">{{ historyItem.avgExecFee }}%</span>
+                        </div>
+                        <div class="row-cell avg-exec-rebate-col">
+                          <span class="percentage">{{ historyItem.avgExecRebate }}%</span>
+                        </div>
+                        <div class="row-cell agreements-col">
+                          <span class="quantity">{{ historyItem.agreements }}</span>
+                        </div>
+                        <div class="row-cell initiator-col">
+                          <span class="email">{{ historyItem.initiator }}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div v-else-if="activeOrderDetailTab === 'child-orders'" class="tab-panel">
                 <h4>Child Orders</h4>
@@ -97,33 +207,24 @@
               </div>
             </div>
           </div>
-          <div v-else class="window-placeholder">
-            <h3>{{ window.title }}</h3>
-            <p>Future window content goes here</p>
-          </div>
         </div>
-      </div>
-      
-      <!-- Add Window Button -->
-      <div 
-        v-if="windows.length < 6"
-        class="add-window-btn"
-        @click="addWindow('New Window', null)"
-      >
-        <span>+ Add Window</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import OrdersWindow from '~/components/windows/OrdersWindow.vue'
 
 // Grid system state
-const gridColumns = ref(2)
-const gridRows = ref(1)
+const gridColumns = ref(1)
+const gridRows = ref(2)
 const gridGap = ref(8)
+
+// Splitter state
+const splitterPosition = ref(50) // Percentage from top
+const isSplitterDragging = ref(false)
 
 // Window configurations
 const windows = ref([
@@ -146,6 +247,42 @@ const windows = ref([
 // Show archived toggle state
 const showArchived = ref(false)
 
+// Splitter drag functions
+function startSplitterDrag(e: MouseEvent) {
+  e.preventDefault()
+  isSplitterDragging.value = true
+  
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isSplitterDragging.value) return
+    
+    const containerRect = document.querySelector('.grid-container')?.getBoundingClientRect()
+    if (containerRect) {
+      const relativeY = e.clientY - containerRect.top
+      const percentage = (relativeY / containerRect.height) * 100
+      
+      // Constrain between 20% and 80% to prevent overflow
+      const constrainedPercentage = Math.max(20, Math.min(80, percentage))
+      splitterPosition.value = constrainedPercentage
+    }
+  }
+  
+  const handleMouseUp = () => {
+    isSplitterDragging.value = false
+    document.removeEventListener('mousemove', handleMouseMove)
+    document.removeEventListener('mouseup', handleMouseUp)
+  }
+  
+  document.addEventListener('mousemove', handleMouseMove)
+  document.addEventListener('mouseup', handleMouseUp)
+}
+
+// Computed grid template rows
+const gridTemplateRows = computed(() => {
+  const topSize = splitterPosition.value
+  const bottomSize = 100 - splitterPosition.value
+  return `${topSize}fr 8px ${bottomSize}fr`
+})
+
 // Order Details tab state
 const activeOrderDetailTab = ref('history')
 const orderDetailTabs = ref([
@@ -153,6 +290,40 @@ const orderDetailTabs = ref([
   { id: 'child-orders', label: 'Child Orders' },
   { id: 'details', label: 'Details' }
 ])
+
+// Order History data
+const orderHistory = ref([])
+
+// Generate sample order history data
+const generateOrderHistory = () => {
+  const events = ['Created', 'Modified', 'Partially Filled', 'Filled', 'Cancelled', 'Rejected', 'Updated']
+  const initiators = ['trader1@provable.com', 'trader2@provable.com', 'trader3@provable.com', 'SYSTEM']
+  
+  const history = []
+  // Only generate 1 row
+  const event = events[Math.floor(Math.random() * events.length)]
+  const initiator = initiators[Math.floor(Math.random() * initiators.length)]
+  
+  history.push({
+    id: 1,
+    date: '10/12/23',
+    time: '8:30A',
+    event,
+    orderQty: Math.floor(Math.random() * 500) + 50,
+    openQty: Math.floor(Math.random() * 400) + 30,
+    firmQty: Math.floor(Math.random() * 300) + 20,
+    execQty: Math.floor(Math.random() * 200) + 10,
+    avgExecFee: (Math.random() * 2).toFixed(2),
+    avgExecRebate: (Math.random() * 1.5).toFixed(2),
+    agreements: Math.floor(Math.random() * 5) + 1,
+    initiator
+  })
+  
+  return history
+}
+
+// Initialize order history
+orderHistory.value = generateOrderHistory()
 
 // Available grid positions - quadrant-based layout
 const gridPositions = ref([
@@ -476,6 +647,7 @@ function batchOrders() {
   // Add your batch orders logic here
 }
 
+
 // Toggle show archived function
 function toggleShowArchived() {
   showArchived.value = !showArchived.value
@@ -671,6 +843,7 @@ useHead({
   background-color: #555555;
 }
 
+
 .show-archived-toggle {
   display: flex;
   align-items: center;
@@ -719,6 +892,49 @@ useHead({
 .window-content {
   flex: 1;
   overflow: hidden;
+}
+
+/* Horizontal Splitter */
+.horizontal-splitter {
+  background: rgba(255, 255, 255, 0.05);
+  cursor: row-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  position: relative;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.horizontal-splitter:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.horizontal-splitter.dragging {
+  background: rgba(4, 207, 139, 0.2);
+  border-top: 1px solid rgba(4, 207, 139, 0.5);
+  border-bottom: 1px solid rgba(4, 207, 139, 0.5);
+}
+
+.splitter-handle {
+  width: 40px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.horizontal-splitter:hover .splitter-handle {
+  background: rgba(255, 255, 255, 0.5);
+  width: 60px;
+}
+
+.horizontal-splitter.dragging .splitter-handle {
+  background: rgba(4, 207, 139, 0.8);
+  width: 80px;
 }
 
 /* Add Window Button */
@@ -803,7 +1019,7 @@ useHead({
 
 .tab-content {
   flex: 1;
-  padding: 20px;
+  padding: 0;
   overflow-y: auto;
 }
 
@@ -819,6 +1035,152 @@ useHead({
   font-size: 14px;
   line-height: 1.5;
 }
+
+/* History Table Styles - Using exact Orders table design */
+.table-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Table Rows Container with Scroll */
+.table-rows-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Row Wrapper */
+.row-wrapper {
+  width: 100%;
+  min-width: max-content;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Table Header */
+.table-header {
+  display: flex;
+  background-color: #161818;
+  padding: 0;
+  gap: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  min-width: max-content;
+  flex-shrink: 0;
+}
+
+.header-cell {
+  background-color: rgba(224, 224, 224, 0);
+  display: flex;
+  align-items: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 40px;
+  padding: 0 12px;
+}
+
+.header-text {
+  font-weight: 400;
+}
+
+.header-subtext {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 10px;
+  margin-left: 2px;
+}
+
+/* Table Row */
+.table-row {
+  display: flex;
+  padding: 0;
+  gap: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background-color 0.15s ease;
+  width: 100%;
+  min-width: max-content;
+}
+
+.table-row:hover {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.row-cell {
+  display: flex;
+  align-items: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 13px;
+  color: #ffffff;
+  white-space: nowrap;
+  height: 48px;
+  padding: 0 12px;
+}
+
+/* Column Widths */
+.when-col { width: 120px; min-width: 120px; }
+.event-col { width: 120px; min-width: 120px; }
+.order-qty-col { width: 80px; min-width: 80px; }
+.open-qty-col { width: 80px; min-width: 80px; }
+.firm-qty-col { width: 80px; min-width: 80px; }
+.exec-qty-col { width: 80px; min-width: 80px; }
+.avg-exec-fee-col { width: 100px; min-width: 100px; }
+.avg-exec-rebate-col { width: 120px; min-width: 120px; }
+.agreements-col { width: 80px; min-width: 80px; }
+.initiator-col { width: 180px; min-width: 180px; }
+
+/* Data Element Styling - EXACT copy from OrdersWindow.vue */
+
+.date-time {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.date {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.time {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.quantity {
+  color: #ffffff;
+  font-weight: 500;
+  text-align: right;
+  width: 100%;
+}
+
+.percentage {
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  color: #ffffff;
+  font-weight: 500;
+  letter-spacing: 0.12px;
+}
+
+.email {
+  color: #ffffff;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+
 
 /* Responsive Grid */
 @media (max-width: 1200px) {
