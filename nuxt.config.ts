@@ -5,8 +5,7 @@ export default defineNuxtConfig({
   
   // CSS Framework
   css: [
-    '~/assets/css/main.css',
-    '@unovis/ts/dist/styles.css'
+    '~/assets/css/main.css'
   ],
   
   // Modules

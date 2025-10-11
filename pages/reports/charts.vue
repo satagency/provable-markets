@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, markRaw } from 'vue'
 import LineChartExample from '~/components/charts/LineChartExample.vue'
 import VolumeChartExample from '~/components/charts/VolumeChartExample.vue'
 import CandlestickChartExample from '~/components/charts/CandlestickChartExample.vue'
@@ -61,28 +61,28 @@ const windows = ref([
   {
     id: 1,
     title: 'Price Trend',
-    component: LineChartExample,
+    component: markRaw(LineChartExample),
     gridArea: '1 / 1 / 2 / 2',
     zIndex: 1
   },
   {
     id: 2,
     title: 'Trading Volume',
-    component: VolumeChartExample,
+    component: markRaw(VolumeChartExample),
     gridArea: '1 / 2 / 2 / 3',
     zIndex: 1
   },
   {
     id: 3,
     title: 'OHLC Candlestick',
-    component: CandlestickChartExample,
+    component: markRaw(CandlestickChartExample),
     gridArea: '2 / 1 / 3 / 2',
     zIndex: 1
   },
   {
     id: 4,
     title: 'Real-Time Feed',
-    component: RealTimeChartExample,
+    component: markRaw(RealTimeChartExample),
     gridArea: '2 / 2 / 3 / 3',
     zIndex: 1
   }
