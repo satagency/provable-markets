@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ComputedRef } from 'vue'
+import { computed } from 'vue'
 
 interface LineChartItem {
   date: string
@@ -22,21 +22,20 @@ interface LineChartItem {
   tablet: number
 }
 
-const categories: ComputedRef<Record<string, BulletLegendItemInterface>> =
-  computed(() => ({
-    desktop: {
-      name: 'Desktop',
-      color: '#3b82f6',
-    },
-    mobile: {
-      name: 'Mobile',
-      color: '#22c55e',
-    },
-    tablet: {
-      name: 'Tablet',
-      color: '#f59e0b',
-    },
-  }))
+const categories = computed(() => ({
+  desktop: {
+    name: 'Desktop',
+    color: '#3b82f6',
+  },
+  mobile: {
+    name: 'Mobile',
+    color: '#22c55e',
+  },
+  tablet: {
+    name: 'Tablet',
+    color: '#f59e0b',
+  },
+}))
 
 const LineChartData: LineChartItem[] = [
   { date: '2024-04-01', desktop: 222, mobile: 150, tablet: 80 },
