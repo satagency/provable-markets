@@ -2,29 +2,20 @@
   <div class="test-page">
     <h1>Unovis Test Page</h1>
     <div class="chart-container">
-      <VisXYContainer :data="data" :height="400">
-        <VisLine :x="x" :y="y" />
-        <VisAxis type="x" />
-        <VisAxis type="y" />
-      </VisXYContainer>
+      <div ref="chartContainer" style="width: 100%; height: 400px;"></div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { VisXYContainer, VisLine, VisAxis } from '@unovis/vue'
+import { onMounted, ref } from 'vue'
 
-// Simple static data - no real-time logic
-const data = [
-  { x: 1, y: 10 },
-  { x: 2, y: 20 },
-  { x: 3, y: 15 },
-  { x: 4, y: 25 },
-  { x: 5, y: 30 }
-]
+const chartContainer = ref<HTMLElement>()
 
-const x = (d: any) => d.x
-const y = (d: any) => d.y
+onMounted(() => {
+  console.log('Test page mounted')
+  console.log('Chart container:', chartContainer.value)
+})
 </script>
 
 <style scoped>
