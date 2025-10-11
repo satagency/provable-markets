@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   ],
   
   // Modules
-  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', '@nuxtjs/google-fonts', 'nuxt-charts'],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@vueuse/nuxt', '@nuxtjs/google-fonts'],
   
   // Google Fonts
   googleFonts: {
@@ -62,6 +62,6 @@ export default defineNuxtConfig({
   
   // Build Configuration
   build: {
-    transpile: ['chart.js']
+    transpile: []
   }
 })

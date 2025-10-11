@@ -17,11 +17,6 @@
           <span class="submenu-label">Templates</span>
         </NuxtLink>
       </li>
-      <li>
-        <NuxtLink to="/reports/charts" class="submenu-item">
-          <span class="submenu-label">Charts</span>
-        </NuxtLink>
-      </li>
     </ul>
   </div>
 </template>
