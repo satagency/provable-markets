@@ -3,10 +3,10 @@
     <h3 class="chart-title">Real-Time Market Feed</h3>
     <div class="chart-container">
       <LineChart
-        :data="chartData"
-        :categories="chartCategories"
+        :data="data"
+        :categories="categories"
         :height="300"
-        :yAxis="yAxisConfig"
+        :xFormatter="xFormatter"
         xLabel="Time"
         yLabel="Price"
       />
@@ -17,7 +17,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 
-const chartData = ref([
+const data = ref([
   { time: '1', price: 175 },
   { time: '2', price: 176 },
   { time: '3', price: 174 },
@@ -30,31 +30,25 @@ const chartData = ref([
   { time: '10', price: 182 }
 ])
 
-const chartCategories = {
-  price: { name: 'Price', color: '#04CF8B' }
-}
-
-const yAxisConfig = {
-  title: {
-    text: 'Price'
-  },
-  labels: {
-    formatter: function() {
-      return this.value
-    }
+const categories = {
+  price: {
+    name: 'Price',
+    color: '#04CF8B'
   }
 }
+
+const xFormatter = (i: number) => data.value[i].time
 
 let updateInterval: NodeJS.Timeout | null = null
 
 onMounted(() => {
   // Update chart every second
   updateInterval = setInterval(() => {
-    const newValue = chartData.value[chartData.value.length - 1].price + (Math.random() - 0.5) * 2
-    chartData.value.push({ time: (chartData.value.length + 1).toString(), price: newValue })
+    const newValue = data.value[data.value.length - 1].price + (Math.random() - 0.5) * 2
+    data.value.push({ time: (data.value.length + 1).toString(), price: newValue })
     
-    if (chartData.value.length > 20) {
-      chartData.value.shift()
+    if (data.value.length > 20) {
+      data.value.shift()
     }
   }, 1000)
 })

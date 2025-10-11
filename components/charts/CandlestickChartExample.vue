@@ -3,10 +3,10 @@
     <h3 class="chart-title">OHLC Candlestick</h3>
     <div class="chart-container">
       <LineChart
-        :data="chartData"
-        :categories="chartCategories"
+        :data="data"
+        :categories="categories"
         :height="300"
-        :yAxis="yAxisConfig"
+        :xFormatter="xFormatter"
         xLabel="Time"
         yLabel="Price"
       />
@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-const chartData = [
+const data = [
   { time: '1', price: 105 },
   { time: '2', price: 108 },
   { time: '3', price: 104 },
@@ -28,20 +28,14 @@ const chartData = [
   { time: '10', price: 138 }
 ]
 
-const chartCategories = {
-  price: { name: 'Price', color: '#04CF8B' }
-}
-
-const yAxisConfig = {
-  title: {
-    text: 'Price'
-  },
-  labels: {
-    formatter: function() {
-      return this.value
-    }
+const categories = {
+  price: {
+    name: 'Price',
+    color: '#04CF8B'
   }
 }
+
+const xFormatter = (i: number) => data[i].time
 </script>
 
 <style scoped>

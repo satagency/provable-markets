@@ -3,10 +3,10 @@
     <h3 class="chart-title">Trading Volume</h3>
     <div class="chart-container">
       <BarChart
-        :data="chartData"
-        :categories="chartCategories"
+        :data="data"
+        :categories="categories"
         :height="300"
-        :yAxis="yAxisConfig"
+        :xFormatter="xFormatter"
         xLabel="Time"
         yLabel="Volume"
       />
@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-const chartData = [
+const data = [
   { time: '1', volume: 100 },
   { time: '2', volume: 150 },
   { time: '3', volume: 120 },
@@ -28,20 +28,14 @@ const chartData = [
   { time: '10', volume: 210 }
 ]
 
-const chartCategories = {
-  volume: { name: 'Volume', color: '#04CF8B' }
-}
-
-const yAxisConfig = {
-  title: {
-    text: 'Volume'
-  },
-  labels: {
-    formatter: function() {
-      return this.value
-    }
+const categories = {
+  volume: {
+    name: 'Volume',
+    color: '#04CF8B'
   }
 }
+
+const xFormatter = (i: number) => data[i].time
 </script>
 
 <style scoped>
