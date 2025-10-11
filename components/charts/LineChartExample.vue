@@ -1,35 +1,24 @@
 <template>
-  <div class="chart-wrapper">
-    <h3 class="chart-title">Stock Price Trend</h3>
-    <div class="chart-container">
-      <VisXYContainer 
-        :data="data" 
-        :height="280"
-      >
-        <VisLine 
-          :x="(d) => d.x" 
-          :y="(d) => d.y" 
-          color="#04CF8B"
-          :lineWidth="2"
-        />
-        <VisAxis type="x" label="Time" />
-        <VisAxis type="y" label="Price ($)" />
-        <VisTooltip />
-      </VisXYContainer>
+  <ChartWrapper>
+    <div class="chart-content">
+      <h3 class="chart-title">Stock Price Trend</h3>
+      <div ref="chartContainer" class="chart-container"></div>
     </div>
-  </div>
+  </ChartWrapper>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { VisXYContainer, VisLine, VisAxis, VisTooltip } from '@unovis/vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import ChartWrapper from './ChartWrapper.vue'
+
+const chartContainer = ref<HTMLElement>()
+let chart: any = null
 
 interface DataPoint {
   x: number
   y: number
 }
 
-// Generate simple test data
 const generateData = (): DataPoint[] => {
   const points: DataPoint[] = []
   const now = Date.now()
@@ -46,25 +35,50 @@ const generateData = (): DataPoint[] => {
   return points
 }
 
-const data = ref<DataPoint[]>(generateData())
+onMounted(async () => {
+  if (!chartContainer.value) return
+  
+  // Dynamically import Unovis only on client side
+  const { VisXYContainer, VisLine, VisAxis } = await import('@unovis/ts')
+  
+  const data = generateData()
+  
+  chart = new VisXYContainer(chartContainer.value, {
+    components: [
+      new VisLine({
+        x: (d: DataPoint) => d.x,
+        y: (d: DataPoint) => d.y,
+        color: '#04CF8B'
+      })
+    ],
+    xAxis: new VisAxis({ type: 'x', numTicks: 5 }),
+    yAxis: new VisAxis({ type: 'y', numTicks: 5 }),
+    height: 280
+  }, data)
+})
+
+onBeforeUnmount(() => {
+  if (chart) {
+    chart.destroy?.()
+  }
+})
 </script>
 
 <style scoped>
-.chart-wrapper {
+.chart-content {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   padding: 20px;
   background: #1a1a1a;
-  box-sizing: border-box;
 }
 
 .chart-title {
   font-size: 16px;
   font-weight: 600;
   color: #ffffff;
-  margin-bottom: 16px;
+  margin: 0 0 16px 0;
 }
 
 .chart-container {
@@ -72,21 +86,16 @@ const data = ref<DataPoint[]>(generateData())
   min-height: 0;
 }
 
-/* Unovis dark theme styling */
-.chart-wrapper :deep(svg) {
+.chart-container :deep(svg) {
   background: transparent;
 }
 
-.chart-wrapper :deep(.unovis-axis line) {
+.chart-container :deep(.unovis-axis line) {
   stroke: rgba(255, 255, 255, 0.1);
 }
 
-.chart-wrapper :deep(.unovis-axis text) {
+.chart-container :deep(.unovis-axis text) {
   fill: rgba(255, 255, 255, 0.7);
   font-size: 12px;
-}
-
-.chart-wrapper :deep(.unovis-xy-container) {
-  background: transparent;
 }
 </style>

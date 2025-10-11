@@ -1,50 +1,43 @@
 <template>
-  <ClientOnly>
-    <div class="dashboard-container">
-      <!-- Grid Container for Windows -->
+  <div class="dashboard-container">
+    <!-- Grid Container for Windows -->
+    <div 
+      class="grid-container"
+      :style="{ gridTemplateColumns: gridTemplate }"
+    >
+      <!-- Dynamic Windows -->
       <div 
-        class="grid-container"
-        :style="{ gridTemplateColumns: gridTemplate }"
+        v-for="window in windows"
+        :key="window.id"
+        class="grid-window"
+        :style="{ gridArea: window.gridArea, zIndex: window.zIndex }"
+        @mousedown="startDrag(window.id, $event)"
       >
-        <!-- Dynamic Windows -->
-        <div 
-          v-for="window in windows"
-          :key="window.id"
-          class="grid-window"
-          :style="{ gridArea: window.gridArea, zIndex: window.zIndex }"
-          @mousedown="startDrag(window.id, $event)"
-        >
-          <!-- Window Header with Controls -->
-          <div class="window-header">
-            <div class="window-title-section">
-              <span class="window-title">{{ window.title }}</span>
-            </div>
-            <div class="window-controls">
-              <button 
-                v-if="windows.length > 1"
-                @click="removeWindow(window.id)"
-                class="close-btn"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
-            </div>
+        <!-- Window Header with Controls -->
+        <div class="window-header">
+          <div class="window-title-section">
+            <span class="window-title">{{ window.title }}</span>
           </div>
-        
-          <!-- Window Content -->
-          <div class="window-content">
-            <component v-if="window.component" :is="window.component" />
+          <div class="window-controls">
+            <button 
+              v-if="windows.length > 1"
+              @click="removeWindow(window.id)"
+              class="close-btn"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
           </div>
+        </div>
+      
+        <!-- Window Content -->
+        <div class="window-content">
+          <component v-if="window.component" :is="window.component" />
         </div>
       </div>
     </div>
-    <template #fallback>
-      <div class="dashboard-container">
-        <div class="loading-message">Loading charts...</div>
-      </div>
-    </template>
-  </ClientOnly>
+  </div>
 </template>
 
 <script setup lang="ts">
