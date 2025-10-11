@@ -51,5 +51,9 @@ const xFormatter = (tick: number): string => {
 .chart-window {
   padding: 20px;
 }
+
+.chart-window :deep(.unovis-axis-grid-line) {
+  stroke: #333 !important;
+}
 </style>
 
