@@ -999,6 +999,11 @@ const handleViewOrder = (order) => {
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.4);
 }
 
+/* Dense density adjustments for Actions header */
+.table-density-dense .table-header .sticky-actions {
+  padding-left: 20px;
+}
+
 /* Row sticky actions */
 .table-row .sticky-actions {
   background-color: #1A1A1A !important;
