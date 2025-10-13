@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-container">
+  <div class="page-foundation">
 
     <!-- Grid Container for Windows -->
     <div 
@@ -436,16 +436,7 @@ useHead({
 </script>
 
 <style scoped>
-.dashboard-container {
-  padding: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-  background-image: radial-gradient(circle, rgba(85, 85, 85, 0.15) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
+/* Agreements container now uses page-foundation class from main.css */
 
 /* Grid Container */
 .grid-container {

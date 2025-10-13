@@ -1,25 +1,25 @@
 <template>
   <div class="submenu">
-    <h3 class="submenu-title">Dashboard</h3>
+    <h3 class="submenu-title">Aurora</h3>
     <ul class="submenu-list">
       <li>
         <NuxtLink to="/dashboard" class="submenu-item">
-          <span class="submenu-label">Design R&D</span>
+          <span class="submenu-label">First Principles</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/dashboard/performance" class="submenu-item">
-          <span class="submenu-label">Performance</span>
+        <NuxtLink to="/dashboard/priorities" class="submenu-item">
+          <span class="submenu-label">Priorities</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/dashboard/positions" class="submenu-item">
-          <span class="submenu-label">Positions</span>
+        <NuxtLink to="/dashboard/ux-improvements" class="submenu-item">
+          <span class="submenu-label">UX Improvements</span>
         </NuxtLink>
       </li>
       <li>
-        <NuxtLink to="/dashboard/alerts" class="submenu-item">
-          <span class="submenu-label">Alerts</span>
+        <NuxtLink to="/dashboard/roadmap" class="submenu-item">
+          <span class="submenu-label">Roadmap</span>
         </NuxtLink>
       </li>
     </ul>

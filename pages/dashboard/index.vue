@@ -1,644 +1,246 @@
 <template>
-  <div class="dashboard-container">
+  <div class="page-foundation">
+    <div class="float-page">
+      
+      <!-- Logo -->
+      <div class="logo">
+        <img src="/Favicon.png" alt="Aurora" class="logo-image" />
+      </div>
 
-    <!-- Grid Container for Windows -->
-    <div 
-      class="grid-container"
-      :style="{ gridTemplateColumns: gridTemplate }"
-    >
-      <!-- Dynamic Windows -->
-      <div 
-        v-for="window in windows"
-        :key="window.id"
-        class="grid-window"
-        :style="{ gridArea: window.gridArea, zIndex: window.zIndex }"
-        @mousedown="startDrag(window.id, $event)"
-      >
-        <!-- Window Header with Controls -->
-        <div class="window-header">
-          <div class="window-title-section">
-            <span class="window-title">{{ window.title }}</span>
+      <!-- Main Content -->
+      <div class="main-content">
+        
+        <!-- Header -->
+        <div class="header">
+          <h1 class="title">Aurora.</h1>
+          <p class="description">{{ projectDescription }}</p>
+        </div>
+
+        <!-- First Principles -->
+        <div class="principles">
+          <h2 class="principles-heading">OUR FIRST PRINCIPLES...</h2>
+          
+          <div class="principle">
+            <h3 class="principle-title">Design led</h3>
+            <p class="principle-text">{{ designLedDescription }}</p>
           </div>
-          <div class="window-header-actions">
-            <button 
-              v-if="window.title === 'Orders'"
-              class="create-order-btn"
-              @click="createOrder"
-            >
-              <span>Create Order</span>
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-              </svg>
-            </button>
+          
+          <div class="principle">
+            <h3 class="principle-title">Small teams</h3>
+            <p class="principle-text">{{ smallTeamsDescription }}</p>
           </div>
-          <div class="window-controls">
-            <button 
-              v-if="windows.length > 1"
-              @click="removeWindow(window.id)"
-              class="close-btn"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
+          
+          <div class="principle">
+            <h3 class="principle-title">Less fuss</h3>
+            <p class="principle-text">{{ lessFussDescription }}</p>
+          </div>
+        </div>
+
+      </div>
+      
+      <!-- Footer -->
+      <div class="footer">
+        <div class="footer-left">
+          <span>Aurora Labs Limited ©2024 All rights reserved.</span>
+          <a href="#" class="link">Contact us</a>
+          </div>
+        <div class="footer-right">
+          <!-- Social links removed -->
         </div>
       </div>
       
-        <!-- Window Content -->
-        <div class="window-content">
-          <component v-if="window.component" :is="window.component" />
-          <div v-else class="window-placeholder">
-            <h3>{{ window.title }}</h3>
-            <p>Future window content goes here</p>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Add Window Button -->
-      <div 
-        v-if="windows.length < 6"
-        class="add-window-btn"
-        @click="addWindow('New Window', null)"
-      >
-        <span>+ Add Window</span>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import OrdersWindow from '~/components/windows/OrdersWindow.vue'
+import { ref } from 'vue'
 
-// Grid system state
-const gridColumns = ref(2)
-const gridRows = ref(1)
-const gridGap = ref(8)
+// Project Description
+const projectDescription = ref('Aurora is a securities lending platform founded by Provable Markets, where beautiful software & institutional-grade workflows come to surface.')
 
-// Window configurations
-const windows = ref([
-  {
-    id: 1,
-    title: 'Orders',
-    component: OrdersWindow,
-    gridArea: '1 / 1 / 2 / 2', // row-start / col-start / row-end / col-end
-    zIndex: 1
-  },
-  {
-    id: 2,
-    title: 'Window 2',
-    component: null,
-    gridArea: '2 / 1 / 3 / 2',
-    zIndex: 1
-  }
-])
+// First Principles
+const designLedDescription = ref('Literally everything we do is permeated by design thinking, not "just" numbers. We trust our gut and obsess over details. We ship fast and iterate by talking directly to users.')
 
+const smallTeamsDescription = ref('We believe small focused teams lead to improved trust, greater ownership and an increased opportunity for innovation — small teams build and "collaborate better".')
 
-// Available grid positions - quadrant-based layout
-const gridPositions = ref([
-  // Quadrant positions
-  { id: 1, area: '1 / 1 / 2 / 2', name: 'Top Left' },
-  { id: 2, area: '1 / 2 / 2 / 3', name: 'Top Right' },
-  { id: 3, area: '2 / 1 / 3 / 2', name: 'Bottom Left' },
-  { id: 4, area: '2 / 2 / 3 / 3', name: 'Bottom Right' }
-])
-
-// Drag state
-const isDragging = ref(false)
-const dragWindowId = ref(0)
-const dragStart = ref({ x: 0, y: 0 })
-
-// Window styles computed from grid areas
-const window1Style = ref({
-  gridArea: windows.value[0].gridArea,
-  zIndex: windows.value[0].zIndex
-})
-
-const window2Style = ref({
-  gridArea: windows.value[1].gridArea,
-  zIndex: windows.value[1].zIndex
-})
-
-// Start drag
-function startDrag(windowId: number, e: MouseEvent) {
-  // Only allow dragging from window header
-  if (!(e.target as HTMLElement).closest('.window-header')) {
-    return
-  }
-  
-  console.log('Start drag window:', windowId)
-  e.preventDefault()
-  e.stopPropagation()
-  
-  isDragging.value = true
-  dragWindowId.value = windowId
-  dragStart.value = {
-    x: e.clientX,
-    y: e.clientY
-  }
-  
-  // Bring window to front
-  windows.value.forEach(window => {
-    if (window.id === windowId) {
-      window.zIndex = 10
-    } else {
-      window.zIndex = 1
-    }
-  })
-  
-  updateWindowStyles()
-}
-
-// Mouse move handler
-function handleMouseMove(e: MouseEvent) {
-  if (isDragging.value) {
-    const deltaX = e.clientX - dragStart.value.x
-    const deltaY = e.clientY - dragStart.value.y
-    
-    // Only update position if mouse has moved significantly
-    if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
-      // Calculate which grid position the mouse is over
-      const containerRect = document.querySelector('.grid-container')?.getBoundingClientRect()
-      if (containerRect) {
-        const relativeX = e.clientX - containerRect.left
-        const relativeY = e.clientY - containerRect.top
-        
-        // Determine grid position based on mouse position
-        const newPosition = calculateGridPosition(relativeX, relativeY, containerRect)
-        
-        if (newPosition) {
-          const currentWindow = windows.value.find(w => w.id === dragWindowId.value)
-          if (currentWindow && currentWindow.gridArea !== newPosition) {
-            moveWindow(dragWindowId.value, newPosition)
-          }
-        }
-      }
-    }
-  }
-}
-
-// Calculate grid position based on mouse coordinates
-function calculateGridPosition(x: number, y: number, containerRect: DOMRect) {
-  const containerWidth = containerRect.width
-  const containerHeight = containerRect.height
-  
-  // Simple row detection based on mouse Y position
-  const rowHeight = containerHeight / 3 // Assume max 3 rows
-  let targetRow = 1
-  
-  if (y < rowHeight) {
-    targetRow = 1
-  } else if (y < rowHeight * 2) {
-    targetRow = 2
-  } else {
-    targetRow = 3
-  }
-  
-  // Simple column detection based on mouse X position
-  const colWidth = containerWidth / 2
-  let targetCol = 1
-  
-  if (x < colWidth) {
-    targetCol = 1
-  } else {
-    targetCol = 2
-  }
-  
-  // Return valid grid area
-  if (targetCol === 1) {
-    return `${targetRow} / 1 / ${targetRow + 1} / 2`
-  } else {
-    return `${targetRow} / 2 / ${targetRow + 1} / 3`
-  }
-}
-
-// Mouse up handler
-function handleMouseUp() {
-  isDragging.value = false
-  dragWindowId.value = 0
-}
-
-// Update window styles
-function updateWindowStyles() {
-  window1Style.value = {
-    gridArea: windows.value[0].gridArea,
-    zIndex: windows.value[0].zIndex
-  }
-  
-  window2Style.value = {
-    gridArea: windows.value[1].gridArea,
-    zIndex: windows.value[1].zIndex
-  }
-}
-
-// Computed grid template based on window count
-const gridTemplate = ref('')
-
-// Update grid template - responsive horizontal-first configuration
-function updateGridTemplate() {
-  const windowCount = windows.value.length
-  
-  if (windowCount === 1) {
-    gridTemplate.value = '1fr / 1fr'
-    gridColumns.value = 1
-    gridRows.value = 1
-    windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    return
-  } else if (windowCount === 2) {
-    // Two windows: side by side horizontally
-    gridTemplate.value = '1fr / 1fr 1fr'
-    gridColumns.value = 2
-    gridRows.value = 1
-    windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    windows.value[1].gridArea = '1 / 2 / 2 / 3'
-  } else if (windowCount === 3) {
-    // Three windows: all in top row horizontally
-    gridTemplate.value = '1fr / 1fr 1fr 1fr'
-    gridColumns.value = 3
-    gridRows.value = 1
-    windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    windows.value[1].gridArea = '1 / 2 / 2 / 3'
-    windows.value[2].gridArea = '1 / 3 / 2 / 4'
-  } else if (windowCount === 4) {
-    // Four windows: 2x2 grid
-    gridTemplate.value = '1fr 1fr / 1fr 1fr'
-    gridColumns.value = 2
-    gridRows.value = 2
-    windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    windows.value[1].gridArea = '1 / 2 / 2 / 3'
-    windows.value[2].gridArea = '2 / 1 / 3 / 2'
-    windows.value[3].gridArea = '2 / 2 / 3 / 3'
-  } else if (windowCount === 5) {
-    // Five windows: 3 in top row, 2 in bottom row
-    gridTemplate.value = '1fr 1fr / 1fr 1fr 1fr'
-    gridColumns.value = 3
-    gridRows.value = 2
-    windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    windows.value[1].gridArea = '1 / 2 / 2 / 3'
-    windows.value[2].gridArea = '1 / 3 / 2 / 4'
-    windows.value[3].gridArea = '2 / 1 / 3 / 2'
-    windows.value[4].gridArea = '2 / 2 / 3 / 3'
-  } else if (windowCount === 6) {
-    // Six windows: 3x2 grid
-    gridTemplate.value = '1fr 1fr / 1fr 1fr 1fr'
-    gridColumns.value = 3
-    gridRows.value = 2
-    windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    windows.value[1].gridArea = '1 / 2 / 2 / 3'
-    windows.value[2].gridArea = '1 / 3 / 2 / 4'
-    windows.value[3].gridArea = '2 / 1 / 3 / 2'
-    windows.value[4].gridArea = '2 / 2 / 3 / 3'
-    windows.value[5].gridArea = '2 / 3 / 3 / 4'
-  } else {
-    // More than 6 windows: flexible layout
-    const cols = Math.ceil(Math.sqrt(windowCount))
-    const rows = Math.ceil(windowCount / cols)
-    const rowTemplate = Array(rows).fill('1fr').join(' ')
-    const colTemplate = Array(cols).fill('1fr').join(' ')
-    gridTemplate.value = `${rowTemplate} / ${colTemplate}`
-    gridColumns.value = cols
-    gridRows.value = rows
-    
-    // Position windows in grid
-    windows.value.forEach((window, index) => {
-      const row = Math.floor(index / cols) + 1
-      const col = (index % cols) + 1
-      window.gridArea = `${row} / ${col} / ${row + 1} / ${col + 1}`
-    })
-  }
-  
-  console.log('Grid template updated:', {
-    template: gridTemplate.value,
-    columns: gridColumns.value,
-    rows: gridRows.value,
-    windowCount: windowCount
-  })
-}
-
-// Analyze how windows are distributed across rows
-function analyzeRowConfiguration() {
-  const rowConfig = {}
-  
-  windows.value.forEach(window => {
-    const match = window.gridArea.match(/(\d+)/)
-    const row = match ? parseInt(match[1]) : 1
-    
-    if (!rowConfig[row]) {
-      rowConfig[row] = []
-    }
-    rowConfig[row].push(window)
-  })
-  
-  return rowConfig
-}
-
-// Move window to different position
-function moveWindow(windowId: number, newPosition: string) {
-  const window = windows.value.find(w => w.id === windowId)
-  if (window && window.gridArea !== newPosition) {
-    console.log(`Moving window ${windowId} from ${window.gridArea} to ${newPosition}`)
-    window.gridArea = newPosition
-    
-    // Update grid template first
-    updateGridTemplate()
-    
-    // Then ensure windows in single-window rows span full width
-    optimizeWindowAreas()
-    
-    updateWindowStyles()
-  }
-}
-
-// Optimize window areas to ensure full width when alone in row
-function optimizeWindowAreas() {
-  const rowConfig = analyzeRowConfiguration()
-  
-  windows.value.forEach(window => {
-    const match = window.gridArea.match(/(\d+)/)
-    const windowRow = match ? parseInt(match[1]) : 1
-    const rowWindows = rowConfig[windowRow] || []
-    
-    if (rowWindows.length === 1) {
-      // Single window in row - make it full width
-      window.gridArea = `${windowRow} / 1 / ${windowRow + 1} / 2`
-    }
-  })
-}
-
-// Get available positions for a window
-function getAvailablePositions(windowId: number) {
-  const usedPositions = windows.value
-    .filter(w => w.id !== windowId)
-    .map(w => w.gridArea)
-  
-  return gridPositions.value.filter(pos => !usedPositions.includes(pos.area))
-}
-
-// Add new window
-function addWindow(title: string, component: any) {
-  if (windows.value.length >= 6) {
-    console.log('Maximum 6 windows allowed')
-    return
-  }
-  
-  const newId = Math.max(...windows.value.map(w => w.id)) + 1
-  
-  // Add the new window
-  windows.value.push({
-    id: newId,
-    title,
-    component,
-    gridArea: '1 / 1 / 2 / 2', // Temporary position
-    zIndex: 1
-  })
-  
-  // Update grid template which will automatically position all windows
-  updateGridTemplate()
-  updateWindowStyles()
-}
-
-// Remove window
-function removeWindow(windowId: number) {
-  windows.value = windows.value.filter(w => w.id !== windowId)
-  updateGridTemplate()
-  updateWindowStyles()
-}
-
-// Create order function
-function createOrder() {
-  console.log('Create Order clicked')
-  // Add your create order logic here
-}
-
-
-// Event listeners
-onMounted(function() {
-  document.addEventListener('mousemove', handleMouseMove)
-  document.addEventListener('mouseup', handleMouseUp)
-  
-  // Initialize grid template
-  updateGridTemplate()
-})
-
-onUnmounted(function() {
-  document.removeEventListener('mousemove', handleMouseMove)
-  document.removeEventListener('mouseup', handleMouseUp)
-})
+const lessFussDescription = ref('We strive for simplicity — less is more.')
 
 // Set page title
-if (process.client) {
-  document.title = 'Dashboard'
-}
+useHead({
+  title: 'Aurora - Provable Markets'
+})
 </script>
 
 <style scoped>
-.dashboard-container {
-  padding: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  overflow: hidden;
-  background-image: radial-gradient(circle, rgba(85, 85, 85, 0.15) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-/* Grid Container */
-.grid-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 8px;
-  height: calc(100vh - 50px - 24px); /* Full viewport minus header and padding */
-  padding: 2px;
-  box-sizing: border-box;
-}
-
-/* Grid Windows */
-.grid-window {
-  border: 1px solid #404040;
-  border-radius: 6px;
-  overflow: hidden;
-  background: #1a1a1a;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.grid-window:hover {
-  border-color: rgba(4, 207, 139, 0.5);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.grid-window:active {
-  border-color: rgba(4, 207, 139, 0.8);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-}
-
-/* Window Header */
-.window-header {
-  height: 40px;
-  background: #2a2a2a;
-  border-bottom: 1px solid #404040;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 12px;
-  cursor: move;
-  user-select: none;
-  transition: background-color 0.2s ease;
-}
-
-.window-header:hover {
-  background: #333;
-}
-
-.grid-window:active .window-header {
-  background: #444;
-}
-
-.window-title-section {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.window-title {
+/* Float Design - Clean Implementation */
+.float-page {
+  padding: 4rem 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   color: #ffffff;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.window-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: auto;
-}
-
-.window-controls {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: 8px;
-}
-
-.position-select {
-  background: #1a1a1a;
-  border: 1px solid #404040;
-  color: #ffffff;
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-size: 12px;
-  cursor: pointer;
-}
-
-.position-select:hover {
-  border-color: rgba(4, 207, 139, 0.5);
-}
-
-.close-btn {
-  background: transparent;
-  border: none;
-  color: #ffffff;
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s ease;
-}
-
-.close-btn:hover {
-  color: #ff4444;
-}
-
-.create-order-btn {
-  background-color: #0e8212;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  height: 28px;
-  padding: 0 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: 'Geist', sans-serif;
-  font-weight: 500;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.create-order-btn:hover {
-  background-color: #0a6b0e;
-}
-
-
-/* Window Content */
-.window-content {
+  width: 100%;
   flex: 1;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
-/* Add Window Button */
-.add-window-btn {
-  border: 2px dashed #404040;
-  border-radius: 6px;
-  background: transparent;
+/* Logo */
+.logo {
+  margin-bottom: 3rem;
+}
+
+.logo-image {
+  height: 24px;
+  width: auto;
+}
+
+/* Main Content */
+.main-content {
+  margin-bottom: 4rem;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: 2.5rem;
+  margin-bottom: 4rem;
+}
+
+.title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 2.5rem;
+  line-height: 1.2;
+  color: #ffffff;
+  margin: 0;
+  flex-shrink: 0;
+  width: 200px;
+}
+
+.description {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  flex: 1;
+  max-width: 360px;
+}
+
+/* Principles */
+.principles {
+  margin-bottom: 4rem;
+}
+
+.principles-heading {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0 0 3rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.principle {
+  display: flex;
+  align-items: flex-start;
+  gap: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.principle:last-child {
+  margin-bottom: 0;
+}
+
+.principle-title {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  color: #ffffff;
+  margin: 0;
+  flex-shrink: 0;
+  width: 200px;
+}
+
+.principle-text {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  flex: 1;
+  max-width: 360px;
+}
+
+/* Footer */
+.footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-left {
   display: flex;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #666;
-  font-size: 14px;
-  transition: all 0.2s ease;
+  gap: 0.5rem;
 }
 
-.add-window-btn:hover {
-  border-color: rgba(4, 207, 139, 0.5);
-  color: rgba(4, 207, 139, 0.8);
-  background: rgba(4, 207, 139, 0.05);
-}
-
-/* Window Placeholder */
-.window-placeholder {
-  padding: 40px;
-  color: #888;
-  text-align: center;
-  height: 100%;
+.footer-right {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  gap: 0.25rem;
 }
 
-.window-placeholder h3 {
-  color: #ccc;
-  margin-bottom: 10px;
+.link {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-position: from-font;
 }
 
-.window-placeholder p {
-  color: #666;
-  font-size: 14px;
+.x-icon {
+  margin: 0 0.25rem;
+  color: #ffffff;
 }
 
-/* Responsive Grid */
-@media (max-width: 1200px) {
-  .grid-container {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
-  }
-}
-
+/* Responsive Design */
 @media (max-width: 768px) {
-  .grid-container {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    gap: 10px;
-    padding: 10px;
+  .float-page {
+    padding: 2rem 1rem;
+  }
+  
+  .header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .title {
+    width: 100%;
+    font-size: 2rem;
+  }
+  
+  .principle {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .principle-title {
+    width: 100%;
+    font-size: 1.25rem;
+  }
+  
+  .footer {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
   }
 }
 </style>
