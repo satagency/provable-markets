@@ -2,8 +2,10 @@
   <div class="agreements-window" :class="densityClasses">
     <!-- Agreements Table -->
     <div class="agreements-content">
-      <!-- Table Header -->
-      <div class="table-header">
+      <!-- Table Rows Container with Scroll -->
+      <div class="table-rows-container">
+        <!-- Table Header -->
+        <div class="table-header">
         <div class="header-cell select-col">
           <span class="header-text">Select</span>
         </div>
@@ -1407,6 +1409,7 @@
           </div>
         </div>
       </div>
+      </div>
     </div>
   </div>
 </template>
@@ -1423,14 +1426,24 @@ const { densityClasses } = useTableDensity()
   height: 100%;
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .agreements-content {
   flex: 1;
-  overflow: auto;
+  overflow: hidden;
   padding: 0;
   width: 100%;
+}
+
+/* Table Rows Container with Scroll */
+.table-rows-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 /* Table Header */
@@ -1440,8 +1453,11 @@ const { densityClasses } = useTableDensity()
   padding: 0;
   gap: 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
   min-width: max-content;
-  width: max-content;
+  position: sticky;
+  top: 0;
+  z-index: 40;
 }
 
 .header-cell {
@@ -1517,8 +1533,8 @@ const { densityClasses } = useTableDensity()
   gap: 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: background-color 0.15s ease;
+  width: 100%;
   min-width: max-content;
-  width: max-content;
 }
 
 .table-row:hover {

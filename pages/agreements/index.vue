@@ -22,9 +22,7 @@
               @click="createAgreement"
             >
               <span>Create Agreement</span>
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-              </svg>
+              <PlusIcon />
             </button>
           </div>
         </div>
@@ -44,14 +42,22 @@
         <div class="splitter-handle"></div>
       </div>
       
-      <!-- Agreement Details Window -->
+      <!-- Bottom Window (Create Agreement or Agreement Details) -->
       <div 
+        v-if="bottomWindowMode !== 'none'"
         class="grid-window"
         :style="{ gridArea: '3 / 1 / 4 / 2', zIndex: 1 }"
         @mousedown="startDrag(2, $event)"
       >
+        <CreateAgreementWindow 
+          v-if="bottomWindowMode === 'create'"
+          @close="closeBottomWindow" 
+          @create="handleCreateAgreement" 
+          @save-draft="handleSaveDraft" 
+        />
         <AgreementDetailsWindow 
-          @close="closeWindow(2)" 
+          v-else-if="bottomWindowMode === 'details'"
+          @close="closeBottomWindow" 
           @deactivate="handleDeactivate" 
           @terminate="handleTerminate" 
           @edit="handleEdit" 
@@ -65,6 +71,8 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import AgreementsWindow from '~/components/windows/AgreementsWindow.vue'
 import AgreementDetailsWindow from '~/components/windows/AgreementDetailsWindow.vue'
+import CreateAgreementWindow from '~/components/windows/CreateAgreementWindow.vue'
+import { PlusIcon } from '~/components/icons'
 
 // Grid system state
 const gridColumns = ref(1)
@@ -72,8 +80,11 @@ const gridRows = ref(2)
 const gridGap = ref(8)
 
 // Splitter state
-const splitterPosition = ref(50) // Percentage from top
+const splitterPosition = ref(45) // Percentage from top - larger default for create form with proper spacing
 const isSplitterDragging = ref(false)
+
+// Bottom window state
+const bottomWindowMode = ref('none') // 'none', 'create', 'details'
 
 // Window configurations
 const windows = ref([
@@ -119,6 +130,9 @@ function handleSplitterMouseUp() {
 
 // Computed grid template rows
 const gridTemplateRows = computed(() => {
+  if (bottomWindowMode.value === 'none') {
+    return '1fr 12px 0fr' // Hide bottom window
+  }
   const topSize = splitterPosition.value
   const bottomSize = 100 - splitterPosition.value
   return `${topSize}fr 12px ${bottomSize}fr`
@@ -392,7 +406,25 @@ function closeWindow(windowId: number) {
 // Create agreement function
 function createAgreement() {
   console.log('Create Agreement clicked')
+  bottomWindowMode.value = 'create'
+}
+
+// Close bottom window
+function closeBottomWindow() {
+  bottomWindowMode.value = 'none'
+}
+
+// Handle create agreement from form
+function handleCreateAgreement(formData: any) {
+  console.log('Creating agreement with data:', formData)
   // Add your create agreement logic here
+  closeBottomWindow()
+}
+
+// Handle save draft
+function handleSaveDraft(formData: any) {
+  console.log('Saving draft with data:', formData)
+  // Add your save draft logic here
 }
 
 // Event listeners
