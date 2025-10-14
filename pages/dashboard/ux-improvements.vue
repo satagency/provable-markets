@@ -12,27 +12,36 @@
         
         <!-- Header -->
         <div class="header">
-          <h1 class="title">Aurora.</h1>
+          <h1 class="title">Better UX.</h1>
           <p class="description">{{ projectDescription }}</p>
         </div>
 
-        <!-- First Principles -->
+        <!-- UX Improvements -->
         <div class="principles">
-          <h2 class="principles-heading">OUR FIRST PRINCIPLES...</h2>
+          <h2 class="principles-heading">UX IMPROVEMENTS...</h2>
           
           <div class="principle">
-            <h3 class="principle-title">Design led</h3>
-            <p class="principle-text">{{ designLedDescription }}</p>
+            <h3 class="principle-title">Smart Data Tables</h3>
+            <ul class="principle-list">
+              <li>Filterable & Sortable</li>
+              <li>Customizable Views</li>
+            </ul>
           </div>
           
           <div class="principle">
-            <h3 class="principle-title">Small teams</h3>
-            <p class="principle-text">{{ smallTeamsDescription }}</p>
+            <h3 class="principle-title">Connected Workflows</h3>
+            <ul class="principle-list">
+              <li>Cross-Screen Integration</li>
+              <li>Contextual Navigation</li>
+            </ul>
           </div>
           
           <div class="principle">
-            <h3 class="principle-title">Less fuss</h3>
-            <p class="principle-text">{{ lessFussDescription }}</p>
+            <h3 class="principle-title">Progressive Discovery</h3>
+            <ul class="principle-list">
+              <li>Smart Defaults</li>
+              <li>Intuitive Onboarding</li>
+            </ul>
           </div>
         </div>
 
@@ -44,7 +53,7 @@
           <span>If you have any questions, feel free to reach out on </span>
           <SlackIcon :size="16" />
           <span>Slack.</span>
-          </div>
+        </div>
         <div class="footer-right">
           <!-- Social links removed -->
         </div>
@@ -59,7 +68,7 @@ import { ref } from 'vue'
 import { SlackIcon } from '~/components/icons'
 
 // Project Description
-const projectDescription = ref('Aurora is a securities lending platform founded by Provable Markets, where beautiful software & institutional-grade workflows come to surface.')
+const projectDescription = ref('Reducing cognitive load and eliminating context switching through intuitive workflows.')
 
 // First Principles
 const designLedDescription = ref('Literally everything we do is permeated by design thinking, not "just" numbers. We trust our gut and obsess over details. We ship fast and iterate by talking directly to users.')
@@ -182,6 +191,22 @@ useHead({
   max-width: 360px;
 }
 
+.principle-list {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  padding-left: 1rem;
+  flex: 1;
+  max-width: 360px;
+}
+
+.principle-list li {
+  margin-bottom: 0.5rem;
+}
+
 /* Footer */
 .footer {
   border-top: 1px solid rgba(255, 255, 255, 0.2);
@@ -216,11 +241,6 @@ useHead({
   color: #ffffff;
 }
 
-.slack-icon {
-  margin: 0 0.25rem;
-  vertical-align: middle;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .float-page {
@@ -238,7 +258,7 @@ useHead({
   }
   
   .principle {
-  flex-direction: column;
+    flex-direction: column;
     gap: 1rem;
   }
   

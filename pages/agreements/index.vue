@@ -444,7 +444,7 @@ useHead({
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 8px;
-  height: calc(100vh - 50px - 24px); /* Full viewport minus header and padding */
+  min-height: calc(100vh - 50px - 24px); /* Minimum height but allow expansion */
   padding: 2px;
   box-sizing: border-box;
 }

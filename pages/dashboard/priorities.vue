@@ -12,27 +12,36 @@
         
         <!-- Header -->
         <div class="header">
-          <h1 class="title">Aurora.</h1>
+          <h1 class="title">Priorities.</h1>
           <p class="description">{{ projectDescription }}</p>
         </div>
 
         <!-- First Principles -->
         <div class="principles">
-          <h2 class="principles-heading">OUR FIRST PRINCIPLES...</h2>
+          <h2 class="principles-heading">STRATEGIC PRIORITIES...</h2>
           
           <div class="principle">
-            <h3 class="principle-title">Design led</h3>
-            <p class="principle-text">{{ designLedDescription }}</p>
+            <h3 class="principle-title">Revenue-Driving Features</h3>
+            <ul class="principle-list">
+              <li>Strategy Builder & Advanced Matching</li>
+              <li>Bulk Order Management</li>
+            </ul>
           </div>
           
           <div class="principle">
-            <h3 class="principle-title">Small teams</h3>
-            <p class="principle-text">{{ smallTeamsDescription }}</p>
+            <h3 class="principle-title">Workflow Efficiency</h3>
+            <ul class="principle-list">
+              <li>Smart Data Tables</li>
+              <li>Connected Workflows</li>
+            </ul>
           </div>
           
           <div class="principle">
-            <h3 class="principle-title">Less fuss</h3>
-            <p class="principle-text">{{ lessFussDescription }}</p>
+            <h3 class="principle-title">Design System Evolution</h3>
+            <ul class="principle-list">
+              <li>Custom Platform Components</li>
+              <li>Professional Interface Design</li>
+            </ul>
           </div>
         </div>
 
@@ -44,7 +53,7 @@
           <span>If you have any questions, feel free to reach out on </span>
           <SlackIcon :size="16" />
           <span>Slack.</span>
-          </div>
+        </div>
         <div class="footer-right">
           <!-- Social links removed -->
         </div>
@@ -59,14 +68,14 @@ import { ref } from 'vue'
 import { SlackIcon } from '~/components/icons'
 
 // Project Description
-const projectDescription = ref('Aurora is a securities lending platform founded by Provable Markets, where beautiful software & institutional-grade workflows come to surface.')
+const projectDescription = ref('Integrated design drives measurable business outcomes—higher user engagement, increased trading volumes, and competitive differentiation.')
 
-// First Principles
-const designLedDescription = ref('Literally everything we do is permeated by design thinking, not "just" numbers. We trust our gut and obsess over details. We ship fast and iterate by talking directly to users.')
+// Strategic Priorities
+const revenueFeaturesDescription = ref('• Strategy Builder & Advanced Matching\n\n• Bulk Order Management')
 
-const smallTeamsDescription = ref('We believe small focused teams lead to improved trust, greater ownership and an increased opportunity for innovation — small teams build and "collaborate better".')
+const workflowEfficiencyDescription = ref('• Smart Data Tables\n\n• Connected Workflows')
 
-const lessFussDescription = ref('We strive for simplicity — less is more.')
+const designSystemDescription = ref('• Custom Platform Components\n\n• Professional Interface Design')
 
 // Set page title
 useHead({
@@ -180,6 +189,23 @@ useHead({
   margin: 0;
   flex: 1;
   max-width: 360px;
+  white-space: pre-line;
+}
+
+.principle-list {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  padding-left: 1rem;
+  flex: 1;
+  max-width: 360px;
+}
+
+.principle-list li {
+  margin-bottom: 0.5rem;
 }
 
 /* Footer */
@@ -216,11 +242,6 @@ useHead({
   color: #ffffff;
 }
 
-.slack-icon {
-  margin: 0 0.25rem;
-  vertical-align: middle;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .float-page {
@@ -238,7 +259,7 @@ useHead({
   }
   
   .principle {
-  flex-direction: column;
+    flex-direction: column;
     gap: 1rem;
   }
   

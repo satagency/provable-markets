@@ -436,6 +436,8 @@ watch(() => route.path, (newPath) => {
   padding: 8px;
   border-radius: 3px;
   height: 40px;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .toggle-btn {
@@ -460,11 +462,13 @@ watch(() => route.path, (newPath) => {
   display: flex;
   align-items: center;
   gap: 3.2px;
-  padding: 2px 9px 4px 0;
+  padding: 0 9px 0 0;
   border-radius: 90px;
   transition: opacity 0.15s ease;
   opacity: 1 !important;
   width: auto !important;
+  margin-top: 42px;
+  vertical-align: middle;
 }
 
 
@@ -719,6 +723,8 @@ watch(() => route.path, (newPath) => {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .main-content.submenu-open {
