@@ -19,6 +19,7 @@
           <template #label>
             <span>Open Positions</span>
             <div class="activity-dot"></div>
+            <PulsatingOrb size="small" />
           </template>
           <NuxtLink to="/trade-manager/open-positions" class="submenu-item">
             <span class="submenu-label">All Positions</span>
@@ -59,6 +60,7 @@
 
 <script setup lang="ts">
 import SubmenuDropdown from '~/components/ui/SubmenuDropdown.vue'
+import PulsatingOrb from '~/components/ui/PulsatingOrb.vue'
 
 // Mock data for count badges - replace with real data
 const returnsCount = ref(3)

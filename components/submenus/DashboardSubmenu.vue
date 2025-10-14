@@ -3,11 +3,6 @@
     <h3 class="submenu-title">Aurora</h3>
     <ul class="submenu-list">
       <li>
-        <NuxtLink to="/dashboard" class="submenu-item">
-          <span class="submenu-label">First Principles</span>
-        </NuxtLink>
-      </li>
-      <li>
         <NuxtLink to="/dashboard/priorities" class="submenu-item">
           <span class="submenu-label">Priorities</span>
         </NuxtLink>
@@ -20,6 +15,11 @@
       <li>
         <NuxtLink to="/dashboard/roadmap" class="submenu-item">
           <span class="submenu-label">Roadmap</span>
+        </NuxtLink>
+      </li>
+      <li>
+        <NuxtLink to="/dashboard" class="submenu-item">
+          <span class="submenu-label">First Principles</span>
         </NuxtLink>
       </li>
     </ul>

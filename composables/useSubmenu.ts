@@ -23,8 +23,12 @@ export const useSubmenu = () => {
     if (submenuExpanded.value && currentSubmenu.value === submenuName) {
       collapseSubmenu()
     } else {
-      expandSubmenu(submenuName)
+      expandSubmenu(submenuName, true) // Force expansion to always work
     }
+  }
+
+  const isCurrentSubmenu = (submenuName: string) => {
+    return currentSubmenu.value === submenuName
   }
 
   return {
@@ -33,6 +37,7 @@ export const useSubmenu = () => {
     lastSubmenu: readonly(lastSubmenu),
     expandSubmenu,
     collapseSubmenu,
-    toggleSubmenu
+    toggleSubmenu,
+    isCurrentSubmenu
   }
 }

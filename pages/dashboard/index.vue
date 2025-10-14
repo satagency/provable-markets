@@ -58,6 +58,12 @@
 import { ref } from 'vue'
 import { SlackIcon } from '~/components/icons'
 
+// Set page title
+// @ts-ignore - useHead is auto-imported by Nuxt
+useHead({
+  title: 'Aurora - Provable Markets'
+})
+
 // Project Description
 const projectDescription = ref('Aurora is a securities lending platform founded by Provable Markets, where beautiful software & institutional-grade workflows come to surface.')
 
@@ -67,11 +73,6 @@ const designLedDescription = ref('Literally everything we do is permeated by des
 const smallTeamsDescription = ref('We believe small focused teams lead to improved trust, greater ownership and an increased opportunity for innovation — small teams build and "collaborate better".')
 
 const lessFussDescription = ref('We strive for simplicity — less is more.')
-
-// Set page title
-useHead({
-  title: 'Aurora - Provable Markets'
-})
 </script>
 
 <style>

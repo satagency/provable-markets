@@ -15,6 +15,7 @@
       <li>
         <NuxtLink to="/marketplace/orders" class="submenu-item">
           <span class="submenu-label">Orders</span>
+          <PulsatingOrb size="small" />
         </NuxtLink>
       </li>
       <li>
@@ -32,6 +33,7 @@
 </template>
 
 <script setup lang="ts">
+import PulsatingOrb from '~/components/ui/PulsatingOrb.vue'
 // Marketplace submenu logic
 </script>
 

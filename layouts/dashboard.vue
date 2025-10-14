@@ -31,49 +31,53 @@
         <!-- Main Navigation -->
         <nav class="main-nav">
           <div class="nav-section">
-            <NuxtLink to="/dashboard" class="nav-item" :class="{ 'active': $route.path.startsWith('/dashboard') }">
+            <NuxtLink to="/dashboard" class="nav-item" :class="{ 'active': $route.path.startsWith('/dashboard') }" @click="handleNavClick($event, 'dashboard')">
               <div class="nav-icon">
                 <HomeIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Home</span>
+              <PulsatingOrb size="small" />
             </NuxtLink>
 
-            <NuxtLink to="/marketplace" class="nav-item" :class="{ 'active': $route.path.startsWith('/marketplace') }">
+            <NuxtLink to="/marketplace" class="nav-item" :class="{ 'active': $route.path.startsWith('/marketplace') }" @click="handleNavClick($event, 'marketplace')">
               <div class="nav-icon">
                 <MarketplaceIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Marketplace</span>
+              <PulsatingOrb size="small" />
             </NuxtLink>
 
-            <NuxtLink to="/trade-manager" class="nav-item" :class="{ 'active': $route.path.startsWith('/trade-manager') }">
+            <NuxtLink to="/trade-manager" class="nav-item" :class="{ 'active': $route.path.startsWith('/trade-manager') }" @click="handleNavClick($event, 'trade-manager')">
               <div class="nav-icon">
                 <TradeManagerIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Trade Manager</span>
+              <PulsatingOrb size="small" />
             </NuxtLink>
 
-            <NuxtLink to="/agreements" class="nav-item" :class="{ 'active': $route.path.startsWith('/agreements') }">
+            <NuxtLink to="/agreements" class="nav-item" :class="{ 'active': $route.path.startsWith('/agreements') }" @click="handleNavClick($event, 'agreements')">
               <div class="nav-icon">
                 <AgreementsIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Agreements</span>
+              <PulsatingOrb size="small" />
             </NuxtLink>
 
-            <NuxtLink to="/locates" class="nav-item" :class="{ 'active': $route.path.startsWith('/locates') }">
+            <NuxtLink to="/locates" class="nav-item" :class="{ 'active': $route.path.startsWith('/locates') }" @click="handleNavClick($event, 'locates')">
               <div class="nav-icon">
                 <LocatesIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Locates</span>
             </NuxtLink>
 
-            <NuxtLink to="/analytics" class="nav-item" :class="{ 'active': $route.path.startsWith('/analytics') }">
+            <NuxtLink to="/analytics" class="nav-item" :class="{ 'active': $route.path.startsWith('/analytics') }" @click="handleNavClick($event, 'analytics')">
               <div class="nav-icon">
                 <AnalyticsIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Analytics</span>
             </NuxtLink>
 
-            <NuxtLink to="/reports" class="nav-item" :class="{ 'active': $route.path.startsWith('/reports') }">
+            <NuxtLink to="/reports" class="nav-item" :class="{ 'active': $route.path.startsWith('/reports') }" @click="handleNavClick($event, 'reports')">
               <div class="nav-icon">
                 <ReportsIcon class="w-5 h-5 block" />
               </div>
@@ -86,46 +90,47 @@
 
           <!-- Secondary Navigation -->
           <div class="nav-section secondary">
-            <NuxtLink to="/swaps" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/swaps') }">
+            <NuxtLink to="/swaps" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/swaps') }" @click="handleNavClick($event, 'swaps')">
               <div class="nav-icon">
                 <SwapsIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Swaps</span>
             </NuxtLink>
 
-            <NuxtLink to="/trade-optimizer" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/trade-optimizer') }">
+            <NuxtLink to="/trade-optimizer" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/trade-optimizer') }" @click="handleNavClick($event, 'trade-optimizer')">
               <div class="nav-icon">
                 <SparkleIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Trade Optimizer</span>
             </NuxtLink>
 
-            <NuxtLink to="/basket-tool" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/basket-tool') }">
+            <NuxtLink to="/basket-tool" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/basket-tool') }" @click="handleNavClick($event, 'basket-tool')">
               <div class="nav-icon">
                 <BasketIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Basket Tool</span>
             </NuxtLink>
 
-            <NuxtLink to="/strategy-builder" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/strategy-builder') }">
+            <NuxtLink to="/strategy-builder/create" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/strategy-builder') }" @click="handleNavClick($event, 'strategy-builder')">
               <div class="nav-icon">
                 <StrategyIcon class="w-5 h-5 block" />
               </div>
               <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Strategy Builder</span>
+              <PulsatingOrb size="small" />
             </NuxtLink>
           </div>
         </nav>
 
         <!-- Bottom Section -->
         <div class="sidebar-bottom">
-          <NuxtLink to="/compliance" class="nav-item bottom" :class="{ 'active': $route.path.startsWith('/compliance') }">
+          <NuxtLink to="/compliance" class="nav-item bottom" :class="{ 'active': $route.path.startsWith('/compliance') }" @click="handleNavClick($event, 'compliance')">
             <div class="nav-icon">
               <ComplianceIcon class="w-5 h-5 block" />
             </div>
             <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Compliance & Legal</span>
           </NuxtLink>
 
-          <NuxtLink to="/settings" class="nav-item bottom" :class="{ 'active': $route.path.startsWith('/settings') }">
+          <NuxtLink to="/settings" class="nav-item bottom" :class="{ 'active': $route.path.startsWith('/settings') }" @click="handleNavClick($event, 'settings')">
             <div class="nav-icon">
               <SettingsIcon class="w-5 h-5 block" />
             </div>
@@ -222,6 +227,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { useSubmenu } from '~/composables/useSubmenu'
 import DashboardSubmenu from '~/components/submenus/DashboardSubmenu.vue'
 import MarketplaceSubmenu from '~/components/submenus/MarketplaceSubmenu.vue'
@@ -236,6 +243,7 @@ import StrategyBuilderSubmenu from '~/components/submenus/StrategyBuilderSubmenu
 import ComplianceSubmenu from '~/components/submenus/ComplianceSubmenu.vue'
 import SettingsSubmenu from '~/components/submenus/SettingsSubmenu.vue'
 import TableDensitySettings from '~/components/ui/TableDensitySettings.vue'
+import PulsatingOrb from '~/components/ui/PulsatingOrb.vue'
 
 // Import icon components directly
 import {
@@ -288,7 +296,7 @@ const checkMarketStatus = () => {
 // Update clock every second
 const updateClock = () => {
   const now = new Date()
-  const options = {
+  const options: Intl.DateTimeFormatOptions = {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
@@ -302,7 +310,18 @@ const updateClock = () => {
 }
 
 // Use submenu composable
-const { submenuExpanded, currentSubmenu, expandSubmenu, collapseSubmenu } = useSubmenu()
+const { submenuExpanded, currentSubmenu, expandSubmenu, collapseSubmenu, toggleSubmenu, isCurrentSubmenu } = useSubmenu()
+
+// Handle navigation item clicks
+const handleNavClick = (event: Event, submenuName: string) => {
+  // Prevent default navigation if submenu exists and we want to toggle
+  if (routesWithSubmenus.includes(submenuName)) {
+    event.preventDefault()
+    event.stopPropagation()
+    toggleSubmenu(submenuName)
+    return false
+  }
+}
 
 // Auto-collapse submenu after 6 seconds
 const autoCollapseTimer = ref(null)
@@ -467,7 +486,7 @@ watch(() => route.path, (newPath) => {
   transition: opacity 0.15s ease;
   opacity: 1 !important;
   width: auto !important;
-  margin-top: 42px;
+  margin-top: 44px;
   vertical-align: middle;
 }
 
@@ -531,7 +550,7 @@ watch(() => route.path, (newPath) => {
 }
 
 
-    .nav-item {
+.nav-item {
       display: flex;
       align-items: center;
       gap: 12px;
@@ -544,6 +563,7 @@ watch(() => route.path, (newPath) => {
       font-family: 'Roboto', sans-serif;
       font-size: 14px;
       font-weight: 400;
+      position: relative;
     }
 
 .nav-item:hover {
@@ -609,6 +629,11 @@ watch(() => route.path, (newPath) => {
   overflow: hidden;
   margin: 0;
   padding: 0;
+}
+
+/* Hide pulsating orb when sidebar is collapsed */
+.main-sidebar.collapsed .pulsating-orb {
+  display: none;
 }
 
 .sidebar-bottom {
@@ -725,10 +750,6 @@ watch(() => route.path, (newPath) => {
   min-width: 0;
   height: 100%;
   overflow-y: auto;
-}
-
-.main-content.submenu-open {
-  /* Adjust content when submenu is open */
 }
 
 .main-header {
