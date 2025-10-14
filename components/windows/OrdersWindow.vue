@@ -879,16 +879,14 @@ const handleViewOrder = (order) => {
 /* Header sticky actions */
 .table-header .sticky-actions {
   background-color: #161818 !important;
-  z-index: 50;
+  z-index: 10;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.4);
-  width: 190px !important;
-  min-width: 190px !important;
 }
 
 /* Row sticky actions */
 .table-row .sticky-actions {
   background-color: #1A1A1A !important;
-  z-index: 30;
+  z-index: 5;
 }
 
 .table-row:hover .sticky-actions {

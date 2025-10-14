@@ -10,170 +10,170 @@
       <div class="table-rows-container">
         <!-- Table Header -->
         <div class="table-header">
-            <div class="header-cell select-col">
-              <span class="header-text">Select</span>
-            </div>
-            <div class="header-cell status-col">
-              <span class="header-text">Status</span>
-            </div>
-            <div class="header-cell agreement-id-col">
-              <span class="header-text">Agreement ID</span>
-            </div>
-            <div class="header-cell side-col">
-              <span class="header-text">Side</span>
-            </div>
-            <div class="header-cell counterparty-id-col">
-              <span class="header-text">Counterparty ID</span>
-            </div>
-            <div class="header-cell short-name-col">
-              <span class="header-text">Short Name</span>
-            </div>
-            <div class="header-cell booking-account-col">
-              <span class="header-text">Booking Account</span>
-            </div>
+        <div class="header-cell select-col">
+          <span class="header-text">Select</span>
+        </div>
+        <div class="header-cell status-col">
+          <span class="header-text">Status</span>
+        </div>
+        <div class="header-cell agreement-id-col">
+          <span class="header-text">Agreement ID</span>
+        </div>
+        <div class="header-cell side-col">
+          <span class="header-text">Side</span>
+        </div>
+        <div class="header-cell counterparty-id-col">
+          <span class="header-text">Counterparty ID</span>
+        </div>
+        <div class="header-cell short-name-col">
+          <span class="header-text">Short Name</span>
+        </div>
+        <div class="header-cell booking-account-col">
+          <span class="header-text">Booking Account</span>
+        </div>
             <div class="header-cell cusip-col">
               <span class="header-text">CUSIP</span>
-            </div>
+        </div>
             <div class="header-cell open-qty-col">
               <span class="header-text">Open QTY</span>
-            </div>
+        </div>
             <div class="header-cell ioi-qty-col">
               <span class="header-text">IOI QTY</span>
-            </div>
+        </div>
             <div class="header-cell firm-qty-col">
               <span class="header-text">Firm QTY</span>
-            </div>
+        </div>
             <div class="header-cell fee-col">
               <span class="header-text">Fee</span>
               <span class="header-subtext">%</span>
-            </div>
+        </div>
             <div class="header-cell exec-fee-col">
               <span class="header-text">Exec Fee</span>
               <span class="header-subtext">%</span>
-            </div>
+        </div>
             <div class="header-cell rebates-col">
               <span class="header-text">Rebates</span>
               <span class="header-subtext">%</span>
-            </div>
+        </div>
             <div class="header-cell agreements-col">
               <span class="header-text">Agreements</span>
-            </div>
+        </div>
             <div class="header-cell unit-price-col">
               <span class="header-text">Unit Price</span>
-            </div>
+        </div>
             <div class="header-cell market-value-col">
               <span class="header-text">Market Value</span>
-            </div>
+        </div>
             <div class="header-cell total-qty-col">
               <span class="header-text">Total QTY</span>
-            </div>
+        </div>
             <div class="header-cell min-qty-col">
               <span class="header-text">Min QTY</span>
-            </div>
+        </div>
             <div class="header-cell time-force-col">
               <span class="header-text">Time Force</span>
-            </div>
+        </div>
             <div class="header-cell counterparty-col">
               <span class="header-text">CounterParty</span>
-            </div>
+        </div>
             <div class="header-cell last-col">
               <span class="header-text">Last</span>
-            </div>
-            <div class="header-cell actions-col sticky-actions">
-              <span class="header-text">Actions</span>
-            </div>
         </div>
-        
+            <div class="header-cell actions-col sticky-actions">
+          <span class="header-text">Actions</span>
+        </div>
+      </div>
+
         <!-- Dynamic Table Rows -->
           <div 
             v-for="order in orders" 
             :key="order.id" 
             class="table-row"
           >
-              <div class="row-cell select-col">
-                <div class="gripper">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
-                  </svg>
-                </div>
-                <div class="checkbox">
-                  <input type="checkbox" />
-                </div>
-              </div>
-              <div class="row-cell status-col">
+        <div class="row-cell select-col">
+          <div class="gripper">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+            </svg>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" />
+          </div>
+        </div>
+        <div class="row-cell status-col">
                 <StatusPill :status="order.status" />
-              </div>
+        </div>
               <div class="row-cell updated-col">
-                <div class="date-time">
+          <div class="date-time">
                   <span class="date">{{ order.date }}</span>
                   <span class="time">{{ order.time }}</span>
-                </div>
-              </div>
-              <div class="row-cell side-col">
+          </div>
+        </div>
+        <div class="row-cell side-col">
                 <SideBadge :side="order.side" />
-              </div>
+          </div>
               <div class="row-cell intent-col">
                 <span>{{ order.intent }}</span>
-              </div>
+        </div>
               <div class="row-cell ticker-col">
                 <span class="ticker">{{ order.ticker }}</span>
-              </div>
+        </div>
               <div class="row-cell security-col">
                 <span class="security-name">{{ order.securityName }}</span>
-              </div>
+        </div>
               <div class="row-cell cusip-col">
                 <span class="cusip">{{ order.cusip }}</span>
-              </div>
+        </div>
               <div class="row-cell open-qty-col">
                 <span class="quantity">{{ order.openQty }}</span>
-              </div>
+        </div>
               <div class="row-cell ioi-qty-col">
                 <span v-if="order.ioiQty" class="quantity">{{ order.ioiQty }}</span>
                 <span v-else class="dash">--</span>
-              </div>
+        </div>
               <div class="row-cell firm-qty-col">
                 <span v-if="order.firmQty" class="quantity">{{ order.firmQty }}</span>
                 <span v-else class="dash">--</span>
-              </div>
+        </div>
               <div class="row-cell fee-col">
                 <span :class="order.fee < 0 ? 'fee-negative' : 'fee-positive'">{{ order.fee }}%</span>
-              </div>
+        </div>
               <div class="row-cell exec-fee-col">
                 <span class="fee-positive">{{ order.execFee }}%</span>
-              </div>
+        </div>
               <div class="row-cell rebates-col">
                 <span class="fee-positive">{{ order.rebates }}%</span>
-              </div>
+        </div>
               <div class="row-cell agreements-col">
                 <div class="agreements-info">
                   <div class="agreement-count">{{ order.agreements }}</div>
                   <span class="available-text">available</span>
                   <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                  </svg>
-                </div>
-              </div>
+            </svg>
+          </div>
+          </div>
               <div class="row-cell unit-price-col">
                 <span class="price">${{ order.unitPrice }}</span>
-              </div>
+        </div>
               <div class="row-cell market-value-col">
                 <span class="market-value">${{ order.marketValue.toLocaleString() }}</span>
-              </div>
+        </div>
               <div class="row-cell total-qty-col">
                 <span class="quantity">{{ order.totalQty }}</span>
-              </div>
+        </div>
               <div class="row-cell min-qty-col">
                 <span class="quantity">{{ order.minQty }}</span>
-              </div>
+          </div>
               <div class="row-cell time-force-col">
                 <span class="quantity">{{ order.timeForce }}</span>
-              </div>
+        </div>
               <div class="row-cell counterparty-col">
                 <span class="loss-amount">{{ order.counterpartyAmount > 0 ? '+' : '' }}${{ Math.abs(order.counterpartyAmount) }}</span>
-              </div>
+        </div>
               <div class="row-cell last-col">
                 <div :class="`priority-badge ${order.priority.toLowerCase()}`">{{ order.priority }}</div>
-              </div>
+        </div>
               <div class="row-cell actions-col sticky-actions">
                 <div class="docked-actions-panel">
                   <button 
@@ -183,7 +183,7 @@
                   >
                     <svg class="action-icon" fill="currentColor" viewBox="0 0 256 256">
                       <path d="M208.49,191.51a12,12,0,0,1-17,17L128,145,64.49,208.49a12,12,0,0,1-17-17L111,128,47.51,64.49a12,12,0,0,1,17-17L128,111l63.51-63.52a12,12,0,0,1,17,17L145,128Z"/>
-                    </svg>
+            </svg>
                   </button>
                   <button 
                     class="action-icon-btn edit-btn"
@@ -192,7 +192,7 @@
                   >
                     <svg class="action-icon" fill="currentColor" viewBox="0 0 256 256">
                       <path d="M227.31,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96A16,16,0,0,0,227.31,73.37ZM192,108.68,147.31,64,168,43.31,212.69,88ZM48,163.31l76.69-76.68,44.68,44.69L92.69,208H48Z"/>
-                    </svg>
+            </svg>
                   </button>
                   <button 
                     class="action-icon-btn toggle-btn"
@@ -214,15 +214,15 @@
                     <!-- Outline eye icon (default) -->
                     <svg v-if="selectedOrder?.id !== order.id" class="action-icon" fill="currentColor" viewBox="0 0 256 256">
                       <path d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,124,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.47,133.47,0,0,1,25,128,133.33,133.33,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A133.46,133.46,0,0,1,231,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"/>
-                    </svg>
+            </svg>
                     <!-- Filled eye icon (active) -->
                     <svg v-else class="action-icon" fill="currentColor" viewBox="0 0 256 256">
                       <path d="M128,48C61.43,48,17.51,105.18,8.69,124.76a8,8,0,0,0,0,6.5c8.82,19.58,52.74,76.74,119.31,76.74s110.49-57.16,119.31-76.74a8,8,0,0,0,0-6.5C238.49,105.18,194.57,48,128,48Zm0,112a48,48,0,1,1,48-48A48.05,48.05,0,0,1,128,160Zm0-80a32,32,0,1,0,32,32A32,32,0,0,0,128,80Z"/>
-                    </svg>
+            </svg>
                   </button>
-                </div>
-              </div>
-            </div>
+          </div>
+          </div>
+        </div>
         </div>
       </div>
     </div>
@@ -879,16 +879,14 @@ const handleViewOrder = (order) => {
 /* Header sticky actions */
 .table-header .sticky-actions {
   background-color: #161818 !important;
-  z-index: 50;
+  z-index: 10;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.4);
-  width: 190px !important;
-  min-width: 190px !important;
 }
 
 /* Row sticky actions */
 .table-row .sticky-actions {
   background-color: #1A1A1A !important;
-  z-index: 30;
+  z-index: 5;
 }
 
 .table-row:hover .sticky-actions {
