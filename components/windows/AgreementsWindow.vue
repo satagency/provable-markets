@@ -535,7 +535,7 @@
         <div class="row-cell select-col">
           <div class="gripper">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-join="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
             </svg>
           </div>
           <div class="checkbox">
@@ -786,232 +786,13 @@
           <span class="counterparty-booking">PF-ACC-001-INTERNAL</span>
         </div>
         <div class="row-cell trade-type-col">
-          <span class="trade-type">NSCC 100% Collateral</span>
+          <span class="trade-type">TT Cash EUR</span>
         </div>
         <div class="row-cell settlement-type-col">
           <span class="settlement-type">BILAT</span>
         </div>
         <div class="row-cell collateral-pct-col">
-          <span class="collateral-pct">100%</span>
-        </div>
-        <div class="row-cell price-rounding-col">
-          <span class="price-rounding">0.001</span>
-        </div>
-        <div class="row-cell created-by-col">
-          <span class="created-by">Emma Thompson</span>
-        </div>
-        <div class="row-cell approved-by-col">
-          <span class="approved-by">James Wilson</span>
-        </div>
-        <div class="row-cell created-at-col">
-          <div class="date-time">
-            <span class="date">10/06/23</span>
-            <span class="time">10:20A</span>
-          </div>
-        </div>
-        <div class="row-cell approved-at-col">
-          <div class="date-time">
-            <span class="date">10/06/23</span>
-            <span class="time">11:35A</span>
-          </div>
-        </div>
-        <div class="row-cell collateral-type-col">
-          <span class="collateral-type">Non-Cash (UST)</span>
-        </div>
-        <div class="row-cell pricing-currency-col">
-          <span class="pricing-currency">USD</span>
-        </div>
-        <div class="row-cell billing-currency-col">
-          <span class="billing-currency">USD</span>
-        </div>
-        <div class="row-cell collateral-method-col">
-          <span class="collateral-method">Pledge (PL)</span>
-        </div>
-        <div class="row-cell dividend-required-col">
-          <span class="dividend-required">105%</span>
-        </div>
-        <div class="row-cell term-type-col">
-          <span class="term-type">Fixed</span>
-        </div>
-        <div class="row-cell term-start-col">
-          <div class="date-time">
-            <span class="date">11/01/23</span>
-            <span class="time">EOD</span>
-          </div>
-        </div>
-        <div class="row-cell term-end-col">
-          <div class="date-time">
-            <span class="date">02/01/24</span>
-            <span class="time">EOD</span>
-          </div>
-        </div>
-        <div class="row-cell balance-target-col">
-          <span class="balance-target">$150,000,000</span>
-        </div>
-        <div class="row-cell target-variable-col">
-          <span class="target-variable">2%</span>
-        </div>
-        <div class="row-cell settlement-system-col">
-          <span class="settlement-system">Provable</span>
-        </div>
-        <div class="row-cell actions-col">
-          <div class="action-buttons">
-            <button class="action-btn">Edit</button>
-            <button class="action-btn danger">Terminate</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="table-row">
-        <div class="row-cell select-col">
-          <div class="gripper">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
-            </svg>
-          </div>
-          <div class="checkbox">
-            <input type="checkbox" />
-          </div>
-        </div>
-        <div class="row-cell status-col">
-          <span class="status-pending">Pending</span>
-        </div>
-        <div class="row-cell agreement-id-col">
-          <span class="agreement-id">H600980113NW41TJ49J-V2</span>
-        </div>
-        <div class="row-cell side-col">
-          <div class="borrowing-badge">
-            <span class="borrow-text">BORROW</span>
-          </div>
-        </div>
-        <div class="row-cell counterparty-id-col">
-          <span class="counterparty-id">8009 – Elite Financial</span>
-        </div>
-        <div class="row-cell short-name-col">
-          <span class="short-name">ELITE_StatePERS_OCC</span>
-        </div>
-        <div class="row-cell booking-account-col">
-          <span class="booking-account">ACC-008-2023</span>
-        </div>
-        <div class="row-cell counterparty-booking-col">
-          <span class="counterparty-booking">EF-ACC-001-INTERNAL</span>
-        </div>
-        <div class="row-cell trade-type-col">
-          <span class="trade-type">JGB JPY Collateral</span>
-        </div>
-        <div class="row-cell settlement-type-col">
-          <span class="settlement-type">OCC</span>
-        </div>
-        <div class="row-cell collateral-pct-col">
-          <span class="collateral-pct">108%</span>
-        </div>
-        <div class="row-cell price-rounding-col">
-          <span class="price-rounding">0.0001</span>
-        </div>
-        <div class="row-cell created-by-col">
-          <span class="created-by">Robert Davis</span>
-        </div>
-        <div class="row-cell approved-by-col">
-          <span class="approved-by">--</span>
-        </div>
-        <div class="row-cell created-at-col">
-          <div class="date-time">
-            <span class="date">10/05/23</span>
-            <span class="time">15:10P</span>
-          </div>
-        </div>
-        <div class="row-cell approved-at-col">
-          <span class="dash">--</span>
-        </div>
-        <div class="row-cell collateral-type-col">
-          <span class="collateral-type">Non-Cash (JGB)</span>
-        </div>
-        <div class="row-cell pricing-currency-col">
-          <span class="pricing-currency">JPY</span>
-        </div>
-        <div class="row-cell billing-currency-col">
-          <span class="billing-currency">JPY</span>
-        </div>
-        <div class="row-cell collateral-method-col">
-          <span class="collateral-method">Transfer (TT)</span>
-        </div>
-        <div class="row-cell dividend-required-col">
-          <span class="dividend-required">108%</span>
-        </div>
-        <div class="row-cell term-type-col">
-          <span class="term-type">Variable</span>
-        </div>
-        <div class="row-cell term-start-col">
-          <div class="date-time">
-            <span class="date">11/05/23</span>
-            <span class="time">EOD</span>
-          </div>
-        </div>
-        <div class="row-cell term-end-col">
-          <div class="date-time">
-            <span class="date">01/05/24</span>
-            <span class="time">EOD</span>
-          </div>
-        </div>
-        <div class="row-cell balance-target-col">
-          <span class="balance-target">$85,000,000</span>
-        </div>
-        <div class="row-cell target-variable-col">
-          <span class="target-variable">6%</span>
-        </div>
-        <div class="row-cell settlement-system-col">
-          <span class="dash">--</span>
-        </div>
-        <div class="row-cell actions-col">
-          <div class="action-buttons">
-            <button class="action-btn">Edit</button>
-            <button class="action-btn danger">Cancel</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="table-row">
-        <div class="row-cell select-col">
-          <div class="gripper">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16"></path>
-            </svg>
-          </div>
-          <div class="checkbox">
-            <input type="checkbox" />
-          </div>
-        </div>
-        <div class="row-cell status-col">
-          <span class="status-active">Active</span>
-        </div>
-        <div class="row-cell agreement-id-col">
-          <span class="agreement-id">I701080124OX52UK50K-V1</span>
-        </div>
-        <div class="row-cell side-col">
-          <div class="lending-badge">
-            <span class="lend-text">LENDER</span>
-          </div>
-        </div>
-        <div class="row-cell counterparty-id-col">
-          <span class="counterparty-id">8010 – Summit Financial</span>
-        </div>
-        <div class="row-cell short-name-col">
-          <span class="short-name">SUMMIT_StatePERS_NSCC</span>
-        </div>
-        <div class="row-cell booking-account-col">
-          <span class="booking-account">ACC-009-2023</span>
-        </div>
-        <div class="row-cell counterparty-booking-col">
-          <span class="counterparty-booking">SF-ACC-001-INTERNAL</span>
-        </div>
-        <div class="row-cell trade-type-col">
-          <span class="trade-type">TT Cash EUR</span>
-        </div>
-        <div class="row-cell settlement-type-col">
-          <span class="settlement-type">NSCC</span>
-        </div>
-        <div class="row-cell collateral-pct-col">
-          <span class="collateral-pct">130%</span>
+          <span class="collateral-pct">118%</span>
         </div>
         <div class="row-cell price-rounding-col">
           <span class="price-rounding">0.01</span>
@@ -1020,18 +801,18 @@
           <span class="created-by">Jennifer Lee</span>
         </div>
         <div class="row-cell approved-by-col">
-          <span class="approved-by">Michael Brown</span>
+          <span class="approved-by">Robert Wilson</span>
         </div>
         <div class="row-cell created-at-col">
           <div class="date-time">
-            <span class="date">10/04/23</span>
-            <span class="time">09:45A</span>
+            <span class="date">10/06/23</span>
+            <span class="time">10:30A</span>
           </div>
         </div>
         <div class="row-cell approved-at-col">
           <div class="date-time">
-            <span class="date">10/04/23</span>
-            <span class="time">10:55A</span>
+            <span class="date">10/06/23</span>
+            <span class="time">11:45A</span>
           </div>
         </div>
         <div class="row-cell collateral-type-col">
@@ -1047,20 +828,20 @@
           <span class="collateral-method">Pledge (PL)</span>
         </div>
         <div class="row-cell dividend-required-col">
-          <span class="dividend-required">120%</span>
+          <span class="dividend-required">118%</span>
         </div>
         <div class="row-cell term-type-col">
           <span class="term-type">Fixed</span>
         </div>
         <div class="row-cell term-start-col">
           <div class="date-time">
-            <span class="date">11/10/23</span>
+            <span class="date">11/01/23</span>
             <span class="time">EOD</span>
           </div>
         </div>
         <div class="row-cell term-end-col">
           <div class="date-time">
-            <span class="date">03/10/24</span>
+            <span class="date">05/01/24</span>
             <span class="time">EOD</span>
           </div>
         </div>

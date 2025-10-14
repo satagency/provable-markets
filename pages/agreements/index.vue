@@ -1,27 +1,23 @@
 <template>
   <div class="page-foundation">
-
     <!-- Grid Container for Windows -->
     <div 
       class="grid-container"
-      :style="{ gridTemplateColumns: gridTemplate }"
+      :style="{ gridTemplateRows }"
     >
-      <!-- Dynamic Windows -->
+      <!-- Agreements Window -->
       <div 
-        v-for="window in windows"
-        :key="window.id"
         class="grid-window"
-        :style="{ gridArea: window.gridArea, zIndex: window.zIndex }"
-        @mousedown="startDrag(window.id, $event)"
+        :style="{ gridArea: '1 / 1 / 2 / 2', zIndex: 1 }"
+        @mousedown="startDrag(1, $event)"
       >
         <!-- Window Header with Controls -->
         <div class="window-header">
           <div class="window-title-section">
-            <span class="window-title">{{ window.title }}</span>
+            <span class="window-title">Agreements</span>
           </div>
           <div class="window-header-actions">
             <button 
-              v-if="window.title === 'Agreements'"
               class="create-agreement-btn"
               @click="createAgreement"
             >
@@ -31,49 +27,53 @@
               </svg>
             </button>
           </div>
-          <div class="window-controls">
-            <button 
-              v-if="windows.length > 1"
-              @click="removeWindow(window.id)"
-              class="close-btn"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
         </div>
-      </div>
-      
+        
         <!-- Window Content -->
         <div class="window-content">
-          <component v-if="window.component" :is="window.component" />
-          <div v-else class="window-placeholder">
-            <h3>{{ window.title }}</h3>
-            <p>Future window content goes here</p>
-          </div>
+          <AgreementsWindow />
         </div>
       </div>
       
-      <!-- Add Window Button -->
+      <!-- Horizontal Splitter -->
       <div 
-        v-if="windows.length < 6"
-        class="add-window-btn"
-        @click="addWindow('New Window', null)"
+        class="horizontal-splitter"
+        :class="{ dragging: isSplitterDragging }"
+        @mousedown="startSplitterDrag"
       >
-        <span>+ Add Window</span>
+        <div class="splitter-handle"></div>
+      </div>
+      
+      <!-- Agreement Details Window -->
+      <div 
+        class="grid-window"
+        :style="{ gridArea: '3 / 1 / 4 / 2', zIndex: 1 }"
+        @mousedown="startDrag(2, $event)"
+      >
+        <AgreementDetailsWindow 
+          @close="closeWindow(2)" 
+          @deactivate="handleDeactivate" 
+          @terminate="handleTerminate" 
+          @edit="handleEdit" 
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import AgreementsWindow from '~/components/windows/AgreementsWindow.vue'
+import AgreementDetailsWindow from '~/components/windows/AgreementDetailsWindow.vue'
 
 // Grid system state
-const gridColumns = ref(2)
-const gridRows = ref(1)
+const gridColumns = ref(1)
+const gridRows = ref(2)
 const gridGap = ref(8)
+
+// Splitter state
+const splitterPosition = ref(50) // Percentage from top
+const isSplitterDragging = ref(false)
 
 // Window configurations
 const windows = ref([
@@ -86,13 +86,59 @@ const windows = ref([
   },
   {
     id: 2,
-    title: 'Window 2',
+    title: 'Agreement Details',
     component: null,
     gridArea: '2 / 1 / 3 / 2',
     zIndex: 1
   }
 ])
 
+// Splitter drag functions
+function startSplitterDrag(e: MouseEvent) {
+  e.preventDefault()
+  isSplitterDragging.value = true
+}
+
+function handleSplitterMouseMove(e: MouseEvent) {
+  if (!isSplitterDragging.value) return
+  
+  const containerRect = document.querySelector('.grid-container')?.getBoundingClientRect()
+  if (containerRect) {
+    const relativeY = e.clientY - containerRect.top
+    const percentage = (relativeY / containerRect.height) * 100
+    
+    // Constrain between 20% and 80% to prevent overflow
+    const constrainedPercentage = Math.max(20, Math.min(80, percentage))
+    splitterPosition.value = constrainedPercentage
+  }
+}
+
+function handleSplitterMouseUp() {
+  isSplitterDragging.value = false
+}
+
+// Computed grid template rows
+const gridTemplateRows = computed(() => {
+  const topSize = splitterPosition.value
+  const bottomSize = 100 - splitterPosition.value
+  return `${topSize}fr 12px ${bottomSize}fr`
+})
+
+// Agreement Details button handlers
+function handleDeactivate() {
+  console.log('Deactivate agreement')
+  // Add deactivate logic here
+}
+
+function handleTerminate() {
+  console.log('Terminate agreement')
+  // Add terminate logic here
+}
+
+function handleEdit() {
+  console.log('Edit agreement')
+  // Add edit logic here
+}
 
 // Available grid positions - quadrant-based layout
 const gridPositions = ref([
@@ -245,50 +291,12 @@ function updateGridTemplate() {
     windows.value[0].gridArea = '1 / 1 / 2 / 2'
     return
   } else if (windowCount === 2) {
-    // Two windows: side by side horizontally
-    gridTemplate.value = '1fr / 1fr 1fr'
-    gridColumns.value = 2
-    gridRows.value = 1
-    windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    windows.value[1].gridArea = '1 / 2 / 2 / 3'
-  } else if (windowCount === 3) {
-    // Three windows: all in top row horizontally
-    gridTemplate.value = '1fr / 1fr 1fr 1fr'
-    gridColumns.value = 3
-    gridRows.value = 1
-    windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    windows.value[1].gridArea = '1 / 2 / 2 / 3'
-    windows.value[2].gridArea = '1 / 3 / 2 / 4'
-  } else if (windowCount === 4) {
-    // Four windows: 2x2 grid
-    gridTemplate.value = '1fr 1fr / 1fr 1fr'
-    gridColumns.value = 2
+    // Two windows: stacked vertically, both full width
+    gridTemplate.value = '1fr 1fr / 1fr'
+    gridColumns.value = 1
     gridRows.value = 2
     windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    windows.value[1].gridArea = '1 / 2 / 2 / 3'
-    windows.value[2].gridArea = '2 / 1 / 3 / 2'
-    windows.value[3].gridArea = '2 / 2 / 3 / 3'
-  } else if (windowCount === 5) {
-    // Five windows: 3 in top row, 2 in bottom row
-    gridTemplate.value = '1fr 1fr / 1fr 1fr 1fr'
-    gridColumns.value = 3
-    gridRows.value = 2
-    windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    windows.value[1].gridArea = '1 / 2 / 2 / 3'
-    windows.value[2].gridArea = '1 / 3 / 2 / 4'
-    windows.value[3].gridArea = '2 / 1 / 3 / 2'
-    windows.value[4].gridArea = '2 / 2 / 3 / 3'
-  } else if (windowCount === 6) {
-    // Six windows: 3x2 grid
-    gridTemplate.value = '1fr 1fr / 1fr 1fr 1fr'
-    gridColumns.value = 3
-    gridRows.value = 2
-    windows.value[0].gridArea = '1 / 1 / 2 / 2'
-    windows.value[1].gridArea = '1 / 2 / 2 / 3'
-    windows.value[2].gridArea = '1 / 3 / 2 / 4'
-    windows.value[3].gridArea = '2 / 1 / 3 / 2'
-    windows.value[4].gridArea = '2 / 2 / 3 / 3'
-    windows.value[5].gridArea = '2 / 3 / 3 / 4'
+    windows.value[1].gridArea = '2 / 1 / 3 / 2'
   } else {
     // More than 6 windows: flexible layout
     const cols = Math.ceil(Math.sqrt(windowCount))
@@ -374,31 +382,8 @@ function getAvailablePositions(windowId: number) {
   return gridPositions.value.filter(pos => !usedPositions.includes(pos.area))
 }
 
-// Add new window
-function addWindow(title: string, component: any) {
-  if (windows.value.length >= 6) {
-    console.log('Maximum 6 windows allowed')
-    return
-  }
-  
-  const newId = Math.max(...windows.value.map(w => w.id)) + 1
-  
-  // Add the new window
-  windows.value.push({
-    id: newId,
-    title,
-    component,
-    gridArea: '1 / 1 / 2 / 2', // Temporary position
-    zIndex: 1
-  })
-  
-  // Update grid template which will automatically position all windows
-  updateGridTemplate()
-  updateWindowStyles()
-}
-
 // Remove window
-function removeWindow(windowId: number) {
+function closeWindow(windowId: number) {
   windows.value = windows.value.filter(w => w.id !== windowId)
   updateGridTemplate()
   updateWindowStyles()
@@ -410,19 +395,18 @@ function createAgreement() {
   // Add your create agreement logic here
 }
 
-
 // Event listeners
 onMounted(function() {
-  document.addEventListener('mousemove', handleMouseMove)
-  document.addEventListener('mouseup', handleMouseUp)
+  document.addEventListener('mousemove', handleSplitterMouseMove)
+  document.addEventListener('mouseup', handleSplitterMouseUp)
   
   // Initialize grid template
   updateGridTemplate()
 })
 
 onUnmounted(function() {
-  document.removeEventListener('mousemove', handleMouseMove)
-  document.removeEventListener('mouseup', handleMouseUp)
+  document.removeEventListener('mousemove', handleSplitterMouseMove)
+  document.removeEventListener('mouseup', handleSplitterMouseUp)
 })
 
 // Set page title
@@ -441,10 +425,8 @@ useHead({
 /* Grid Container */
 .grid-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 8px;
-  min-height: calc(100vh - 50px - 24px); /* Minimum height but allow expansion */
+  gap: 0;
+  height: calc(100vh - 50px - 24px); /* Full viewport minus header and padding */
   padding: 2px;
   box-sizing: border-box;
 }
@@ -571,31 +553,79 @@ useHead({
   background-color: #0a6b0e;
 }
 
-
 /* Window Content */
 .window-content {
   flex: 1;
-  overflow: auto;
+  overflow: hidden;
 }
 
-/* Add Window Button */
-.add-window-btn {
-  border: 2px dashed #404040;
-  border-radius: 6px;
-  background: transparent;
+/* Horizontal Splitter */
+.horizontal-splitter {
+  background: rgba(255, 255, 255, 0.08);
+  cursor: row-resize;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  color: #666;
-  font-size: 14px;
   transition: all 0.2s ease;
+  position: relative;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-.add-window-btn:hover {
-  border-color: rgba(4, 207, 139, 0.5);
-  color: rgba(4, 207, 139, 0.8);
-  background: rgba(4, 207, 139, 0.05);
+.horizontal-splitter:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.horizontal-splitter.dragging {
+  background: rgba(4, 207, 139, 0.25);
+  border-top: 1px solid rgba(4, 207, 139, 0.6);
+  border-bottom: 1px solid rgba(4, 207, 139, 0.6);
+}
+
+.splitter-handle {
+  width: 60px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  position: relative;
+  margin: 0 auto;
+}
+
+.splitter-handle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 1px;
+}
+
+.horizontal-splitter:hover .splitter-handle {
+  background: rgba(255, 255, 255, 0.6);
+  width: 80px;
+  height: 8px;
+}
+
+.horizontal-splitter:hover .splitter-handle::before {
+  background: rgba(255, 255, 255, 0.8);
+  width: 40px;
+}
+
+.horizontal-splitter.dragging .splitter-handle {
+  background: rgba(4, 207, 139, 0.9);
+  width: 100px;
+  height: 10px;
+}
+
+.horizontal-splitter.dragging .splitter-handle::before {
+  background: rgba(255, 255, 255, 1);
+  width: 50px;
 }
 
 /* Window Placeholder */
