@@ -6,8 +6,10 @@
       
       <!-- Orders Table -->
       <div class="orders-content">
-        <!-- Table Header - Fixed outside scrollable area -->
-        <div class="table-header">
+        <!-- Table Rows Container with Scroll -->
+        <div class="table-rows-container">
+          <!-- Table Header -->
+          <div class="table-header">
             <div class="header-cell select-col">
               <span class="header-text">Select</span>
             </div>
@@ -82,9 +84,7 @@
             </div>
         </div>
         
-        <!-- Table Rows Container with Scroll -->
-        <div class="table-rows-container">
-          <!-- Dynamic Table Rows -->
+        <!-- Dynamic Table Rows -->
           <div 
             v-for="order in orders" 
             :key="order.id" 
