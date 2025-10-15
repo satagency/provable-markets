@@ -3,15 +3,27 @@
     <!-- Window Header with Controls -->
     <div class="window-header">
       <div class="window-title-section">
-        <span class="window-title">Create Agreement</span>
+        <span class="window-title">
+          {{ mode === 'create' ? 'Create Agreement' : mode === 'view' ? 'View Agreement' : 'Edit Agreement' }}
+        </span>
+        <span v-if="agreement" class="agreement-id">{{ agreement.agreementId }}</span>
       </div>
       <div class="window-controls">
-        <button class="batch-orders-btn save-draft-btn" @click="handleSaveDraft">
-          <span>Save Draft</span>
-        </button>
-        <button class="batch-orders-btn create-btn" @click="handleCreateAgreement">
-          <span>Create Agreement</span>
-        </button>
+        <!-- View mode: Only show Edit button -->
+        <template v-if="mode === 'view'">
+          <button class="batch-orders-btn edit-btn" @click="handleEditFromView">
+            <span>Edit</span>
+          </button>
+        </template>
+        <!-- Create/Edit mode: Show Save Draft and Create Agreement buttons -->
+        <template v-else>
+          <button class="batch-orders-btn save-draft-btn" @click="handleSaveDraft">
+            <span>Save Draft</span>
+          </button>
+          <button class="batch-orders-btn create-btn" @click="handleCreateAgreement">
+            <span>Create Agreement</span>
+          </button>
+        </template>
         <button class="close-btn" @click="$emit('close')">
           <CloseIcon />
         </button>
@@ -173,7 +185,6 @@
 
                 <!-- Coverage Section -->
                 <div class="form-section">
-                  <h3 class="section-header">Coverage</h3>
                   <div class="form-grid-2up">
                     <div class="percentage-input">
                       <label class="material-label">Coverage <span class="required-asterisk">*</span></label>
@@ -378,12 +389,23 @@
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script setup lang="ts">
+import { ref, watch, onMounted } from 'vue'
 import { CloseIcon, CalendarIcon } from '~/components/icons'
 
+// Define props
+interface Props {
+  agreement?: any // The agreement data to pre-fill (optional)
+  mode?: 'create' | 'view' | 'edit'
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  agreement: null,
+  mode: 'create'
+})
+
 // Define emits
-const emit = defineEmits(['close', 'create', 'save-draft'])
+const emit = defineEmits(['close', 'create', 'save-draft', 'edit-from-view'])
 
 // Create Agreement tab state
 const activeCreateAgreementTab = ref('basic')
@@ -432,6 +454,54 @@ const handleSaveDraft = () => {
   console.log('Saving draft with data:', formData.value)
   emit('save-draft', formData.value)
 }
+
+const handleEditFromView = () => {
+  console.log('Switching from view to edit mode')
+  emit('edit-from-view', agreement.value)
+}
+
+// Pre-fill form when agreement data is provided
+const prefillForm = (agreement) => {
+  if (!agreement) return
+  
+  formData.value = {
+    agreementId: agreement.agreementId || '',
+    side: agreement.side || '',
+    counterpartyId: agreement.counterpartyId || '',
+    shortName: agreement.shortName || '',
+    bookingAccount: agreement.bookingAccount || '',
+    counterpartyBooking: agreement.counterpartyBooking || '',
+    tradeType: agreement.tradeType || '',
+    settlementType: agreement.settlementType || '',
+    collateralPct: agreement.collateralPct || '',
+    priceRounding: agreement.priceRounding || '',
+    collateralType: agreement.collateralType || '',
+    collateralMethod: agreement.collateralMethod || '',
+    pricingCurrency: agreement.pricingCurrency || '',
+    billingCurrency: agreement.billingCurrency || '',
+    dividendRequired: agreement.dividendRequired || '',
+    termType: agreement.termType || '',
+    termStart: agreement.termStart || '',
+    termEnd: agreement.termEnd || '',
+    balanceTarget: agreement.balanceTarget || '',
+    targetVariable: agreement.targetVariable || '',
+    rwaBucket: agreement.rwaBucket || '',
+    settlementSystem: agreement.settlementSystem || '',
+    comments: agreement.comments || ''
+  }
+}
+
+// Watch for agreement changes
+watch(() => props.agreement, (newAgreement) => {
+  prefillForm(newAgreement)
+}, { immediate: true })
+
+// Pre-fill on mount if agreement is provided
+onMounted(() => {
+  if (props.agreement) {
+    prefillForm(props.agreement)
+  }
+})
 </script>
 
 <style scoped>
@@ -475,6 +545,13 @@ const handleSaveDraft = () => {
   font-weight: 500;
   color: #ffffff;
   margin: 0;
+}
+
+.agreement-id {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-left: 8px;
 }
 
 .window-controls {
@@ -659,7 +736,7 @@ const handleSaveDraft = () => {
 
 .form-label {
   font-family: 'Roboto', sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.7);
   font-weight: 500;
 }
@@ -706,7 +783,7 @@ const handleSaveDraft = () => {
   border-bottom: 0.5px solid white;
   color: white;
   font-family: 'Roboto', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   padding: 4.8px 0;
   outline: none;
   transition: all 0.2s ease;
@@ -762,9 +839,9 @@ const handleSaveDraft = () => {
 /* Section Headers */
 .section-header {
   font-family: 'Roboto', sans-serif;
-  font-size: 18px;
+  font-size: 14px;
   color: #6fedc7;
-  font-weight: 400;
+  font-weight: 500;
   margin: 0;
   padding: 8px 0 16px 0;
 }
@@ -806,7 +883,7 @@ const handleSaveDraft = () => {
   border-bottom: 0.5px solid white;
   color: white;
   font-family: 'Roboto', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   padding: 4.8px 0;
   outline: none;
   transition: all 0.2s ease;
@@ -823,7 +900,7 @@ const handleSaveDraft = () => {
 
 .percentage-symbol {
   color: white;
-  font-size: 16px;
+  font-size: 14px;
   font-family: 'Roboto', sans-serif;
   position: absolute;
   right: 0;

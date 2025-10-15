@@ -29,7 +29,12 @@
         
         <!-- Window Content -->
         <div class="window-content">
-          <AgreementsWindow />
+          <AgreementsWindow 
+            ref="agreementsWindowRef"
+            @view-agreement="handleViewAgreement"
+            @edit-agreement="handleEditAgreement"
+            @create-agreement="handleCreateAgreement"
+          />
         </div>
       </div>
       
@@ -50,17 +55,13 @@
         @mousedown="startDrag(2, $event)"
       >
         <CreateAgreementWindow 
-          v-if="bottomWindowMode === 'create'"
+          v-if="bottomWindowMode === 'create' || bottomWindowMode === 'details'"
+          :agreement="selectedAgreement"
+          :mode="bottomWindowMode === 'details' ? 'view' : (selectedAgreement ? 'edit' : 'create')"
           @close="closeBottomWindow" 
           @create="handleCreateAgreement" 
-          @save-draft="handleSaveDraft" 
-        />
-        <AgreementDetailsWindow 
-          v-else-if="bottomWindowMode === 'details'"
-          @close="closeBottomWindow" 
-          @deactivate="handleDeactivate" 
-          @terminate="handleTerminate" 
-          @edit="handleEdit" 
+          @save-draft="handleSaveDraft"
+          @edit-from-view="handleEditFromView"
         />
       </div>
     </div>
@@ -69,8 +70,8 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useHead } from '#app'
 import AgreementsWindow from '~/components/windows/AgreementsWindow.vue'
-import AgreementDetailsWindow from '~/components/windows/AgreementDetailsWindow.vue'
 import CreateAgreementWindow from '~/components/windows/CreateAgreementWindow.vue'
 import { PlusIcon } from '~/components/icons'
 
@@ -85,6 +86,10 @@ const isSplitterDragging = ref(false)
 
 // Bottom window state
 const bottomWindowMode = ref('none') // 'none', 'create', 'details'
+const selectedAgreement = ref(null)
+
+// Ref to AgreementsWindow component
+const agreementsWindowRef = ref(null)
 
 // Window configurations
 const windows = ref([
@@ -138,20 +143,18 @@ const gridTemplateRows = computed(() => {
   return `${topSize}fr 12px ${bottomSize}fr`
 })
 
-// Agreement Details button handlers
-function handleDeactivate() {
-  console.log('Deactivate agreement')
-  // Add deactivate logic here
+
+// AgreementsWindow event handlers
+function handleViewAgreement(agreement) {
+  console.log('Page received view-agreement event:', agreement)
+  selectedAgreement.value = agreement
+  bottomWindowMode.value = 'details'
 }
 
-function handleTerminate() {
-  console.log('Terminate agreement')
-  // Add terminate logic here
-}
-
-function handleEdit() {
-  console.log('Edit agreement')
-  // Add edit logic here
+function handleEditAgreement(agreement) {
+  console.log('Page received edit-agreement event:', agreement)
+  selectedAgreement.value = agreement
+  bottomWindowMode.value = 'create' // Use create window for editing
 }
 
 // Available grid positions - quadrant-based layout
@@ -412,6 +415,11 @@ function createAgreement() {
 // Close bottom window
 function closeBottomWindow() {
   bottomWindowMode.value = 'none'
+  selectedAgreement.value = null
+  // Clear the viewed state in the agreements window
+  if (agreementsWindowRef.value) {
+    agreementsWindowRef.value.clearViewedState()
+  }
 }
 
 // Handle create agreement from form
@@ -425,6 +433,12 @@ function handleCreateAgreement(formData: any) {
 function handleSaveDraft(formData: any) {
   console.log('Saving draft with data:', formData)
   // Add your save draft logic here
+}
+
+function handleEditFromView(agreement: any) {
+  console.log('Switching from view to edit mode for agreement:', agreement)
+  selectedAgreement.value = agreement
+  bottomWindowMode.value = 'create' // Switch to create window in edit mode
 }
 
 // Event listeners

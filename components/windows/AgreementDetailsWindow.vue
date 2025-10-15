@@ -3,8 +3,8 @@
     <!-- Window Header with Controls -->
     <div class="window-header">
       <div class="window-title-section">
-        <span class="window-title">A800280056GP64MC72C-V1</span>
-        <StatusPill status="ACTIVE" />
+        <span class="window-title">{{ agreement?.agreementId || 'Agreement Details' }}</span>
+        <StatusPill :status="agreement?.status || 'OPEN'" />
       </div>
       <div class="window-controls">
         <button 
@@ -260,17 +260,21 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import StatusPill from '~/components/ui/StatusPill.vue'
 import SideBadge from '~/components/ui/SideBadge.vue'
-import { useConfirmDialog } from '~/composables/useConfirmDialog'
+// Define props
+interface Props {
+  agreement?: any
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  agreement: null
+})
 
 // Define emits
 const emit = defineEmits(['close', 'deactivate', 'terminate', 'edit'])
-
-// Confirm dialog composable
-const { confirmDelete, showDialog } = useConfirmDialog()
 
 // Agreement activation state
 const isAgreementActive = ref(true)

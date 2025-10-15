@@ -206,7 +206,7 @@
                 <div class="docked-actions-panel">
                   <button 
                     class="action-icon-btn close-btn"
-                    @click="handleClose"
+                    @click="handleCloseAgreement(agreement)"
                     title="Close Agreement"
                   >
                     <svg class="action-icon" fill="currentColor" viewBox="0 0 256 256">
@@ -215,7 +215,7 @@
                   </button>
                   <button 
                     class="action-icon-btn edit-btn"
-                    @click="handleEdit"
+                    @click="handleEditAgreement(agreement)"
                     title="Edit Agreement"
                   >
                     <svg class="action-icon" fill="currentColor" viewBox="0 0 256 256">
@@ -223,32 +223,47 @@
             </svg>
                   </button>
                   <button 
-                    class="action-icon-btn toggle-btn"
-                    @click="handleToggle"
+                    class="action-icon-btn duplicate-btn"
+                    @click="handleDuplicate(agreement)"
                     :class="{ 'active': false }"
-                    title="Toggle Agreement Status"
+                    title="Duplicate Agreement"
                   >
-                    <!-- Arrow Bend Up Left (holding back from market) -->
-                    <ArrowBendUpLeftIcon class="action-icon" />
+                    <!-- Duplicate icon -->
+                    <svg class="action-icon" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M184,64H40A16,16,0,0,0,24,80V216a16,16,0,0,0,16,16H184a16,16,0,0,0,16-16V80A16,16,0,0,0,184,64Zm0,152H40V80H184V216ZM216,40V184a8,8,0,0,1-16,0V48H64a8,8,0,0,1,0-16H200A16,16,0,0,1,216,40Z"/>
+            </svg>
                   </button>
                   <button 
                     class="action-icon-btn view-btn"
-                    @click="handleView"
-                    :class="{ 'active': false }"
+                    @click="handleViewAgreement(agreement)"
+                    :class="{ 'active': viewedAgreementId === agreement.id }"
                     title="View Agreement Details"
                   >
                     <!-- Outline eye icon (default) -->
-                    <svg class="action-icon" fill="currentColor" viewBox="0 0 256 256">
+                    <svg v-if="viewedAgreementId !== agreement.id" class="action-icon" fill="currentColor" viewBox="0 0 256 256">
                       <path d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,124,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.47,133.47,0,0,1,25,128,133.33,133.33,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A133.46,133.46,0,0,1,231,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"/>
+            </svg>
+                    <!-- Filled eye icon (active/viewing) -->
+                    <svg v-else class="action-icon" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M128,48C61.43,48,17.51,105.18,8.69,124.76a8,8,0,0,0,0,6.5c8.82,19.58,52.74,76.74,119.31,76.74s110.49-57.16,119.31-76.74a8,8,0,0,0,0-6.5C238.49,105.18,194.57,48,128,48Zm0,112a48,48,0,1,1,48-48A48.05,48.05,0,0,1,128,160Zm0-80a32,32,0,1,0,32,32A32,32,0,0,0,128,80Z"/>
             </svg>
                   </button>
           </div>
           </div>
         </div>
         </div>
-        </div>
           </div>
         </div>
+      </div>
+
+    <!-- Confirmation Dialog -->
+    <ConfirmDialog
+      :config="confirmDialogConfig"
+      :is-open="showConfirmDialog"
+      @confirm="handleConfirmClose"
+      @cancel="handleCancelClose"
+      @close="handleCancelClose"
+    />
 </template>
 
 <script setup lang="ts">
@@ -257,10 +272,17 @@ import { ref } from 'vue'
 import { useTableDensity } from '~/composables/useTableDensity'
 import StatusPill from '~/components/ui/StatusPill.vue'
 import SideBadge from '~/components/ui/SideBadge.vue'
-import { ArrowBendUpLeftIcon, ArrowBendUpRightIcon } from '~/components/icons'
+import ConfirmDialog from '~/components/ui/ConfirmDialog.vue'
+import { ArrowBendUpRightIcon } from '~/components/icons'
 
 // Table density management
-const { densityClasses } = useTableDensity()
+const { densityClasses, setDensity } = useTableDensity()
+
+// Force normal density for Agreements (good spacing like Orders)
+setDensity('normal')
+
+// Define emits
+const emit = defineEmits(['view-agreement', 'edit-agreement', 'create-agreement', 'close-details'])
 
 // Generate dynamic agreements data
 const generateAgreements = () => {
@@ -346,8 +368,22 @@ const generateAgreements = () => {
 // Sample data
 const agreements = ref(generateAgreements())
 
-// Selected agreement for detail view
+// Selected agreement for confirmation dialog
 const selectedAgreement = ref(null)
+
+// Track which agreement is currently being viewed
+const viewedAgreementId = ref(null)
+
+// State for confirmation dialog
+const showConfirmDialog = ref(false)
+const confirmDialogConfig = ref({
+  title: 'Close Agreement',
+  message: 'Are you sure you want to close this agreement?',
+  confirmText: 'Close Agreement',
+  cancelText: 'Cancel',
+  variant: 'danger' as const,
+  allowBackdropClose: true
+})
 
 // Action handlers
 const handleCloseOrder = (orderId) => {
@@ -360,8 +396,9 @@ const handleEditOrder = (orderId) => {
   // TODO: Implement edit order logic
 }
 
-const handleToggle = () => {
-  console.log('Toggle agreement status')
+const handleDuplicate = (agreement) => {
+  console.log('Duplicating agreement:', agreement)
+  // TODO: Implement duplicate agreement logic
 }
 
 const handleView = () => {
@@ -375,6 +412,49 @@ const handleClose = () => {
 const handleEdit = () => {
   console.log('Edit agreement')
 }
+
+// New handlers for agreement actions
+const handleViewAgreement = (agreement) => {
+  console.log('handleViewAgreement called with:', agreement)
+  console.log('Emitting view-agreement event to parent')
+  viewedAgreementId.value = agreement.id
+  emit('view-agreement', agreement)
+}
+
+const handleEditAgreement = (agreement) => {
+  console.log('handleEditAgreement called with:', agreement)
+  console.log('Emitting edit-agreement event to parent')
+  emit('edit-agreement', agreement)
+}
+
+const handleCloseAgreement = (agreement) => {
+  selectedAgreement.value = agreement
+  showConfirmDialog.value = true
+}
+
+// Dialog handlers
+const handleConfirmClose = () => {
+  console.log('Closing agreement:', selectedAgreement.value)
+  // TODO: Implement actual close logic
+  showConfirmDialog.value = false
+  selectedAgreement.value = null
+}
+
+const handleCancelClose = () => {
+  showConfirmDialog.value = false
+  selectedAgreement.value = null
+}
+
+// Clear viewed state when details window is closed
+const clearViewedState = () => {
+  viewedAgreementId.value = null
+}
+
+// Expose the clearViewedState function to parent
+defineExpose({
+  clearViewedState
+})
+
 </script>
 
 <style scoped>
@@ -570,6 +650,7 @@ const handleEdit = () => {
 .table-density-normal .header-cell {
   height: 40px;
   padding: 0 12px;
+  font-size: 14px;
 }
 
 /* Dense density (Agreements spacing) */
@@ -622,7 +703,7 @@ const handleEdit = () => {
 .balance-target-col { width: 135px; min-width: 135px; }
 .target-variable-col { width: 90px; min-width: 90px; }
 .settlement-system-col { width: 90px; min-width: 90px; }
-.actions-col { width: 143px; min-width: 143px; }
+.actions-col { width: 190px; min-width: 190px; }
 
 /* Table Row */
 .table-row {
@@ -654,6 +735,7 @@ const handleEdit = () => {
 .table-density-normal .row-cell {
   height: 48px;
   padding: 0 12px;
+  font-size: 14px;
 }
 
 /* Dense density (Agreements spacing) */
@@ -858,8 +940,7 @@ const handleEdit = () => {
   gap: 8px;
   width: 100%;
   height: 100%;
-  padding: 0 12px 0 16px;
-  margin-right: 12px;
+  padding: 0 16px;
   box-sizing: border-box;
 }
 
@@ -900,7 +981,7 @@ const handleEdit = () => {
   background-color: transparent;
 }
 
-.action-icon-btn.toggle-btn:hover {
+.action-icon-btn.duplicate-btn:hover {
   color: rgba(255, 255, 255, 0.9);
   background-color: transparent;
 }
