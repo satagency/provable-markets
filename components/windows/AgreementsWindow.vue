@@ -31,53 +31,65 @@
         <div class="header-cell booking-account-col">
           <span class="header-text">Booking Account</span>
         </div>
-            <div class="header-cell cusip-col">
-              <span class="header-text">CUSIP</span>
+        <div class="header-cell counterparty-booking-col">
+          <span class="header-text">Counterparty Booking Account</span>
         </div>
-            <div class="header-cell open-qty-col">
-              <span class="header-text">Open QTY</span>
+        <div class="header-cell trade-type-col">
+          <span class="header-text">Trade Type</span>
         </div>
-            <div class="header-cell ioi-qty-col">
-              <span class="header-text">IOI QTY</span>
+        <div class="header-cell settlement-type-col">
+          <span class="header-text">Settlement Type</span>
         </div>
-            <div class="header-cell firm-qty-col">
-              <span class="header-text">Firm QTY</span>
+        <div class="header-cell collateral-pct-col">
+          <span class="header-text">Collateral %</span>
         </div>
-            <div class="header-cell fee-col">
-              <span class="header-text">Fee</span>
-              <span class="header-subtext">%</span>
+        <div class="header-cell price-rounding-col">
+          <span class="header-text">Price Rounding</span>
         </div>
-            <div class="header-cell exec-fee-col">
-              <span class="header-text">Exec Fee</span>
-              <span class="header-subtext">%</span>
+        <div class="header-cell created-by-col">
+          <span class="header-text">Created By</span>
         </div>
-            <div class="header-cell rebates-col">
-              <span class="header-text">Rebates</span>
-              <span class="header-subtext">%</span>
+        <div class="header-cell approved-by-col">
+          <span class="header-text">Approved By</span>
         </div>
-            <div class="header-cell agreements-col">
-              <span class="header-text">Agreements</span>
+        <div class="header-cell created-at-col">
+          <span class="header-text">Created At</span>
         </div>
-            <div class="header-cell unit-price-col">
-              <span class="header-text">Unit Price</span>
+        <div class="header-cell approved-at-col">
+          <span class="header-text">Approved At</span>
         </div>
-            <div class="header-cell market-value-col">
-              <span class="header-text">Market Value</span>
+        <div class="header-cell collateral-type-col">
+          <span class="header-text">Collateral Type</span>
         </div>
-            <div class="header-cell total-qty-col">
-              <span class="header-text">Total QTY</span>
+        <div class="header-cell pricing-currency-col">
+          <span class="header-text">Pricing Currency</span>
         </div>
-            <div class="header-cell min-qty-col">
-              <span class="header-text">Min QTY</span>
+        <div class="header-cell billing-currency-col">
+          <span class="header-text">Billing Currency</span>
         </div>
-            <div class="header-cell time-force-col">
-              <span class="header-text">Time Force</span>
+        <div class="header-cell collateral-method-col">
+          <span class="header-text">Collateral Method</span>
         </div>
-            <div class="header-cell counterparty-col">
-              <span class="header-text">CounterParty</span>
+        <div class="header-cell dividend-required-col">
+          <span class="header-text">Dividend Required</span>
         </div>
-            <div class="header-cell last-col">
-              <span class="header-text">Last</span>
+        <div class="header-cell term-type-col">
+          <span class="header-text">Term Type</span>
+        </div>
+        <div class="header-cell term-start-col">
+          <span class="header-text">Term Start</span>
+        </div>
+        <div class="header-cell term-end-col">
+          <span class="header-text">Term End</span>
+        </div>
+        <div class="header-cell balance-target-col">
+          <span class="header-text">Balance Target</span>
+        </div>
+        <div class="header-cell target-variable-col">
+          <span class="header-text">Target Variable</span>
+        </div>
+        <div class="header-cell settlement-system-col">
+          <span class="header-text">Settlement System</span>
         </div>
             <div class="header-cell actions-col sticky-actions">
           <span class="header-text">Actions</span>
@@ -86,8 +98,8 @@
 
         <!-- Dynamic Table Rows -->
           <div 
-            v-for="order in orders" 
-            :key="order.id" 
+            v-for="agreement in agreements" 
+            :key="agreement.id" 
             class="table-row"
           >
         <div class="row-cell select-col">
@@ -101,85 +113,101 @@
           </div>
         </div>
         <div class="row-cell status-col">
-                <StatusPill :status="order.status" />
+          <StatusPill status="OPEN" />
         </div>
-              <div class="row-cell updated-col">
-          <div class="date-time">
-                  <span class="date">{{ order.date }}</span>
-                  <span class="time">{{ order.time }}</span>
-          </div>
+        <div class="row-cell agreement-id-col">
+          <span class="agreement-id">{{ agreement.agreementId }}</span>
         </div>
         <div class="row-cell side-col">
-                <SideBadge :side="order.side" />
+          <SideBadge :side="agreement.side" />
+        </div>
+        <div class="row-cell counterparty-id-col">
+          <span class="counterparty-id">{{ agreement.counterpartyId }}</span>
+        </div>
+        <div class="row-cell short-name-col">
+          <span class="short-name">{{ agreement.shortName }}</span>
+        </div>
+        <div class="row-cell booking-account-col">
+          <span class="booking-account">{{ agreement.bookingAccount }}</span>
+        </div>
+        <div class="row-cell counterparty-booking-col">
+          <span class="counterparty-booking">{{ agreement.counterpartyBooking }}</span>
+        </div>
+        <div class="row-cell trade-type-col">
+          <span class="trade-type">{{ agreement.tradeType }}</span>
+        </div>
+        <div class="row-cell settlement-type-col">
+          <span class="settlement-type">{{ agreement.settlementType }}</span>
+        </div>
+        <div class="row-cell collateral-pct-col">
+          <span class="collateral-pct">{{ agreement.collateralPct }}</span>
+        </div>
+        <div class="row-cell price-rounding-col">
+          <span class="price-rounding">{{ agreement.priceRounding }}</span>
+        </div>
+        <div class="row-cell created-by-col">
+          <span class="created-by">{{ agreement.createdBy }}</span>
+        </div>
+        <div class="row-cell approved-by-col">
+          <span class="approved-by">{{ agreement.approvedBy }}</span>
+        </div>
+        <div class="row-cell created-at-col">
+          <div class="date-time">
+            <span class="date">{{ agreement.createdAt }}</span>
+            <span class="time">{{ agreement.createdAtTime }}</span>
           </div>
-              <div class="row-cell intent-col">
-                <span>{{ order.intent }}</span>
         </div>
-              <div class="row-cell ticker-col">
-                <span class="ticker">{{ order.ticker }}</span>
-        </div>
-              <div class="row-cell security-col">
-                <span class="security-name">{{ order.securityName }}</span>
-        </div>
-              <div class="row-cell cusip-col">
-                <span class="cusip">{{ order.cusip }}</span>
-        </div>
-              <div class="row-cell open-qty-col">
-                <span class="quantity">{{ order.openQty }}</span>
-        </div>
-              <div class="row-cell ioi-qty-col">
-                <span v-if="order.ioiQty" class="quantity">{{ order.ioiQty }}</span>
-                <span v-else class="dash">--</span>
-        </div>
-              <div class="row-cell firm-qty-col">
-                <span v-if="order.firmQty" class="quantity">{{ order.firmQty }}</span>
-                <span v-else class="dash">--</span>
-        </div>
-              <div class="row-cell fee-col">
-                <span :class="order.fee < 0 ? 'fee-negative' : 'fee-positive'">{{ order.fee }}%</span>
-        </div>
-              <div class="row-cell exec-fee-col">
-                <span class="fee-positive">{{ order.execFee }}%</span>
-        </div>
-              <div class="row-cell rebates-col">
-                <span class="fee-positive">{{ order.rebates }}%</span>
-        </div>
-              <div class="row-cell agreements-col">
-                <div class="agreements-info">
-                  <div class="agreement-count">{{ order.agreements }}</div>
-                  <span class="available-text">available</span>
-                  <svg class="w-4 h-4 search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
+        <div class="row-cell approved-at-col">
+          <div class="date-time">
+            <span class="date">{{ agreement.approvedAt }}</span>
+            <span class="time">{{ agreement.approvedAtTime }}</span>
           </div>
+        </div>
+        <div class="row-cell collateral-type-col">
+          <span class="collateral-type">{{ agreement.collateralType }}</span>
+        </div>
+        <div class="row-cell pricing-currency-col">
+          <span class="pricing-currency">{{ agreement.pricingCurrency }}</span>
+        </div>
+        <div class="row-cell billing-currency-col">
+          <span class="billing-currency">{{ agreement.billingCurrency }}</span>
+        </div>
+        <div class="row-cell collateral-method-col">
+          <span class="collateral-method">{{ agreement.collateralMethod }}</span>
+        </div>
+        <div class="row-cell dividend-required-col">
+          <span class="dividend-required">{{ agreement.dividendRequired }}</span>
+        </div>
+        <div class="row-cell term-type-col">
+          <span class="term-type">{{ agreement.termType }}</span>
+        </div>
+        <div class="row-cell term-start-col">
+          <div class="date-time">
+            <span class="date">{{ agreement.termStart }}</span>
+            <span class="time">{{ agreement.termStartTime }}</span>
           </div>
-              <div class="row-cell unit-price-col">
-                <span class="price">${{ order.unitPrice }}</span>
         </div>
-              <div class="row-cell market-value-col">
-                <span class="market-value">${{ order.marketValue.toLocaleString() }}</span>
-        </div>
-              <div class="row-cell total-qty-col">
-                <span class="quantity">{{ order.totalQty }}</span>
-        </div>
-              <div class="row-cell min-qty-col">
-                <span class="quantity">{{ order.minQty }}</span>
+        <div class="row-cell term-end-col">
+          <div class="date-time">
+            <span class="date">{{ agreement.termEnd }}</span>
+            <span class="time">{{ agreement.termEndTime }}</span>
           </div>
-              <div class="row-cell time-force-col">
-                <span class="quantity">{{ order.timeForce }}</span>
         </div>
-              <div class="row-cell counterparty-col">
-                <span class="loss-amount">{{ order.counterpartyAmount > 0 ? '+' : '' }}${{ Math.abs(order.counterpartyAmount) }}</span>
+        <div class="row-cell balance-target-col">
+          <span class="balance-target">{{ agreement.balanceTarget }}</span>
         </div>
-              <div class="row-cell last-col">
-                <div :class="`priority-badge ${order.priority.toLowerCase()}`">{{ order.priority }}</div>
+        <div class="row-cell target-variable-col">
+          <span class="target-variable">{{ agreement.targetVariable }}</span>
+        </div>
+        <div class="row-cell settlement-system-col">
+          <span class="settlement-system">{{ agreement.settlementSystem }}</span>
         </div>
               <div class="row-cell actions-col sticky-actions">
                 <div class="docked-actions-panel">
                   <button 
                     class="action-icon-btn close-btn"
-                    @click="handleCloseOrder(order.id)"
-                    title="Close Order"
+                    @click="handleClose"
+                    title="Close Agreement"
                   >
                     <svg class="action-icon" fill="currentColor" viewBox="0 0 256 256">
                       <path d="M208.49,191.51a12,12,0,0,1-17,17L128,145,64.49,208.49a12,12,0,0,1-17-17L111,128,47.51,64.49a12,12,0,0,1,17-17L128,111l63.51-63.52a12,12,0,0,1,17,17L145,128Z"/>
@@ -187,8 +215,8 @@
                   </button>
                   <button 
                     class="action-icon-btn edit-btn"
-                    @click="handleEditOrder(order.id)"
-                    title="Edit Order"
+                    @click="handleEdit"
+                    title="Edit Agreement"
                   >
                     <svg class="action-icon" fill="currentColor" viewBox="0 0 256 256">
                       <path d="M227.31,73.37,182.63,28.69a16,16,0,0,0-22.63,0L36.69,152A15.86,15.86,0,0,0,32,163.31V208a16,16,0,0,0,16,16H92.69A15.86,15.86,0,0,0,104,219.31L227.31,96A16,16,0,0,0,227.31,73.37ZM192,108.68,147.31,64,168,43.31,212.69,88ZM48,163.31l76.69-76.68,44.68,44.69L92.69,208H48Z"/>
@@ -196,37 +224,31 @@
                   </button>
                   <button 
                     class="action-icon-btn toggle-btn"
-                    @click="handleToggleOrder(order.id)"
-                    :class="{ 'active': order.isToggled }"
-                    title="Toggle Order Exposure"
+                    @click="handleToggle"
+                    :class="{ 'active': false }"
+                    title="Toggle Agreement Status"
                   >
                     <!-- Arrow Bend Up Left (holding back from market) -->
-                    <ArrowBendUpLeftIcon v-if="!order.isToggled" class="action-icon" />
-                    <!-- Arrow Bend Up Right (exposing to market) -->
-                    <ArrowBendUpRightIcon v-else class="action-icon" />
+                    <ArrowBendUpLeftIcon class="action-icon" />
                   </button>
                   <button 
                     class="action-icon-btn view-btn"
-                    @click="handleViewOrder(order)"
-                    :class="{ 'active': selectedOrder?.id === order.id }"
-                    title="View Order Details"
+                    @click="handleView"
+                    :class="{ 'active': false }"
+                    title="View Agreement Details"
                   >
                     <!-- Outline eye icon (default) -->
-                    <svg v-if="selectedOrder?.id !== order.id" class="action-icon" fill="currentColor" viewBox="0 0 256 256">
+                    <svg class="action-icon" fill="currentColor" viewBox="0 0 256 256">
                       <path d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,124,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.47,133.47,0,0,1,25,128,133.33,133.33,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A133.46,133.46,0,0,1,231,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"/>
-            </svg>
-                    <!-- Filled eye icon (active) -->
-                    <svg v-else class="action-icon" fill="currentColor" viewBox="0 0 256 256">
-                      <path d="M128,48C61.43,48,17.51,105.18,8.69,124.76a8,8,0,0,0,0,6.5c8.82,19.58,52.74,76.74,119.31,76.74s110.49-57.16,119.31-76.74a8,8,0,0,0,0-6.5C238.49,105.18,194.57,48,128,48Zm0,112a48,48,0,1,1,48-48A48.05,48.05,0,0,1,128,160Zm0-80a32,32,0,1,0,32,32A32,32,0,0,0,128,80Z"/>
             </svg>
                   </button>
           </div>
           </div>
         </div>
         </div>
-      </div>
-    </div>
-  </div>
+        </div>
+          </div>
+        </div>
 </template>
 
 <script setup lang="ts">
@@ -240,70 +262,92 @@ import { ArrowBendUpLeftIcon, ArrowBendUpRightIcon } from '~/components/icons'
 // Table density management
 const { densityClasses } = useTableDensity()
 
-// Generate dynamic orders data
-const generateOrders = () => {
-  const tickers = ['TSLA', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'NFLX', 'ADBE', 'CRM', 'ORCL', 'INTC', 'AMD', 'PYPL', 'UBER', 'LYFT', 'SQ', 'ROKU', 'ZM', 'PTON']
-  const sides = ['LENDER', 'BORROWER']
-  const intents = ['Firm', 'IOI']
-  const priorities = ['HIGH', 'MEDIUM', 'LOW']
+// Generate dynamic agreements data
+const generateAgreements = () => {
+  const agreementIds = [
+    'A800280056GP64MC72C-V1',
+    'A800780007GP64MC72C-V1', 
+    'A800380003GP64MC72C-V1',
+    'A800380003GP64MC72C-V2',
+    'A800380003GP64MC72C-V3'
+  ]
+  const sides = ['LENDER', 'BORROWER', 'BORROWER', 'BORROWER', 'LENDER']
+  const counterparties = [
+    '8002 – District Financial',
+    '8007 – West Side Assets',
+    '8003 – Tribeca Financial',
+    '8003 – Tribeca Financial',
+    '8003 – Tribeca Financial'
+  ]
+  const shortNames = [
+    'DTRCT_StatePERS_NSCC',
+    'WESTSIDE (B)',
+    'TRIBECA (B)',
+    'Tribeca_NSCC_B',
+    'Tribeca_NSCC_L'
+  ]
+  const bookingAccounts = ['ACC-001-2023', 'ACC-002-2023', 'ACC-003-2023', 'ACC-004-2023', 'ACC-005-2023']
+  const counterpartyBookings = ['GS-ACC-001-INTERNAL', 'WS-ACC-001-INTERNAL', 'TB-ACC-001-INTERNAL', 'TB-ACC-002-INTERNAL', 'TB-ACC-003-INTERNAL']
+  const tradeTypes = ['State PERS Exclusive', 'West Side Standard', 'Tribeca Standard', 'Tribeca NSCC', 'Tribeca NSCC']
+  const settlementTypes = ['NSCC', 'DTC', 'NSCC', 'NSCC', 'NSCC']
+  const collateralTypes = ['Cash', 'Securities', 'Cash', 'Securities', 'Cash']
+  const currencies = ['USD', 'USD', 'USD', 'USD', 'USD']
+  const collateralMethods = ['Transfer (TT)', 'Transfer (TT)', 'Transfer (TT)', 'Transfer (TT)', 'Transfer (TT)']
+  const termTypes = ['Fixed', 'Variable', 'Fixed', 'Variable', 'Fixed']
+  const createdBy = ['John Smith', 'Jane Doe', 'Bob Johnson', 'Alice Brown', 'Charlie Wilson']
+  const approvedBy = ['Jane Doe', 'John Smith', 'Alice Brown', 'Bob Johnson', 'Jane Doe']
+  const statuses = ['Active', 'Active', 'Active', 'Active', 'Active']
   
-  const orders = []
+  const agreements = []
   
-  for (let i = 1; i <= 50; i++) {
-    const ticker = tickers[i % tickers.length]
-    const side = sides[i % sides.length]
-    const intent = intents[i % intents.length]
-    const priority = priorities[i % priorities.length]
+  for (let i = 0; i < 5; i++) {
+    const status = statuses[i]
+    const side = sides[i]
     
-    // Realistic status distribution: 96% PARTIAL, 4% other statuses
-    const statusRandom = Math.random()
-    let status
-    if (statusRandom < 0.96) {
-      status = 'PARTIAL'
-    } else if (statusRandom < 0.98) {
-      status = 'OPEN'
-    } else if (statusRandom < 0.99) {
-      status = 'FILLED'
-    } else {
-      status = 'CANCEL'
-    }
-    
-    orders.push({
-      id: i,
+    agreements.push({
+      id: i + 1,
       status,
-      date: '10/12/23',
-      time: `${9 + Math.floor(i / 10)}:${(i * 3) % 60}${i % 2 === 0 ? 'A' : 'P'}`,
+      agreementId: agreementIds[i],
       side,
-      intent,
-      ticker,
-      securityName: `${ticker} Inc. Common Stock`,
-      cusip: `${Math.floor(Math.random() * 900000000) + 100000000}`,
-      openQty: Math.floor(Math.random() * 500) + 50,
-      ioiQty: intent === 'IOI' ? Math.floor(Math.random() * 300) + 25 : null,
-      firmQty: status === 'FILLED' ? Math.floor(Math.random() * 400) + 30 : null,
-      fee: (Math.random() * 2 - 1).toFixed(2),
-      execFee: (Math.random() * 3 + 3).toFixed(2),
-      rebates: (Math.random() * 3 + 3).toFixed(2),
-      agreements: Math.floor(Math.random() * 5) + 1,
-      unitPrice: (Math.random() * 500 + 50).toFixed(2),
-      marketValue: Math.floor(Math.random() * 200000) + 10000,
-      totalQty: Math.floor(Math.random() * 500) + 50,
-      minQty: Math.floor(Math.random() * 100) + 25,
-      timeForce: Math.floor(Math.random() * 500) + 50,
-      counterpartyAmount: Math.floor(Math.random() * 2000) - 1000,
-      priority,
+      counterpartyId: counterparties[i],
+      shortName: shortNames[i],
+      bookingAccount: bookingAccounts[i],
+      counterpartyBooking: counterpartyBookings[i],
+      tradeType: tradeTypes[i],
+      settlementType: settlementTypes[i],
+      collateralPct: '120%',
+      priceRounding: '0.01',
+      createdBy: createdBy[i],
+      approvedBy: approvedBy[i],
+      createdAt: '10/12/23',
+      createdAtTime: '09:23A',
+      approvedAt: '10/12/23',
+      approvedAtTime: '10:15A',
+      collateralType: collateralTypes[i],
+      pricingCurrency: currencies[i],
+      billingCurrency: currencies[i],
+      collateralMethod: collateralMethods[i],
+      dividendRequired: '100%',
+      termType: termTypes[i],
+      termStart: '10/12/23',
+      termStartTime: 'EOD',
+      termEnd: '11/11/23',
+      termEndTime: 'EOD',
+      balanceTarget: '$200,000,000,000',
+      targetVariable: '5%',
+      settlementSystem: 'Provable',
       isToggled: false
     })
   }
   
-  return orders
+  return agreements
 }
 
 // Sample data
-const orders = ref(generateOrders())
+const agreements = ref(generateAgreements())
 
-// Selected order for detail view
-const selectedOrder = ref(null)
+// Selected agreement for detail view
+const selectedAgreement = ref(null)
 
 // Action handlers
 const handleCloseOrder = (orderId) => {
@@ -316,24 +360,20 @@ const handleEditOrder = (orderId) => {
   // TODO: Implement edit order logic
 }
 
-const handleToggleOrder = (orderId) => {
-  const order = orders.value.find(o => o.id === orderId)
-  if (order) {
-    order.isToggled = !order.isToggled
-    console.log(`Order ${orderId} ${order.isToggled ? 'exposed to market' : 'held back from market'}`)
-  }
+const handleToggle = () => {
+  console.log('Toggle agreement status')
 }
 
-const handleViewOrder = (order) => {
-  // Toggle selection - if already selected, deselect it
-  if (selectedOrder.value?.id === order.id) {
-    console.log('Deselecting order:', order.id)
-    selectedOrder.value = null
-  } else {
-    console.log('Selecting order:', order.id)
-    selectedOrder.value = order
-  }
-  // TODO: Emit event to show/hide order details in bottom window
+const handleView = () => {
+  console.log('View agreement details')
+}
+
+const handleClose = () => {
+  console.log('Close agreement')
+}
+
+const handleEdit = () => {
+  console.log('Edit agreement')
 }
 </script>
 
@@ -554,30 +594,35 @@ const handleViewOrder = (order) => {
 .col-large { width: 160px; min-width: 160px; }
 .col-xlarge { width: 200px; min-width: 200px; }
 
-/* Column Assignments */
-.select-col { width: 80px; min-width: 80px; }
-.status-col { width: 80px; min-width: 80px; }
-.updated-col { width: 120px; min-width: 120px; }
-.side-col { width: 80px; min-width: 80px; }
-.intent-col { width: 80px; min-width: 80px; }
-.ticker-col { width: 80px; min-width: 80px; }
-.security-col { width: 160px; min-width: 160px; }
-.cusip-col { width: 120px; min-width: 120px; }
-.open-qty-col { width: 80px; min-width: 80px; }
-.ioi-qty-col { width: 80px; min-width: 80px; }
-.firm-qty-col { width: 80px; min-width: 80px; }
-.fee-col { width: 80px; min-width: 80px; }
-.exec-fee-col { width: 80px; min-width: 80px; }
-.rebates-col { width: 80px; min-width: 80px; }
-.agreements-col { width: 160px; min-width: 160px; }
-.unit-price-col { width: 80px; min-width: 80px; }
-.market-value-col { width: 120px; min-width: 120px; }
-.total-qty-col { width: 80px; min-width: 80px; }
-.min-qty-col { width: 80px; min-width: 80px; }
-.time-force-col { width: 80px; min-width: 80px; }
-.counterparty-col { width: 120px; min-width: 120px; }
-.last-col { width: 80px; min-width: 80px; }
-.actions-col { width: 180px; min-width: 180px; }
+/* Column Assignments - 25% more dense */
+.select-col { width: 60px; min-width: 60px; }
+.status-col { width: 60px; min-width: 60px; }
+.agreement-id-col { width: 150px; min-width: 150px; }
+.side-col { width: 60px; min-width: 60px; }
+.counterparty-id-col { width: 120px; min-width: 120px; }
+.short-name-col { width: 135px; min-width: 135px; }
+.booking-account-col { width: 105px; min-width: 105px; }
+.counterparty-booking-col { width: 150px; min-width: 150px; }
+.trade-type-col { width: 120px; min-width: 120px; }
+.settlement-type-col { width: 90px; min-width: 90px; }
+.collateral-pct-col { width: 75px; min-width: 75px; }
+.price-rounding-col { width: 75px; min-width: 75px; }
+.created-by-col { width: 90px; min-width: 90px; }
+.approved-by-col { width: 90px; min-width: 90px; }
+.created-at-col { width: 90px; min-width: 90px; }
+.approved-at-col { width: 90px; min-width: 90px; }
+.collateral-type-col { width: 90px; min-width: 90px; }
+.pricing-currency-col { width: 90px; min-width: 90px; }
+.billing-currency-col { width: 90px; min-width: 90px; }
+.collateral-method-col { width: 105px; min-width: 105px; }
+.dividend-required-col { width: 90px; min-width: 90px; }
+.term-type-col { width: 75px; min-width: 75px; }
+.term-start-col { width: 90px; min-width: 90px; }
+.term-end-col { width: 90px; min-width: 90px; }
+.balance-target-col { width: 135px; min-width: 135px; }
+.target-variable-col { width: 90px; min-width: 90px; }
+.settlement-system-col { width: 90px; min-width: 90px; }
+.actions-col { width: 143px; min-width: 143px; }
 
 /* Table Row */
 .table-row {
@@ -601,6 +646,8 @@ const handleViewOrder = (order) => {
   font-size: 13px;
   color: #ffffff;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Normal density (default - current Orders spacing) */
@@ -657,6 +704,30 @@ const handleViewOrder = (order) => {
 
 .time {
   color: rgba(255, 255, 255, 0.6);
+}
+
+/* Text truncation for data elements */
+.agreement-id,
+.counterparty-id,
+.short-name,
+.booking-account,
+.counterparty-booking,
+.trade-type,
+.settlement-type,
+.collateral-type,
+.pricing-currency,
+.billing-currency,
+.collateral-method,
+.term-type,
+.settlement-system,
+.created-by,
+.approved-by,
+.balance-target,
+.target-variable {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .ticker {

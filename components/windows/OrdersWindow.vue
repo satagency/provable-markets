@@ -76,9 +76,6 @@
             <div class="header-cell counterparty-col">
               <span class="header-text">CounterParty</span>
             </div>
-            <div class="header-cell last-col">
-              <span class="header-text">Last</span>
-            </div>
             <div class="header-cell actions-col sticky-actions">
               <span class="header-text">Actions</span>
             </div>
@@ -171,9 +168,6 @@
               <div class="row-cell counterparty-col">
                 <span class="loss-amount">{{ order.counterpartyAmount > 0 ? '+' : '' }}${{ Math.abs(order.counterpartyAmount) }}</span>
               </div>
-              <div class="row-cell last-col">
-                <div :class="`priority-badge ${order.priority.toLowerCase()}`">{{ order.priority }}</div>
-              </div>
               <div class="row-cell actions-col sticky-actions">
                 <div class="docked-actions-panel">
                   <button 
@@ -245,15 +239,12 @@ const generateOrders = () => {
   const tickers = ['TSLA', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'META', 'NFLX', 'ADBE', 'CRM', 'ORCL', 'INTC', 'AMD', 'PYPL', 'UBER', 'LYFT', 'SQ', 'ROKU', 'ZM', 'PTON']
   const sides = ['LENDER', 'BORROWER']
   const intents = ['Firm', 'IOI']
-  const priorities = ['HIGH', 'MEDIUM', 'LOW']
-  
   const orders = []
   
   for (let i = 1; i <= 50; i++) {
     const ticker = tickers[i % tickers.length]
     const side = sides[i % sides.length]
     const intent = intents[i % intents.length]
-    const priority = priorities[i % priorities.length]
     
     // Realistic status distribution: 96% PARTIAL, 4% other statuses
     const statusRandom = Math.random()
@@ -291,7 +282,6 @@ const generateOrders = () => {
       minQty: Math.floor(Math.random() * 100) + 25,
       timeForce: Math.floor(Math.random() * 500) + 50,
       counterpartyAmount: Math.floor(Math.random() * 2000) - 1000,
-      priority,
       isToggled: false
     })
   }
@@ -576,7 +566,6 @@ const handleViewOrder = (order) => {
 .min-qty-col { width: 80px; min-width: 80px; }
 .time-force-col { width: 80px; min-width: 80px; }
 .counterparty-col { width: 120px; min-width: 120px; }
-.last-col { width: 80px; min-width: 80px; }
 .actions-col { width: 180px; min-width: 180px; }
 
 /* Table Row */
@@ -756,28 +745,6 @@ const handleViewOrder = (order) => {
   letter-spacing: -0.14px;
 }
 
-.priority-badge {
-  border-radius: 90px;
-  padding: 2px 13px;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  font-size: 12px;
-  color: white;
-  letter-spacing: 0.12px;
-  text-transform: uppercase;
-}
-
-.priority-badge.high {
-  background-color: rgba(239, 68, 68, 0.8);
-}
-
-.priority-badge.medium {
-  background-color: rgba(245, 158, 11, 0.8);
-}
-
-.priority-badge.low {
-  background-color: rgba(0, 189, 101, 0.66);
-}
 
 /* Docked Actions Panel */
 .docked-actions-panel {
