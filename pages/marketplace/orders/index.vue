@@ -65,6 +65,7 @@
       
       <!-- Horizontal Splitter -->
       <div 
+        v-if="!isOrderDetailsCollapsed"
         class="horizontal-splitter"
         :class="{ dragging: isSplitterDragging }"
         @mousedown="startSplitterDrag"
@@ -75,14 +76,20 @@
       <!-- Order Details Window -->
       <div 
         class="grid-window"
-        :style="{ gridArea: '3 / 1 / 4 / 2', zIndex: 1 }"
+        :class="{ 'collapsed': isOrderDetailsCollapsed }"
+        :style="{ 
+          gridArea: isOrderDetailsCollapsed ? '2 / 1 / 3 / 2' : '3 / 1 / 4 / 2', 
+          zIndex: 1 
+        }"
         @mousedown="startDrag(2, $event)"
       >
         <OrderDetailsWindow 
+          :isCollapsed="isOrderDetailsCollapsed"
           @close="closeWindow(2)" 
           @deactivate="handleDeactivate" 
           @cancel="handleCancel" 
-          @edit="handleEdit" 
+          @edit="handleEdit"
+          @toggle-collapse="toggleOrderDetailsCollapse"
         />
       </div>
     </div>
@@ -124,6 +131,9 @@ const windows = ref([
 // Show archived toggle state
 const showArchived = ref(false)
 
+// Order Details window collapse state
+const isOrderDetailsCollapsed = ref(false)
+
 // Splitter drag functions
 function startSplitterDrag(e: MouseEvent) {
   e.preventDefault()
@@ -155,9 +165,14 @@ function startSplitterDrag(e: MouseEvent) {
 
 // Computed grid template rows
 const gridTemplateRows = computed(() => {
-  const topSize = splitterPosition.value
-  const bottomSize = 100 - splitterPosition.value
-  return `${topSize}fr 12px ${bottomSize}fr`
+  if (isOrderDetailsCollapsed.value) {
+    // When collapsed, only show the orders window and a minimal collapsed window
+    return '1fr 40px'
+  } else {
+    const topSize = splitterPosition.value
+    const bottomSize = 100 - splitterPosition.value
+    return `${topSize}fr 12px ${bottomSize}fr`
+  }
 })
 
 // Order Details button handlers
@@ -485,6 +500,12 @@ function toggleShowArchived() {
   // Add your logic to filter/show archived orders here
 }
 
+// Toggle Order Details window collapse
+function toggleOrderDetailsCollapse() {
+  isOrderDetailsCollapsed.value = !isOrderDetailsCollapsed.value
+  console.log('Order Details collapsed:', isOrderDetailsCollapsed.value)
+}
+
 // Event listeners
 onMounted(function() {
   document.addEventListener('mousemove', handleMouseMove)
@@ -541,6 +562,12 @@ useHead({
 .grid-window:active {
   border-color: rgba(4, 207, 139, 0.8);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.grid-window.collapsed {
+  height: 40px;
+  min-height: 40px;
+  max-height: 40px;
 }
 
 /* Window Header */

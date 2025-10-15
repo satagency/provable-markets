@@ -20,16 +20,22 @@
         <button class="batch-orders-btn edit-btn" @click="$emit('edit')">
           <span>Edit</span>
         </button>
-        <button class="close-btn" @click="$emit('close')">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        <button class="collapse-btn" @click="$emit('toggle-collapse')">
+          <svg 
+            class="w-4 h-4 caret-icon" 
+            :class="{ 'rotated': isCollapsed }"
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
           </svg>
         </button>
       </div>
     </div>
 
     <!-- Window Content -->
-    <div class="window-content">
+    <div v-if="!isCollapsed" class="window-content">
       <div class="order-details-content">
         <!-- Tab Menu -->
         <div class="tab-menu">
@@ -311,8 +317,16 @@ import { ref, onMounted } from 'vue'
 import StatusPill from '~/components/ui/StatusPill.vue'
 import { useConfirmDialog } from '~/composables/useConfirmDialog'
 
+// Define props
+const props = defineProps({
+  isCollapsed: {
+    type: Boolean,
+    default: false
+  }
+})
+
 // Define emits
-const emit = defineEmits(['close', 'deactivate', 'cancel', 'edit'])
+const emit = defineEmits(['close', 'deactivate', 'cancel', 'edit', 'toggle-collapse'])
 
 // Confirm dialog composable
 const { confirmDelete, showDialog } = useConfirmDialog()
@@ -525,7 +539,7 @@ onMounted(() => {
   background-color: rgba(34, 197, 94, 1); /* Slightly brighter green on hover */
 }
 
-.close-btn {
+.collapse-btn {
   width: 20px;
   height: 20px;
   border: none;
@@ -539,9 +553,17 @@ onMounted(() => {
   transition: all 0.2s ease;
 }
 
-.close-btn:hover {
+.collapse-btn:hover {
   background: #444;
   color: #fff;
+}
+
+.caret-icon {
+  transition: transform 0.3s ease;
+}
+
+.caret-icon.rotated {
+  transform: rotate(180deg);
 }
 
 /* Window Content */
