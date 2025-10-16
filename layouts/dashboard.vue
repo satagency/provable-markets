@@ -1,7 +1,15 @@
 <template>
   <div class="dashboard-layout">
     <!-- Main Sidebar -->
-    <aside class="main-sidebar" :class="{ 'collapsed': sidebarCollapsed }">
+    <aside 
+      class="main-sidebar" 
+      :class="{ 
+        'collapsed': sidebarState === 'minimal',
+        'hover-expanded': sidebarState === 'hover-expanded'
+      }"
+      @mouseenter="handleSidebarMouseEnter"
+      @mouseleave="handleSidebarMouseLeave"
+    >
       <div class="sidebar-container">
             <!-- Header with Toggle Button -->
             <div class="sidebar-header">
@@ -10,7 +18,7 @@
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
               </button>
-              <div class="logo" :class="{ 'collapsed': sidebarCollapsed }">
+              <div class="logo" :class="{ 'collapsed': sidebarState === 'minimal' }">
                 <svg width="106" height="13" viewBox="0 0 106 13" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
                   <path d="M3.95198 12.171C1.70998 12.171 0.474976 10.822 0.474976 9.05503C0.474976 7.21203 1.72898 5.99602 4.46498 5.99602C5.20598 5.99602 6.19398 6.14802 6.59298 6.28102V5.46403C6.59298 4.78002 6.15598 4.24802 5.07298 4.24802C4.16098 4.24802 3.62898 4.74202 3.62898 5.35002H0.892976C0.892976 3.48802 2.24198 1.89202 5.16798 1.89202C7.88498 1.89202 9.51898 3.39303 9.51898 5.46403V12H6.89698L6.68798 11.107H6.61198C6.06098 11.734 5.18698 12.171 3.95198 12.171ZM4.69298 9.89102C5.88998 9.89102 6.59298 9.18802 6.59298 8.37102V8.27602C5.98498 8.02902 5.37698 7.95302 4.80698 7.95302C3.85698 7.95302 3.36298 8.37102 3.36298 8.90302C3.36298 9.47302 3.81898 9.89102 4.69298 9.89102Z" fill="#04CF8B"/>
                   <path d="M17.2143 2.06302H20.1403V8.02903C20.1403 10.138 18.8483 12.171 15.5993 12.171C15.5803 12.171 15.5803 12.171 15.5803 12.171C12.3313 12.171 11.0393 10.138 11.0393 8.02903V2.06302H13.9653V7.59202C13.9653 8.73202 14.4403 9.41603 15.5993 9.41603C16.7393 9.41603 17.2143 8.73202 17.2143 7.59202V2.06302Z" fill="#04CF8B"/>
@@ -35,7 +43,7 @@
               <div class="nav-icon">
                 <HomeIcon class="w-5 h-5 block" />
               </div>
-              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Home</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarState === 'minimal' }">Home</span>
               <PulsatingOrb size="small" />
             </NuxtLink>
 
@@ -43,7 +51,7 @@
               <div class="nav-icon">
                 <MarketplaceIcon class="w-5 h-5 block" />
               </div>
-              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Marketplace</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarState === 'minimal' }">Marketplace</span>
               <PulsatingOrb size="small" />
             </NuxtLink>
 
@@ -51,7 +59,7 @@
               <div class="nav-icon">
                 <TradeManagerIcon class="w-5 h-5 block" />
               </div>
-              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Trade Manager</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarState === 'minimal' }">Trade Manager</span>
               <PulsatingOrb size="small" />
             </NuxtLink>
 
@@ -59,7 +67,7 @@
               <div class="nav-icon">
                 <AgreementsIcon class="w-5 h-5 block" />
               </div>
-              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Agreements</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarState === 'minimal' }">Agreements</span>
               <PulsatingOrb size="small" />
             </NuxtLink>
 
@@ -67,26 +75,26 @@
               <div class="nav-icon">
                 <LocatesIcon class="w-5 h-5 block" />
               </div>
-              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Locates</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarState === 'minimal' }">Locates</span>
             </NuxtLink>
 
             <NuxtLink to="/analytics" class="nav-item" :class="{ 'active': $route.path.startsWith('/analytics') }" @click="handleNavClick($event, 'analytics')">
               <div class="nav-icon">
                 <AnalyticsIcon class="w-5 h-5 block" />
               </div>
-              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Analytics</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarState === 'minimal' }">Analytics</span>
             </NuxtLink>
 
             <NuxtLink to="/reports" class="nav-item" :class="{ 'active': $route.path.startsWith('/reports') }" @click="handleNavClick($event, 'reports')">
               <div class="nav-icon">
                 <ReportsIcon class="w-5 h-5 block" />
               </div>
-              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Reports</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarState === 'minimal' }">Reports</span>
             </NuxtLink>
           </div>
 
           <!-- Divider -->
-          <div class="nav-divider" :class="{ 'collapsed': sidebarCollapsed }"></div>
+          <div class="nav-divider" :class="{ 'collapsed': sidebarState === 'minimal' }"></div>
 
           <!-- Secondary Navigation -->
           <div class="nav-section secondary">
@@ -94,28 +102,28 @@
               <div class="nav-icon">
                 <SwapsIcon class="w-5 h-5 block" />
               </div>
-              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Swaps</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarState === 'minimal' }">Swaps</span>
             </NuxtLink>
 
             <NuxtLink to="/trade-optimizer" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/trade-optimizer') }" @click="handleNavClick($event, 'trade-optimizer')">
               <div class="nav-icon">
                 <SparkleIcon class="w-5 h-5 block" />
               </div>
-              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Trade Optimizer</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarState === 'minimal' }">Trade Optimizer</span>
             </NuxtLink>
 
             <NuxtLink to="/basket-tool" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/basket-tool') }" @click="handleNavClick($event, 'basket-tool')">
               <div class="nav-icon">
                 <BasketIcon class="w-5 h-5 block" />
               </div>
-              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Basket Tool</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarState === 'minimal' }">Basket Tool</span>
             </NuxtLink>
 
             <NuxtLink to="/strategy-builder/create" class="nav-item secondary" :class="{ 'active': $route.path.startsWith('/strategy-builder') }" @click="handleNavClick($event, 'strategy-builder')">
               <div class="nav-icon">
                 <StrategyIcon class="w-5 h-5 block" />
               </div>
-              <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Strategy Builder</span>
+              <span class="nav-label" :class="{ 'collapsed': sidebarState === 'minimal' }">Strategy Builder</span>
               <PulsatingOrb size="small" />
             </NuxtLink>
           </div>
@@ -127,28 +135,28 @@
             <div class="nav-icon">
               <ComplianceIcon class="w-5 h-5 block" />
             </div>
-            <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Compliance & Legal</span>
+            <span class="nav-label" :class="{ 'collapsed': sidebarState === 'minimal' }">Compliance & Legal</span>
           </NuxtLink>
 
           <NuxtLink to="/settings" class="nav-item bottom" :class="{ 'active': $route.path.startsWith('/settings') }" @click="handleNavClick($event, 'settings')">
             <div class="nav-icon">
               <SettingsIcon class="w-5 h-5 block" />
             </div>
-            <span class="nav-label" :class="{ 'collapsed': sidebarCollapsed }">Company Settings</span>
+            <span class="nav-label" :class="{ 'collapsed': sidebarState === 'minimal' }">Company Settings</span>
           </NuxtLink>
 
           <!-- Spacing and Divider -->
           <div class="settings-spacing"></div>
-          <div class="settings-divider" :class="{ 'collapsed': sidebarCollapsed }"></div>
+          <div class="settings-divider" :class="{ 'collapsed': sidebarState === 'minimal' }"></div>
 
           <!-- Company Switch Button -->
-          <div class="company-switch" :class="{ 'collapsed': sidebarCollapsed }">
+          <div class="company-switch" :class="{ 'collapsed': sidebarState === 'minimal' }">
             <div class="company-avatar">T</div>
-            <div class="company-info" :class="{ 'collapsed': sidebarCollapsed }">
+            <div class="company-info" :class="{ 'collapsed': sidebarState === 'minimal' }">
               <div class="company-name">Tribeca_PL_Firm</div>
               <div class="company-type">Company</div>
             </div>
-            <div class="company-arrow" :class="{ 'collapsed': sidebarCollapsed }">
+            <div class="company-arrow" :class="{ 'collapsed': sidebarState === 'minimal' }">
               <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
               </svg>
@@ -265,8 +273,10 @@ import {
 
 // Market status icons - using custom inline SVGs
 
-// Sidebar toggle state
-const sidebarCollapsed = ref(false)
+// Sidebar states: 'full', 'minimal', 'hover-expanded'
+const sidebarState = ref('full')
+const isHoveringSidebar = ref(false)
+const sidebarCollapseTimer = ref(null)
 
 // Real-time clock and market status
 const currentDateTime = ref('')
@@ -319,54 +329,82 @@ const handleNavClick = (event: Event, submenuName: string) => {
     event.preventDefault()
     event.stopPropagation()
     toggleSubmenu(submenuName)
+    // Start sidebar collapse timer when submenu opens
+    if (submenuExpanded.value) {
+      startSidebarCollapseTimer()
+    }
     return false
   }
 }
 
-// Auto-collapse submenu after 6 seconds
-const autoCollapseTimer = ref(null)
+// Submenu should stay persistent - no auto-collapse
 const isHoveringSubmenu = ref(false)
 
-// Start auto-collapse timer
-const startAutoCollapseTimer = () => {
-  // Clear existing timer
-  if (autoCollapseTimer.value) {
-    clearTimeout(autoCollapseTimer.value)
-  }
-  
-  // Set new timer for 3 seconds
-  autoCollapseTimer.value = setTimeout(() => {
-    if (!isHoveringSubmenu.value && submenuExpanded.value) {
-      collapseSubmenu()
-    }
-  }, 3000)
-}
-
-// Handle submenu hover
+// Handle submenu hover (keep submenu always visible when expanded)
 const handleSubmenuMouseEnter = () => {
   isHoveringSubmenu.value = true
-  // Clear auto-collapse timer when hovering
-  if (autoCollapseTimer.value) {
-    clearTimeout(autoCollapseTimer.value)
-  }
-  // Expand submenu when hovering (even if it was collapsed)
+  // Ensure submenu stays expanded
   if (currentSubmenu.value) {
-    // Force expand even if it's the same submenu
     expandSubmenu(currentSubmenu.value, true)
   }
 }
 
 const handleSubmenuMouseLeave = () => {
   isHoveringSubmenu.value = false
-  // Restart auto-collapse timer when leaving hover
-  if (submenuExpanded.value) {
-    startAutoCollapseTimer()
+  // Submenu stays visible - no auto-collapse
+}
+
+// Sidebar state management functions
+const setSidebarState = (state: string) => {
+  sidebarState.value = state
+}
+
+const startSidebarCollapseTimer = () => {
+  // Clear existing timer
+  if (sidebarCollapseTimer.value) {
+    clearTimeout(sidebarCollapseTimer.value)
+  }
+  
+  // Set timer for 4 seconds to collapse MAIN SIDEBAR only (submenu stays)
+  sidebarCollapseTimer.value = setTimeout(() => {
+    if (submenuExpanded.value && !isHoveringSidebar.value) {
+      setSidebarState('minimal')
+      // Submenu stays expanded - don't collapse it
+    }
+  }, 4000)
+}
+
+const handleSidebarMouseEnter = () => {
+  isHoveringSidebar.value = true
+  // Clear collapse timer when hovering
+  if (sidebarCollapseTimer.value) {
+    clearTimeout(sidebarCollapseTimer.value)
+  }
+  // Expand sidebar when hovering if it's minimal
+  if (sidebarState.value === 'minimal') {
+    setSidebarState('hover-expanded')
   }
 }
 
-// Toggle sidebar function
+const handleSidebarMouseLeave = () => {
+  isHoveringSidebar.value = false
+  // If we're in hover-expanded state and submenu is open, return to minimal
+  if (sidebarState.value === 'hover-expanded' && submenuExpanded.value) {
+    setSidebarState('minimal')
+  }
+  // Restart collapse timer if submenu is open
+  if (submenuExpanded.value) {
+    startSidebarCollapseTimer()
+  }
+}
+
+// Legacy toggle function for the hamburger button (now just toggles between full and minimal)
 const toggleSidebar = () => {
-  sidebarCollapsed.value = !sidebarCollapsed.value
+  if (sidebarState.value === 'full') {
+    setSidebarState('minimal')
+  } else {
+    setSidebarState('full')
+  }
 }
 
 // Auto-expand submenu based on current route
@@ -389,18 +427,20 @@ onMounted(() => {
   // Clean up interval on unmount
   onUnmounted(() => {
     clearInterval(clockInterval)
-    if (autoCollapseTimer.value) {
-      clearTimeout(autoCollapseTimer.value)
+    if (sidebarCollapseTimer.value) {
+      clearTimeout(sidebarCollapseTimer.value)
     }
   })
   
   const pathSegments = route.path.split('/').filter(Boolean)
   if (pathSegments.length > 0 && routesWithSubmenus.includes(pathSegments[0])) {
     expandSubmenu(pathSegments[0])
-    // Start auto-collapse timer when submenu expands
-    startAutoCollapseTimer()
+    // Start sidebar collapse timer (submenu stays persistent)
+    startSidebarCollapseTimer()
   } else {
     collapseSubmenu()
+    // Reset sidebar to full when no submenu
+    setSidebarState('full')
   }
 })
 
@@ -409,10 +449,12 @@ watch(() => route.path, (newPath) => {
   const pathSegments = newPath.split('/').filter(Boolean)
   if (pathSegments.length > 0 && routesWithSubmenus.includes(pathSegments[0])) {
     expandSubmenu(pathSegments[0])
-    // Start auto-collapse timer when submenu expands
-    startAutoCollapseTimer()
+    // Start sidebar collapse timer (submenu stays persistent)
+    startSidebarCollapseTimer()
   } else {
     collapseSubmenu()
+    // Reset sidebar to full when no submenu
+    setSidebarState('full')
   }
 })
 </script>
@@ -438,6 +480,10 @@ watch(() => route.path, (newPath) => {
 
     .main-sidebar.collapsed {
       width: 60px;
+    }
+
+    .main-sidebar.hover-expanded {
+      width: 256px;
     }
 
     .sidebar-container {
@@ -499,6 +545,14 @@ watch(() => route.path, (newPath) => {
   padding: 0;
 }
 
+/* Show logo when hover-expanded */
+.main-sidebar.hover-expanded .logo.collapsed {
+  opacity: 1 !important;
+  width: auto !important;
+  margin-top: 44px;
+  padding: 0 9px 0 0;
+}
+
 .logo-svg {
   height: 16px;
   width: auto;
@@ -531,6 +585,13 @@ watch(() => route.path, (newPath) => {
   margin: 0;
 }
 
+/* Show dividers when hover-expanded */
+.main-sidebar.hover-expanded .nav-divider.collapsed {
+  opacity: 1;
+  height: 1px;
+  margin: 0;
+}
+
 /* Settings spacing and divider */
 .settings-spacing {
   height: 12px;
@@ -547,6 +608,13 @@ watch(() => route.path, (newPath) => {
   opacity: 0;
   height: 0;
   margin: 0;
+}
+
+/* Show settings divider when hover-expanded */
+.main-sidebar.hover-expanded .settings-divider.collapsed {
+  opacity: 1;
+  height: 1px;
+  margin: 0 0 16px 0;
 }
 
 
@@ -614,7 +682,7 @@ watch(() => route.path, (newPath) => {
   font-weight: 400;
   line-height: 20px;
   white-space: nowrap;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.3s ease, width 0.3s ease;
   opacity: 1 !important;
   width: auto !important;
 }
@@ -631,9 +699,22 @@ watch(() => route.path, (newPath) => {
   padding: 0;
 }
 
+/* Show labels when hover-expanded */
+.main-sidebar.hover-expanded .nav-label.collapsed {
+  opacity: 1 !important;
+  width: auto !important;
+  margin: 0;
+  padding: 0;
+}
+
 /* Hide pulsating orb when sidebar is collapsed */
 .main-sidebar.collapsed .pulsating-orb {
   display: none;
+}
+
+/* Show pulsating orb when hover-expanded */
+.main-sidebar.hover-expanded .pulsating-orb {
+  display: block;
 }
 
 .sidebar-bottom {
@@ -666,6 +747,15 @@ watch(() => route.path, (newPath) => {
 
 .company-arrow.collapsed {
   display: none;
+}
+
+/* Show company info when hover-expanded */
+.main-sidebar.hover-expanded .company-info.collapsed {
+  display: flex;
+}
+
+.main-sidebar.hover-expanded .company-arrow.collapsed {
+  display: block;
 }
 
 .company-switch:hover {
