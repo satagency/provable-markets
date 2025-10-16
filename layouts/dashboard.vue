@@ -435,8 +435,8 @@ onMounted(() => {
   const pathSegments = route.path.split('/').filter(Boolean)
   if (pathSegments.length > 0 && routesWithSubmenus.includes(pathSegments[0])) {
     expandSubmenu(pathSegments[0])
-    // Start sidebar collapse timer (submenu stays persistent)
-    startSidebarCollapseTimer()
+    // DON'T start collapse timer on initial load - let user see full navigation first
+    // Timer will start when user actively navigates
   } else {
     collapseSubmenu()
     // Reset sidebar to full when no submenu
@@ -449,8 +449,8 @@ watch(() => route.path, (newPath) => {
   const pathSegments = newPath.split('/').filter(Boolean)
   if (pathSegments.length > 0 && routesWithSubmenus.includes(pathSegments[0])) {
     expandSubmenu(pathSegments[0])
-    // Start sidebar collapse timer (submenu stays persistent)
-    startSidebarCollapseTimer()
+    // DON'T start collapse timer on route changes - only on active navigation
+    // Timer will start when user actively clicks navigation items
   } else {
     collapseSubmenu()
     // Reset sidebar to full when no submenu
